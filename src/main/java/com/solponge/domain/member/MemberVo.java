@@ -71,4 +71,10 @@ public class MemberVo {
         this.MEMBER_EMAIL = MEMBER_EMAIL;
         this.MEMBER_PHONE = MEMBER_PHONE;
     }
+
+    public MemberVo(Long MEMBER_NO, String MEMBER_ID, String MEMBER_NAME) {
+        this.MEMBER_NO = MEMBER_NO;
+        this.MEMBER_ID = MEMBER_ID;
+        this.MEMBER_NAME = MEMBER_NAME;
+    }
 }

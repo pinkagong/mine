@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cart">
+
+
+    <!--기본 CRUD-->
+    <select id="list" resultType="com.solponge.domain.cart.CartVo">
+        SELECT * FROM CART
+    </select>
+
+    <select id="selectCart" resultType="com.solponge.domain.cart.CartVo">
+        SELECT CART_NUM, MEMBER_NUM, CART_DATE  FROM CART WHERE CART_NUM = #{CART_NUM, jdbcType=NUMERIC}
+    </select>
+
+    <insert id="insertCart" useGeneratedKeys="true" keyProperty="CART_NUM" keyColumn="CART_NUM">
+        INSERT INTO CART(CART_NUM,MEMBER_NUM,CART_DATE)
+        VALUES(CART_NUM_SEQ.NEXTVAL,#{MEMBER_NUM},SYSTIMESTAMP)
+    </insert>
+
+
+    <delete id="deleteCart">
+        DELETE FROM CART WHERE CART_NUM=#{CART_NUM}
+    </delete>
+
+    <!--서비스 CURD-->
+
+    <resultMap id="cartListResultMap" type="com.solponge.domain.cart.CartListVo">
+        <result property="MEMBER_NUM" column="MEMBER_NUM"/>
+        <result property="CART_DATE" column="CART_DATE"/>
+        <result property="CART_ITEM_NUM" column="CART_ITEM_NUM"/>
+        <result property="PRODUCT_NUM" column="PRODUCT_NUM"/>
+        <result property="CART_ITEM_STOCK" column="CART_ITEM_STOCK"/>
+        <result property="PRODUCT_TITLE" column="PRODUCT_TITLE"/>
+        <result property="PRODUCT_PRICE" column="PRODUCT_PRICE"/>
+    </resultMap>
+
+    <select id="cartList" resultType="com.solponge.domain.cart.CartListVo">
+        SELECT CART.MEMBER_NUM,
+               CART.CART_DATE,
+               CART_ITEM.CART_ITEM_NUM,
+               CART_ITEM.PRODUCT_NUM,
+               CART_ITEM.CART_ITEM_STOCK,
+               product.PRODUCT_TITLE,
+               product.PRODUCT_PRICE
+        FROM
+            cart
+                JOIN cart_item ON cart.MEMBER_NUM = cart_item.MEMBER_NUM
+                JOIN product ON cart_item.PRODUCT_NUM = product.PRODUCT_NUM
+        WHERE cart.MEMBER_NUM = #{MEMBER_NUM, jdbcType=NUMERIC}
+    </select>
+
+
+
+
+</mapper>

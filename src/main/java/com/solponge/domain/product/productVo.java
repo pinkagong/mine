@@ -37,4 +37,11 @@ public class productVo {
         this.product_page = product_page;
         this.product_code = product_code;
     }
+
+    public productVo(int product_num, String product_title, int product_price, int product_stock) {
+        this.product_num = product_num;
+        this.product_title = product_title;
+        this.product_price = product_price;
+        this.product_stock = product_stock;
+    }
 }
