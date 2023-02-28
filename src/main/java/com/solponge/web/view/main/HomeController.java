@@ -1,5 +1,7 @@
 package com.solponge.web.view.main;
 
+import com.solponge.domain.cart.CartService;
+import com.solponge.domain.cart.CartVo;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
 import com.solponge.domain.product.productService;
@@ -21,6 +23,7 @@ public class HomeController {
 
    private final MemberServiceImpl memberService;
    private final productService productService;
+   private final CartService cartService;
 
     @GetMapping("/main")
     public String homeLogin(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
@@ -45,6 +48,9 @@ public class HomeController {
 
         Long join = memberService.join(member);
         log.info("joinedMember={}",join);
+        //회원가입 시 카트 생성
+        int cart = cartService.createCart(new CartVo(Math.toIntExact(join)));
+        log.info("cartCreated={}",cart);
         return "member/addComplete";
     }
 

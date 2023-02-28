@@ -55,7 +55,7 @@ class CartDAOTest {
 
     @Test
     void memberCartList(){
-        List<CartListVo> cartListVos = cartDAO.showMemberCart(41);
+        List<CartListVo> cartListVos = cartDAO.showMemberCart(40);
             log.info("memberCartVos={}",cartListVos);
     }
 

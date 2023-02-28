@@ -1,7 +1,14 @@
 package com.solponge.web.view.member;
 
+import com.solponge.domain.cart.CartItem;
+import com.solponge.domain.cart.CartItemVo;
+import com.solponge.domain.cart.CartListVo;
+import com.solponge.domain.cart.CartService;
+import com.solponge.domain.cart.impl.CartServiceImpl;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
+import com.solponge.domain.product.productService;
+import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -19,21 +27,45 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/com.solponge/member")
 public class MemberController {
     private final MemberServiceImpl memberService;
+    private final productService productService;
+    private final CartService cartService;
 
     /**
      * 장바구니
      */
     @GetMapping("/{MEMBER_NO}/myPage/cart")
-    public String cart(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
-        //세션에 회원 데이터가 없으면 home
-        if(loginMember==null){
-            return "redirect:/com.solponge/login";
-        }
-        //로그인 시
-        model.addAttribute("member",loginMember);
+    public String cart(Model model,
+                       HttpServletRequest request){
+        MemberVo loginMember = getLoginMember(request);
+        List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(loginMember.getMEMBER_NO()));
+
+
+        model.addAttribute("cartList",cartListVos);
+
+
         return "member/cart";
 
     }
+
+    /**
+     * 장바구니 추가
+     * @param productId
+     * @param quantityinput
+     * @param request
+     */
+    @GetMapping("/{MEMBER_NO}/myPage/cart/{productId}/{quantityinput}")
+    public String cartSave(@PathVariable int productId,
+                       @PathVariable int quantityinput,
+                       HttpServletRequest request){
+
+        MemberVo loginMember = getLoginMember(request);
+        addCart(productId, quantityinput, loginMember);
+
+        return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/mypage/cart";
+
+    }
+
+
 
     /**
      * 마이페이지
@@ -120,4 +152,18 @@ public class MemberController {
         return "redirect:/com.solponge/main";
     }
 
+    private MemberVo getLoginMember(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
+    }
+
+    private void addCart(int productId, int quantityinput, MemberVo loginMember) {
+        //받아온 상품번호로 상품객체 소환
+        productVo getproduct = productService.getproduct(productId);
+        //cartItem 객체를 생성하여 필요한 값을 cartItemVo로 전달
+        CartItemVo cartItemVo = new CartItemVo(new CartItem(loginMember,getproduct, quantityinput));
+        //받아온 상품정보를 CART_ITEM 에 저장
+        int cart_Item_num = cartService.addItem(cartItemVo);
+        log.info("장바구니에 추가된 상품정보={}",cartService.findItem(cart_Item_num));
+    }
 }

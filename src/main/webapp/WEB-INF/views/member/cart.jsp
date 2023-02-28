@@ -9,7 +9,11 @@
 <header>
     <%@include file="../../tags/header.jsp"%>
 </header>
-${member.MEMBER_NAME}
+${loginMember.MEMBER_NAME}
 장바구니
+<br>
+리스트:${cartList}<br>
+total:${totalPrice}
+
 </body>
 </html>

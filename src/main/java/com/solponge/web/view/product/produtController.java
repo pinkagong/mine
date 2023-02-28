@@ -104,7 +104,7 @@ public class produtController {
         if (requestParams.containsKey("button1")) {
             return "redirect:/button1-page";
         } else {
-            return "redirect:/error-page";
+            return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/myPage/cart/"+ productId + "/" + quantityinput;
         }
 
     }
