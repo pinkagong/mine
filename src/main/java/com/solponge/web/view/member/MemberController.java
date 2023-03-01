@@ -39,23 +39,32 @@ public class MemberController {
     @GetMapping("/{MEMBER_NO}/myPage/cart")
     public String cart(Model model,
                        HttpServletRequest request){
+        //세션을 받아 계정객체 받아옴
         MemberVo member = getLoginMember(request);
+        // 계정의 번호를 이용해 카트리스트VO를 불러옴
+        List<CartItem> cartItems = getCartItems(member);
+        //변환한 cartItem 을 담은 cartItems 를 model 에 저장
+        model.addAttribute("cartItems",cartItems);
+        return "member/cart";
+    }
+
+    private List<CartItem> getCartItems(MemberVo member) {
         List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(member.getMEMBER_NO()));
+        //카트아이템 객체 생성
         List<CartItem> cartItems =new ArrayList<>();
 
         for (CartListVo cartListVo : cartListVos) {
-            CartItem cartItem = cartListVo.toCartItem();//cartListVo를 cartItem 으로 변환 //현재상태 : member=null, cartItem=?어디서받아오더라
-            cartItem.setProduct(productService.getproduct(cartItem.getProduct().getProduct_num()));//cartItem 의 product 정보를 진짜 해당 product 정보로 변환
+            //cartListVo를 cartItem 으로 변환 //현재상태 : member=null, productVo=cartListVo 에서 받아온 기초 정보(cart_item_num, cart_item_title, cart_item_price), cart_item_stock
+            CartItem cartItem = cartListVo.toCartItem();
+            //cartItem 의 product 정보를 진짜 해당 product 정보로 변환
+            cartItem.setProduct(productService.getproduct(cartItem.getProduct().getProduct_num()));
             cartItem.setMember(member);
+            //변환시킨 cartItem 을 미리 만든 cartItems 에 넣기
             cartItems.add(cartItem);
         }
+        //cartItems 를 cart_item_num 순으로 정렬
         Collections.sort(cartItems, Comparator.comparingInt(CartItem::getCART_ITEM_NUM));//cartItems 를 CART_ITEM_NUM 순으로 정렬
-        model.addAttribute("cartItems",cartItems);
-        model.addAttribute("cartList",cartListVos);
-
-
-        return "member/cart";
-
+        return cartItems;
     }
 
     /**

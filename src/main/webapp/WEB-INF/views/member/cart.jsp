@@ -71,6 +71,9 @@
                 <div class="cart__item-quantity">수량: ${cartItem.CART_ITEM_STOCK}개</div>
                 <div class="cart__item-total-price">총 가격: ${cartItem.totalPrice}원</div>
             </div>
+            <div class="cart_Item_check">
+                <input type="checkbox" name="order">[담기]
+            </div>
             <div class="cart__item-remove">[삭제]</div>
         </div>
     </c:forEach>
