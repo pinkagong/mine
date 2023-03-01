@@ -23,12 +23,13 @@ public class AdminLoginCheckInterceptor extends LoginCheckInterceptor {
             return false;
         }
 
-        MemberVo memberVo = (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (memberVo.getMEMBER_GRADE() != Grade.ADMIN) {
-            log.info("미인증 사용자 요청 id={}", memberVo.getMEMBER_ID());
+        MemberVo loginMember = (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (loginMember.getMEMBER_GRADE() != Grade.ADMIN) {
+            log.info("미인증 사용자 요청 id={}", loginMember.getMEMBER_ID());
             response.sendRedirect("/com.solponge/login");
             return false;
         }
+        session.setAttribute("member",loginMember);
         return true;
     }
 }

@@ -19,6 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -36,10 +39,18 @@ public class MemberController {
     @GetMapping("/{MEMBER_NO}/myPage/cart")
     public String cart(Model model,
                        HttpServletRequest request){
-        MemberVo loginMember = getLoginMember(request);
-        List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(loginMember.getMEMBER_NO()));
+        MemberVo member = getLoginMember(request);
+        List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(member.getMEMBER_NO()));
+        List<CartItem> cartItems =new ArrayList<>();
 
-
+        for (CartListVo cartListVo : cartListVos) {
+            CartItem cartItem = cartListVo.toCartItem();//cartListVo를 cartItem 으로 변환 //현재상태 : member=null, cartItem=?어디서받아오더라
+            cartItem.setProduct(productService.getproduct(cartItem.getProduct().getProduct_num()));//cartItem 의 product 정보를 진짜 해당 product 정보로 변환
+            cartItem.setMember(member);
+            cartItems.add(cartItem);
+        }
+        Collections.sort(cartItems, Comparator.comparingInt(CartItem::getCART_ITEM_NUM));//cartItems 를 CART_ITEM_NUM 순으로 정렬
+        model.addAttribute("cartItems",cartItems);
         model.addAttribute("cartList",cartListVos);
 
 

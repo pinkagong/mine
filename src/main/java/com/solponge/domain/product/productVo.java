@@ -44,4 +44,18 @@ public class productVo {
         this.product_price = product_price;
         this.product_stock = product_stock;
     }
+
+    /**
+     * db에서 받아온 정보를 productVo 객체로 만드는 생성자
+     * @param product_num
+     * @param product_title
+     * @param product_price
+     */
+    public productVo(int product_num, String product_title, int product_price) {
+        this.product_num = product_num;
+        this.product_title = product_title;
+        this.product_price = product_price;
+    }
+
+
 }

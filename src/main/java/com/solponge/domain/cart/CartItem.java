@@ -11,6 +11,9 @@ public class CartItem {
     private productVo product;
     private int CART_ITEM_STOCK;
 
+    public CartItem() {
+    }
+
     public CartItem(MemberVo member, productVo product, int CART_ITEM_STOCK) {
         this.member = member;
         this.product = product;
