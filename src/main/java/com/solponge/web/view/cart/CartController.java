@@ -63,17 +63,29 @@ public class CartController {
         return "member/cart";
     }
 
+   /* *//**
+     * 장바구니에서 값 보내는 곳
+     * @param request
+     * @param cartItems
+     * @return
+     *//*
+    *//*oder컨트롤러 따로 만드셔도 되고*//*
     @PostMapping
-    public String postCart(HttpServletRequest request,
-                           @RequestParam("cartItems") List<String> cartItems
-                           ){
-        List<OrderVo> orderist =new ArrayList<>();
-        for (OrderVo orderVo : orderist) {
+    public String postCart(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems){
+        List<OrderVo> orderList =new ArrayList<>();
 
+        for (String cartItem : cartItems) {
+            String[] cartItemArray = cartItem.split(",");
+            OrderVo order = new OrderVo();
+            order.setPRODUCT_NUM(Integer.parseInt(cartItemArray[0]));
+            order.setORDER_STOCK(Integer.parseInt(cartItemArray[1]));
+            order.setMEMBER_NUM(Integer.parseInt(cartItemArray[2]));
+            orderList.add(order);
         }
+        log.info("orderList={}",orderList);
         return null;
 
-    }
+    }*/
 
 
 
