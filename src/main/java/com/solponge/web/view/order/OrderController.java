@@ -1,7 +1,7 @@
 package com.solponge.web.view.order;
 
 import com.solponge.domain.cart.CartService;
-import com.solponge.domain.cart.OrderVo;
+import com.solponge.domain.order.OrderVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
