@@ -83,7 +83,7 @@ public class CartController {
         int cart_Item_num = cartService.addItem(cartItemVo);
         log.info("장바구니에 추가된 상품정보={}",cartService.findItem(cart_Item_num));
 
-        return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/mypage/cart";
+        return "redirect:/com.solponge/product/"+productId;
     }
 
     @PostMapping("/deleteCartItem")
@@ -93,12 +93,6 @@ public class CartController {
         MemberVo loginMember = getLoginMember(request);
         log.info("cartItem_num={}",cartItemNum);
         cartService.deleteItem(cartItemNum);
-
-
-
-        /**
-         * 대기, 삭제버튼시 cartItem_num 이 여기로 넘어와야함
-         */
 
         return "redirect:/com.solponge/member/" + loginMember.getMEMBER_NO() + "/myPage/cart";
     }

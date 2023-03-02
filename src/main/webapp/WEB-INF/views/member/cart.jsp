@@ -62,7 +62,7 @@
 <div class="cart">
     <h1>${loginMember.MEMBER_NAME}님의 장바구니</h1>
     <hr>
-    <form action="">
+    <form method="post" action="/com.solponge/member/{MEMBER_NO}/myPage/cart/deleteCartItem">
     <c:forEach items="${cart.cartItems}" var="entry">
         <c:set var="product" value="${entry.value.product}" />
         <div class="cart__item">
@@ -76,11 +76,11 @@
                 <input type="checkbox" name="order"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
             </div>
             <div class="cart__item-remove">
-                <form method="post" action="/com.solponge/member/{MEMBER_NO}/myPage/cart/deleteCartItem">
+
                     <input type="hidden" name="cartItemNum" value="${entry.value.CART_ITEM_NUM}">
                     <img src="${pageContext.request.contextPath}/img/delete.png" alt="delete.ico" style="width: 25px;"
                          onclick="this.closest('form').submit();"/>
-                </form>
+
             </div>
         </div>
     </c:forEach>
@@ -89,7 +89,7 @@
             총 결제 금액 : ${cart.totalPrice} 원
         </div>
         <br>
-        <button type="submit">주문하기</button>
+       <%-- <button type="submit">주문하기</button>--%>
     </form>
 </div>
 </body>
