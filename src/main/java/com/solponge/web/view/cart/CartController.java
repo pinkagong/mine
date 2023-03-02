@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -31,7 +33,7 @@ public class CartController {
      */
     @SneakyThrows
     @GetMapping
-    public String cart(Model model,
+    public String getCart(Model model,
                        HttpServletRequest request){
         //세션을 받아 계정객체 받아옴
         MemberVo member = getLoginMember(request);
@@ -59,6 +61,18 @@ public class CartController {
         //cartItem 을 넣은 cart 를 model 에 저장
         model.addAttribute("cart",cart);
         return "member/cart";
+    }
+
+    @PostMapping
+    public String postCart(HttpServletRequest request,
+                           @RequestParam("cartItems") List<String> cartItems
+                           ){
+        List<OrderVo> orderist =new ArrayList<>();
+        for (OrderVo orderVo : orderist) {
+
+        }
+        return null;
+
     }
 
 
@@ -91,6 +105,7 @@ public class CartController {
                                  Model model,
                                  HttpServletRequest request){
         MemberVo loginMember = getLoginMember(request);
+        log.info("delete.loginMember={}",loginMember);
         log.info("cartItem_num={}",cartItemNum);
         cartService.deleteItem(cartItemNum);
 
