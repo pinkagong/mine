@@ -19,6 +19,9 @@ public class Cart {
         this.cartItems = new HashMap<>();
     }
 
+    public Cart() {
+    }
+
     public Cart(int cart_num, MemberVo member) {
         this.cart_num = cart_num;
         this.member = member;
@@ -29,13 +32,13 @@ public class Cart {
         Long productNum = (long) cartItem.getProduct().getProduct_num();
 
         if (cartItems.containsKey(productNum)) { // 같은 상품이 이미 장바구니에 있을 경우
-            CartItem existingCartItem = cartItems.get(productNum);
+            /*CartItem existingCartItem = cartItems.get(productNum);
             int stock = existingCartItem.getProduct().getProduct_stock(); // 기존 재고량
             int existingStock = existingCartItem.getCART_ITEM_STOCK(); // 기존 주문량
             if (stock < orderStock + existingStock) { // 재고보다 주문량 합이 많을 경우 예외 발생
                 throw new Exception("not enough stock");
             }
-            existingCartItem.setCART_ITEM_STOCK(existingStock + orderStock); // 기존 상품 주문량 증가
+            existingCartItem.setCART_ITEM_STOCK(existingStock + orderStock); // 기존 상품 주문량 증가*/
         } else { // 새로운 상품을 장바구니에 추가
             int stock = cartItem.getProduct().getProduct_stock(); // 재고량
             if (stock < orderStock) { // 재고보다 주문량이 많을 경우 예외 발생

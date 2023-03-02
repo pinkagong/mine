@@ -1,9 +1,6 @@
 package com.solponge.web.view.member;
 
-import com.solponge.domain.cart.CartItem;
-import com.solponge.domain.cart.CartItemVo;
-import com.solponge.domain.cart.CartListVo;
-import com.solponge.domain.cart.CartService;
+import com.solponge.domain.cart.*;
 import com.solponge.domain.cart.impl.CartServiceImpl;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
@@ -11,6 +8,7 @@ import com.solponge.domain.product.productService;
 import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,22 +34,20 @@ public class MemberController {
     /**
      * 장바구니
      */
+   /* @SneakyThrows
     @GetMapping("/{MEMBER_NO}/myPage/cart")
     public String cart(Model model,
                        HttpServletRequest request){
         //세션을 받아 계정객체 받아옴
         MemberVo member = getLoginMember(request);
-        // 계정의 번호를 이용해 카트리스트VO를 불러옴
-        List<CartItem> cartItems = getCartItems(member);
-        //변환한 cartItem 을 담은 cartItems 를 model 에 저장
-        model.addAttribute("cartItems",cartItems);
-        return "member/cart";
-    }
-
-    private List<CartItem> getCartItems(MemberVo member) {
+        //---------------------------------------------------------
         List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(member.getMEMBER_NO()));
-        //카트아이템 객체 생성
-        List<CartItem> cartItems =new ArrayList<>();
+
+
+        //회원의 카트 vo 조회
+        CartVo myCart = cartService.getMyCart(Math.toIntExact(member.getMEMBER_NO()));
+        //cart 객체 생성
+        Cart cart = myCart.toCart(myCart, member);
 
         for (CartListVo cartListVo : cartListVos) {
             //cartListVo를 cartItem 으로 변환 //현재상태 : member=null, productVo=cartListVo 에서 받아온 기초 정보(cart_item_num, cart_item_title, cart_item_price), cart_item_stock
@@ -60,30 +56,40 @@ public class MemberController {
             cartItem.setProduct(productService.getproduct(cartItem.getProduct().getProduct_num()));
             cartItem.setMember(member);
             //변환시킨 cartItem 을 미리 만든 cartItems 에 넣기
-            cartItems.add(cartItem);
+            cart.addCartItem(cartItem);
+
         }
-        //cartItems 를 cart_item_num 순으로 정렬
-        Collections.sort(cartItems, Comparator.comparingInt(CartItem::getCART_ITEM_NUM));//cartItems 를 CART_ITEM_NUM 순으로 정렬
-        return cartItems;
+        //----------------------------------------------------------
+        //cartItem 을 넣은 cart 를 model 에 저장
+        model.addAttribute("cart",cart);
+        return "member/cart";
     }
 
-    /**
+
+
+    *//**
      * 장바구니 추가
      * @param productId
      * @param quantityinput
      * @param request
-     */
+     *//*
     @GetMapping("/{MEMBER_NO}/myPage/cart/{productId}/{quantityinput}")
     public String cartSave(@PathVariable int productId,
                        @PathVariable int quantityinput,
                        HttpServletRequest request){
 
         MemberVo loginMember = getLoginMember(request);
-        addCart(productId, quantityinput, loginMember);
+        //받아온 상품번호로 상품객체 소환
+        productVo getproduct = productService.getproduct(productId);
+        //cartItem 객체를 생성하여 필요한 값을 cartItemVo로 전달
+        CartItemVo cartItemVo = new CartItemVo(new CartItem(loginMember,getproduct, quantityinput));
+        //받아온 상품정보를 CART_ITEM 에 저장
+        int cart_Item_num = cartService.addItem(cartItemVo);
+        log.info("장바구니에 추가된 상품정보={}",cartService.findItem(cart_Item_num));
 
         return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/mypage/cart";
 
-    }
+    }*/
 
 
 
@@ -172,18 +178,30 @@ public class MemberController {
         return "redirect:/com.solponge/main";
     }
 
+    /**
+     * 세션에서 회원정보 받아옴
+     * @param request
+     * @return
+     */
+
     private MemberVo getLoginMember(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
     }
 
-    private void addCart(int productId, int quantityinput, MemberVo loginMember) {
-        //받아온 상품번호로 상품객체 소환
-        productVo getproduct = productService.getproduct(productId);
-        //cartItem 객체를 생성하여 필요한 값을 cartItemVo로 전달
-        CartItemVo cartItemVo = new CartItemVo(new CartItem(loginMember,getproduct, quantityinput));
-        //받아온 상품정보를 CART_ITEM 에 저장
-        int cart_Item_num = cartService.addItem(cartItemVo);
-        log.info("장바구니에 추가된 상품정보={}",cartService.findItem(cart_Item_num));
-    }
+    /**
+     * 장바구니 담기 시 db 저장
+     * @param productId
+     * @param quantityinput
+     * @param loginMember
+     */
+
+
+    /**
+     * 카트에서 장바구니 아이템들을 출력
+     * @param member
+     * @return
+     */
+
+
 }

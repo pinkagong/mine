@@ -18,7 +18,7 @@ public class CartItemDAO {
     private SqlSession sqlSession;
 
     /**
-     * 기본 CURD 구현
+     * 기본 CRUD 구현
      */
 
     public String cartItemInsert(CartItemVo cartItemVo) {

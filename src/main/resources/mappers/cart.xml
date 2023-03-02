@@ -9,7 +9,7 @@
     </select>
 
     <select id="selectCart" resultType="com.solponge.domain.cart.CartVo">
-        SELECT CART_NUM, MEMBER_NUM, CART_DATE  FROM CART WHERE CART_NUM = #{CART_NUM, jdbcType=NUMERIC}
+        SELECT CART_NUM, MEMBER_NUM, CART_DATE  FROM CART WHERE MEMBER_NUM = #{MEMBER_NUM, jdbcType=NUMERIC}
     </select>
 
     <insert id="insertCart" useGeneratedKeys="true" keyProperty="CART_NUM" keyColumn="CART_NUM">

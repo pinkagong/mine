@@ -20,5 +20,7 @@ public interface CartService {
      */
     int createCart(CartVo cartVo);
 
+    CartVo getMyCart(int member_num);
+
     List<CartListVo> cartList(int member_num);
 }

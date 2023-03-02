@@ -45,6 +45,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public CartVo getMyCart(int member_num) {
+        return cartDAO.cartFindByNum(member_num);
+    }
+
+    @Override
     public List<CartListVo> cartList(int member_num) {
         return cartDAO.showMemberCart(member_num);
     }

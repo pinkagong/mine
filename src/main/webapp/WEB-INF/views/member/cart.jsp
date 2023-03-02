@@ -62,21 +62,35 @@
 <div class="cart">
     <h1>${loginMember.MEMBER_NAME}님의 장바구니</h1>
     <hr>
-    <c:forEach items="${cartItems}" var="cartItem">
+    <form action="">
+    <c:forEach items="${cart.cartItems}" var="entry">
+        <c:set var="product" value="${entry.value.product}" />
         <div class="cart__item">
-            <img class="cart__item-img" src="${cartItem.product.product_img}" alt="${cartItem.product.product_title}">
+            <img class="cart__item-img" src="${product.product_img}" alt="${cartItem.product.product_title}">
             <div class="cart__item-info">
-                <div class="cart__item-title">${cartItem.product.product_title}</div>
-                <div class="cart__item-price">가격: ${cartItem.product.product_price}원</div>
-                <div class="cart__item-quantity">수량: ${cartItem.CART_ITEM_STOCK}개</div>
-                <div class="cart__item-total-price">총 가격: ${cartItem.totalPrice}원</div>
+                <div class="cart__item-title">${product.product_title}</div>
+                <div class="cart__item-price">가격: ${product.product_price}원</div>
+                <div class="cart__item-quantity">상태: <input type="text" value="${entry.value.CART_ITEM_STOCK}" style="width: 20px;"></div>
             </div>
             <div class="cart_Item_check">
-                <input type="checkbox" name="order">[담기]
+                <input type="checkbox" name="order"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
             </div>
-            <div class="cart__item-remove">[삭제]</div>
+            <div class="cart__item-remove">
+                <form method="post" action="/deleteCartItem">
+                    <input type="hidden" name="cartItemNum" value="${entry.value.cartItemNum}">
+                    <img src="${pageContext.request.contextPath}/img/delete.png" alt="delete.ico" style="width: 25px;"
+                         onclick="this.closest('form').submit();"/>
+                </form>
+            </div>
         </div>
     </c:forEach>
+        <br>
+        <div id="cart_total_price" style="align-content: center">
+            총 결제 금액 : ${cart.totalPrice} 원
+        </div>
+        <br>
+        <button type="submit">주문하기</button>
+    </form>
 </div>
 </body>
 </html>

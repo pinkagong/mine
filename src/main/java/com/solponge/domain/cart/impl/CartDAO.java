@@ -22,9 +22,9 @@ public class CartDAO {
      * 기본 CRUD 구현
      */
 
-    public CartVo cartFindByNum(int CART_NUM){
+    public CartVo cartFindByNum(int MEMBER_NUM){
         Map<String,Object> param=new HashMap<>();
-        param.put("CART_NUM",CART_NUM);
+        param.put("MEMBER_NUM",MEMBER_NUM);
         CartVo cart = sqlSession.selectOne("cart.selectCart",param);
       //  log.info("CartDAO.cartFindByNum.cart.member_num={}",cart.getMEMBER_NUM());
         return cart;
@@ -39,7 +39,7 @@ public class CartDAO {
 
     public String cartInsert(CartVo cartVo){
         sqlSession.insert("cart.insertCart",cartVo);
-        return String.valueOf(cartVo.getCART_NUM());
+        return String.valueOf(cartVo.getMEMBER_NUM());
     }
 
     public void cartDelete(int CART_NUM){

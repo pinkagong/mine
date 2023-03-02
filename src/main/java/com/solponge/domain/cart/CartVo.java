@@ -1,5 +1,6 @@
 package com.solponge.domain.cart;
 
+import com.solponge.domain.member.MemberVo;
 import lombok.Data;
 
 @Data
@@ -18,5 +19,13 @@ public class CartVo {
         this.CART_NUM = CART_NUM;
         this.MEMBER_NUM = MEMBER_NUM;
         this.CART_DATE = CART_DATE;
+    }
+
+    public Cart toCart(CartVo cartVo, MemberVo member){
+        Cart cart=new Cart();
+        cart.setCart_num(cartVo.getCART_NUM());
+        cart.setMember(member);
+        cart.setCart_date(cartVo.getCART_DATE());
+        return cart;
     }
 }
