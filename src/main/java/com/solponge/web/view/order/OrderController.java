@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/com.solponge/member/{MEMBER_NO}/myPage/cart")
+@RequestMapping()//임시설정입니다.
 public class OrderController {
     private final MemberServiceImpl memberService;
     private final com.solponge.domain.product.productService productService;
@@ -30,7 +30,7 @@ public class OrderController {
      * @return
      */
 
-    @PostMapping("/com.solponge/member/{MEMBER_NO}/myPage/cart")
+    @PostMapping("/com.solponge/member/{MEMBER_NO}/myPage/cart")//임시로 받는 위치입니다
     public String postItem(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems){
         List<OrderVo> orderList =new ArrayList<>();
 
