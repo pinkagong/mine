@@ -1,6 +1,7 @@
 package com.solponge.domain.cart;
 
 import com.solponge.domain.member.MemberVo;
+import com.solponge.domain.product.productVo;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface CartService {
      */
     int addItem(CartItemVo cartItem);
     void updateItem(int cart_item_num, CartItemVo cartItem);
-    void deleteItem(CartItemVo cartItem);
+    void deleteItem(int cartItem_num);
     CartItemVo findItem(int cart_item_num);
 
     /**
@@ -23,4 +24,6 @@ public interface CartService {
     CartVo getMyCart(int member_num);
 
     List<CartListVo> cartList(int member_num);
+
+    //int getItemNum(MemberVo memberVo, productVo productVo, int CART_ITEM_STOCK);
 }

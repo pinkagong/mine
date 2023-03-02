@@ -11,9 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,7 +38,6 @@ public class CartController {
         //---------------------------------------------------------
         List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(member.getMEMBER_NO()));
 
-
         //회원의 카트 vo 조회
         CartVo myCart = cartService.getMyCart(Math.toIntExact(member.getMEMBER_NO()));
         //cart 객체 생성
@@ -52,6 +49,8 @@ public class CartController {
             //cartItem 의 product 정보를 진짜 해당 product 정보로 변환
             cartItem.setProduct(productService.getproduct(cartItem.getProduct().getProduct_num()));
             cartItem.setMember(member);
+            //cartItemVo에 담겨있는 cart_item_num 값을 받아와 만들어진 cartItem 에 적용
+            cartItem.setCART_ITEM_NUM(cartListVo.getCART_ITEM_NUM());
             //변환시킨 cartItem 을 미리 만든 cartItems 에 넣기
             cart.addCartItem(cartItem);
 
@@ -87,18 +86,21 @@ public class CartController {
         return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/mypage/cart";
     }
 
-    @GetMapping("/deleteCartItem")
-    public String cartItemDelete(Model model,
+    @PostMapping("/deleteCartItem")
+    public String cartItemDelete(@RequestParam("cartItemNum") int cartItemNum,
+                                 Model model,
                                  HttpServletRequest request){
         MemberVo loginMember = getLoginMember(request);
-        CartVo myCart = cartService.getMyCart(Math.toIntExact(loginMember.getMEMBER_NO()));
-        Cart cart = myCart.toCart(myCart, loginMember);
-        
+        log.info("cartItem_num={}",cartItemNum);
+        cartService.deleteItem(cartItemNum);
+
+
+
         /**
          * 대기, 삭제버튼시 cartItem_num 이 여기로 넘어와야함
          */
 
-        return null;
+        return "redirect:/com.solponge/member/" + loginMember.getMEMBER_NO() + "/myPage/cart";
     }
 
     private MemberVo getLoginMember(HttpServletRequest request) {

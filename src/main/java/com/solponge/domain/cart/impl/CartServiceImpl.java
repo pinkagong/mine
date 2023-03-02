@@ -29,8 +29,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteItem(CartItemVo cartItem) {
-        cartItemDAO.cartItemDelete(cartItem.getCART_ITEM_NUM());
+    public void deleteItem(int cartItem_num) {
+        cartItemDAO.cartItemDelete(cartItem_num);
     }
 
     @Override

@@ -76,8 +76,8 @@
                 <input type="checkbox" name="order"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
             </div>
             <div class="cart__item-remove">
-                <form method="post" action="/deleteCartItem">
-                    <input type="hidden" name="cartItemNum" value="${entry.value.cartItemNum}">
+                <form method="post" action="/com.solponge/member/{MEMBER_NO}/myPage/cart/deleteCartItem">
+                    <input type="hidden" name="cartItemNum" value="${entry.value.CART_ITEM_NUM}">
                     <img src="${pageContext.request.contextPath}/img/delete.png" alt="delete.ico" style="width: 25px;"
                          onclick="this.closest('form').submit();"/>
                 </form>
