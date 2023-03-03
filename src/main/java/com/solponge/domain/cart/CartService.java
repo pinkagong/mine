@@ -25,5 +25,4 @@ public interface CartService {
 
     List<CartListVo> cartList(int member_num);
 
-    //int getItemNum(MemberVo memberVo, productVo productVo, int CART_ITEM_STOCK);
 }

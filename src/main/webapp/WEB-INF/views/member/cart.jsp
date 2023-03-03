@@ -68,13 +68,14 @@
             <div class="cart__item">
                 <img class="cart__item-img" src="${product.product_img}" alt="${cartItem.product.product_title}">
                 <div class="cart__item-info">
+                    <div class="cart__item-num">${entry.value.CART_ITEM_NUM}</div>
                     <div class="cart__item-title">${product.product_title}</div>
                     <div class="cart__item-price">가격: ${product.product_price}원</div>
                     <div class="cart__item-quantity">상태: <input type="text" value="${entry.value.CART_ITEM_STOCK}" style="width: 20px;"></div>
-                    <input type="hidden" name="cartItems" value="${product.product_num},${entry.value.CART_ITEM_STOCK},${loginMember.MEMBER_NO}">
+                    <input type="hidden" name="cartItems" value="${product.product_num},${entry.value.CART_ITEM_STOCK},${loginMember.MEMBER_NO},${entry.value.CART_ITEM_NUM}">
                 </div>
                 <div class="cart_Item_check">
-                    <input type="checkbox" name="order"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
+                    <input type="checkbox" name="order" value="${entry.key}"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
                 </div>
                 <div class="cart__item-remove">
                     <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart/deleteCartItem" name="cartItemNum" value="${entry.value.CART_ITEM_NUM}">
