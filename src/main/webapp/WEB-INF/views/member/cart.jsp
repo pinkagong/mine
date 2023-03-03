@@ -75,7 +75,7 @@
                     <input type="hidden" name="cartItems" value="${product.product_num},${entry.value.CART_ITEM_STOCK},${loginMember.MEMBER_NO},${entry.value.CART_ITEM_NUM}">
                 </div>
                 <div class="cart_Item_check">
-                    <input type="checkbox" name="order" value="${entry.key}"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
+                    <input type="checkbox" checked name="order" value="${entry.key}"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
                 </div>
                 <div class="cart__item-remove">
                     <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart/deleteCartItem" name="cartItemNum" value="${entry.value.CART_ITEM_NUM}">

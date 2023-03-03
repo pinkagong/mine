@@ -5,6 +5,7 @@ import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    String loginPost(@Validated @ModelAttribute("loginForm")LoginForm form, BindingResult bindingResult, HttpServletRequest request){
+    String loginPost(@Validated @ModelAttribute("loginForm")LoginForm form, BindingResult bindingResult, HttpServletRequest request, Model model){
 
         if(bindingResult.hasErrors()){
             return "member/loginForm";
@@ -40,6 +41,8 @@ public class LoginController {
 
         if (loginMember==null){//회원을 못 찾을때
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
+            log.info("bindingResult={}",bindingResult);
+            model.addAttribute("bindingResult", bindingResult);
             return "member/loginForm";
         }
         //로그인 성공처리

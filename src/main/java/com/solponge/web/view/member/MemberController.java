@@ -189,19 +189,4 @@ public class MemberController {
         return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
     }
 
-    /**
-     * 장바구니 담기 시 db 저장
-     * @param productId
-     * @param quantityinput
-     * @param loginMember
-     */
-
-
-    /**
-     * 카트에서 장바구니 아이템들을 출력
-     * @param member
-     * @return
-     */
-
-
 }
