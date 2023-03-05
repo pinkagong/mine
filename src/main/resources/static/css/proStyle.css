@@ -1,0 +1,73 @@
+
+/* Table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+table th, table td {
+    padding: 12px;
+    text-align: center;
+}
+table thead th {
+    background-color: rgb(102,153,255);
+    color: white;
+    font-weight: bold;
+}
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+table tbody tr:hover {
+    background-color: #ddd;
+}
+table td img {
+    max-width: 50px;
+}
+table td button {
+    background-color: rgb(102,153,255) !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 15px !important;
+    cursor: pointer !important;
+}
+table td button:hover {
+    background-color: #3458b3;
+}
+
+/* Pagination */
+#paging {
+    margin-top: 20px;
+    text-align: center;
+}
+#paging ul {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    border-radius: 3px;
+}
+#paging li {
+    display: inline;
+}
+#paging a {
+    font-size: 16px;
+    color: rgb(102,153,255);
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 3px;
+    border: 1px solid rgb(102,153,255);
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+}
+#paging a:hover {
+    background-color: rgb(102,153,255);
+    color: white;
+    text-decoration: none;
+}
+#paging .active a {
+    background-color: rgb(102,153,255);
+    color: white;
+    border: 1px solid rgb(102,153,255);
+}
+#paging .disabled a {
+    color: #ccc;
+    pointer-events: none;
+}

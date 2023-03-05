@@ -12,7 +12,7 @@
         SELECT * FROM PRODUCT WHERE product_writer LIKE '%' || #{SearchValue} || '%'
     </select>
     <select id="list" resultType="com.solponge.domain.product.productVo">
-        SELECT * FROM product
+        SELECT * FROM product ORDER BY product_num DESC
     </select>
     <select id="list_new_8" resultType="com.solponge.domain.product.productVo">
         <![CDATA[
@@ -39,14 +39,19 @@
     <select id="product" resultType="com.solponge.domain.product.productVo">
         select * from product where product_num=#{product_num}
     </select>
-    <insert id="inserproduct" useGeneratedKeys="true" keyProperty="product_num" keyColumn="product_num">
-        INSERT INTO product (product_num, product_title, product_subtitle, product_writer, product_price, product_img, product_date, product_stock)
-        VALUES (product_SEQ.NEXTVAL, #{product_title},#{product_subtitle},#{product_writer},#{product_price},#{product_img}, TO_DATE(#{product_date}, 'YYYY-MM-DD'), #{product_stock});
+    <insert id="insertpro" useGeneratedKeys="true" keyProperty="PRODUCT_NUM_num" keyColumn="PRODUCT_NUM">
+        insert into PRODUCT(PRODUCT_NUM, PRODUCT_TITLE, PRODUCT_SUBTITLE, PRODUCT_WRITER, PRODUCT_PRICE, PRODUCT_IMG, PRODUCT_DATE, PRODUCT_PAGE, PRODUCT_STOCK, PRODUCT_CODE)
+        values(PRODUCT_SEQ.NEXTVAL, #{TITLE}, #{SUB}, #{WRITER}, #{PRICE}, #{IMG}, #{DATE}, #{PAGE}, #{STOCK}, #{CODE})
     </insert>
-    <delete id="deleteproduct">
-        delete product where product_num=#{product_num}
+    <delete id="deletepro">
+        DELETE PRODUCT WHERE PRODUCT_NUM=#{NUM}
     </delete>
-    <update id="updateproduct">
-        update product set product_title=#{product_title}, product_price=#{product_price}, product_stock=#{product_stock} where product_num=#{product_num}
+    <update id="updatepro">
+        update PRODUCT set PRODUCT_TITLE=#{TITLE}, PRODUCT_SUBTITLE=#{SUB}, PRODUCT_WRITER=#{WRITER}, PRODUCT_PRICE=#{PRICE}, PRODUCT_IMG=#{IMG},PRODUCT_DATE=#{DATE}, PRODUCT_PAGE=#{PAGE}, PRODUCT_STOCK=#{STOCK}, PRODUCT_SALE=#{SALE}, PRODUCT_VISIT=#{VISIT} where PRODUCT_NUM=#{NUM}
+    </update>
+    <update id="updateProductCode">
+        UPDATE product
+        SET product_code = #{CODE, jdbcType=CLOB}
+        WHERE product_num = #{NUM, jdbcType=INTEGER}
     </update>
 </mapper>

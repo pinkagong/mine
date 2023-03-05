@@ -32,7 +32,7 @@
         <p>${member.MEMBER_NAME}님 환영합니다.</p>
         <a href="/com.solponge/logout" class="btn btn-primary btn-sm">로그아웃</a>
         <a href="/com.solponge/admin/member" class="btn btn-primary btn-sm">회원관리</a>
-        <a href="/com.solponge/member/cart" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">&nbsp;상품관리</a></li>
+        <a href="/com.solponge/admin/product" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">&nbsp;상품관리</a></li>
       </c:if>
     </ul>
   </div>

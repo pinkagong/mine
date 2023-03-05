@@ -13,17 +13,17 @@ public class productServiceImpl implements productService {
     private com.solponge.domain.product.impl.productDAO productDAO;
     @Override
     public String insertproduct(productVo vo) {
-        return null;
+        return productDAO.insertproduct(vo);
     }
 
     @Override
     public void updateproduct(productVo vo) {
-
+        productDAO.updateproduct(vo);
     }
 
     @Override
     public void deleteproduct(int product_num) {
-
+        productDAO.deleteBoard(product_num);
     }
 
     @Override
@@ -49,5 +49,10 @@ public class productServiceImpl implements productService {
     @Override
     public List<productVo> getproductpopularTop8List() {
         return productDAO.getproductpopularTop8List();
+    }
+
+    public List<productVo> findAll() {
+        System.out.println("ProductServiceImpl...");
+        return productDAO.productFindAll();
     }
 }
