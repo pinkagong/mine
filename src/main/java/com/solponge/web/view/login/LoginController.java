@@ -42,7 +42,7 @@ public class LoginController {
         if (loginMember==null){//회원을 못 찾을때
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
             log.info("bindingResult={}",bindingResult);
-            model.addAttribute("bindingResult", bindingResult);
+            //model.addAttribute("bindingResult", bindingResult);
             return "member/loginForm";
         }
         //로그인 성공처리

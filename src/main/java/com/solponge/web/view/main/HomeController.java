@@ -10,9 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
@@ -26,8 +31,8 @@ public class HomeController {
    private final CartService cartService;
 
     @GetMapping("/main")
-    public String homeLogin(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
-        model.addAttribute("member",loginMember);
+    public String home(Model model, HttpServletRequest request){
+        MemberVo member = getLoginMember(request);
         model.addAttribute("getproductNewTop8List", productService.getproductNewTop8List());
        model.addAttribute("getproductpopularTop8List", productService.getproductpopularTop8List());
         return "main";
@@ -39,6 +44,22 @@ public class HomeController {
 
     @PostMapping("/join")
     public String postJoin(@Validated @ModelAttribute("member") MemberVo member, BindingResult bindingResult){
+        List<MemberVo> all = memberService.findAll();
+        for (MemberVo memberVo : all) {
+            String memberId = memberVo.getMEMBER_ID();
+            if(member.getMEMBER_ID().equals(memberId)){
+                bindingResult.rejectValue("MEMBER_ID","idCheckFail","이미 존재하는 회원입니다.");
+            }
+        }
+
+        if (member.getMEMBER_PHONE2()==null||member.getMEMBER_PHONE3()==null) {
+            bindingResult.rejectValue("MEMBER_PHONE", "NotEmpty", "휴대폰번호를 모두 입력해주세요.");
+        }
+
+        if(member.getMEMBER_PWD()!=member.getMEMBER_PWD_CHECK()){
+            bindingResult.rejectValue("MEMBER_PWD_CHECK","pwdCheckFail","비밀번호가 일치하지 않습니다.");
+            log.info("join.bindingResult={}",bindingResult);
+        }
         log.info("member={}",member);
         if(bindingResult.hasErrors()){
             return "member/joinForm";
@@ -66,6 +87,9 @@ public class HomeController {
         String phone = member.getMEMBER_PHONE1() + "-" + member.getMEMBER_PHONE2() + "-" + member.getMEMBER_PHONE3();
         member.setMEMBER_PHONE(phone);
     }
-
+    private MemberVo getLoginMember(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
+    }
 
 }

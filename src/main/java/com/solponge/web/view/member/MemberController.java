@@ -31,98 +31,18 @@ public class MemberController {
     private final productService productService;
     private final CartService cartService;
 
-    /**
-     * 장바구니
-     */
-   /* @SneakyThrows
-    @GetMapping("/{MEMBER_NO}/myPage/cart")
-    public String cart(Model model,
-                       HttpServletRequest request){
-        //세션을 받아 계정객체 받아옴
-        MemberVo member = getLoginMember(request);
-        //---------------------------------------------------------
-        List<CartListVo> cartListVos = cartService.cartList(Math.toIntExact(member.getMEMBER_NO()));
-
-
-        //회원의 카트 vo 조회
-        CartVo myCart = cartService.getMyCart(Math.toIntExact(member.getMEMBER_NO()));
-        //cart 객체 생성
-        Cart cart = myCart.toCart(myCart, member);
-
-        for (CartListVo cartListVo : cartListVos) {
-            //cartListVo를 cartItem 으로 변환 //현재상태 : member=null, productVo=cartListVo 에서 받아온 기초 정보(cart_item_num, cart_item_title, cart_item_price), cart_item_stock
-            CartItem cartItem = cartListVo.toCartItem();
-            //cartItem 의 product 정보를 진짜 해당 product 정보로 변환
-            cartItem.setProduct(productService.getproduct(cartItem.getProduct().getProduct_num()));
-            cartItem.setMember(member);
-            //변환시킨 cartItem 을 미리 만든 cartItems 에 넣기
-            cart.addCartItem(cartItem);
-
-        }
-        //----------------------------------------------------------
-        //cartItem 을 넣은 cart 를 model 에 저장
-        model.addAttribute("cart",cart);
-        return "member/cart";
-    }
-
-
-
-    *//**
-     * 장바구니 추가
-     * @param productId
-     * @param quantityinput
-     * @param request
-     *//*
-    @GetMapping("/{MEMBER_NO}/myPage/cart/{productId}/{quantityinput}")
-    public String cartSave(@PathVariable int productId,
-                       @PathVariable int quantityinput,
-                       HttpServletRequest request){
-
-        MemberVo loginMember = getLoginMember(request);
-        //받아온 상품번호로 상품객체 소환
-        productVo getproduct = productService.getproduct(productId);
-        //cartItem 객체를 생성하여 필요한 값을 cartItemVo로 전달
-        CartItemVo cartItemVo = new CartItemVo(new CartItem(loginMember,getproduct, quantityinput));
-        //받아온 상품정보를 CART_ITEM 에 저장
-        int cart_Item_num = cartService.addItem(cartItemVo);
-        log.info("장바구니에 추가된 상품정보={}",cartService.findItem(cart_Item_num));
-
-        return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/mypage/cart";
-
-    }*/
-
-
-
-    /**
-     * 마이페이지
-     */
-
-/*    @GetMapping("/{MEMBER_NO}/myPage")
-    public String PostMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
-        //세션에 회원 데이터가 없으면 home
-        if(loginMember==null){
-            return "/login";
-        }
-        //로그인 시
-        model.addAttribute("member",loginMember);
-        return "member/myPage";
-
-    }*/
 
     @GetMapping("/{MEMBER_NO}/myPage")
-    public String getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberVo loginMember, Model model) {
-        //세션에 로그인한 회원 데이터가 없으면 home
-        if(loginMember == null) {
-            return "redirect:/com.solponge/main";
-        }
+    public String getMyPage(Model model, HttpServletRequest request) {
+        MemberVo loginMember = getLoginMember(request);
+
         //회원 정보 조회
         model.addAttribute("member", loginMember);
         return "member/updateForm";
     }
 
     @PostMapping("/{MEMBER_NO}/myPage")
-    public String updateMember(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberVo loginMember,
-                               HttpSession Session,
+    public String updateMember(HttpSession Session,
                                RedirectAttributes redirectAttributes,
                                @RequestParam String member_pwd,
                                @RequestParam String email1,
@@ -133,12 +53,9 @@ public class MemberController {
                                @RequestParam String firstnum,
                                @RequestParam String secnum,
                                @RequestParam String thrnum,
-                               Model model) {
-        model.addAttribute("member",loginMember);
-        //세션에 로그인한 회원 데이터가 없으면 메인페이지로
-        if(loginMember==null){
-            return "redirect:/com.solponge/main";
-        }
+                               Model model,
+                               HttpServletRequest request) {
+        MemberVo loginMember = getLoginMember(request);
         //회원 정보 업데이트
         updateMember(loginMember, member_pwd, email1, email2,
                 sample6_postcode, sample6_address, sample6_detailAddress,
@@ -167,8 +84,8 @@ public class MemberController {
     }
 
     @GetMapping("/{MEMBER_NO}/myPage/delete")
-    public String deleteMember(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
-                               @PathVariable Long MEMBER_NO, HttpServletRequest request) {
+    public String deleteMember(@PathVariable Long MEMBER_NO, HttpServletRequest request) {
+        MemberVo loginMember = getLoginMember(request);
         MemberVo member = memberService.findByNo(MEMBER_NO);
         memberService.withdrawal(member);
         HttpSession session = request.getSession(false);

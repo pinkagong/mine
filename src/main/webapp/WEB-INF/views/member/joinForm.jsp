@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="h" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,30 +15,41 @@
 <header>
     <%@include file="../../tags/header.jsp"%>
 </header>
-<form method="post" action="" name="frm">
+<form:form method="post" modelAttribute="member" name="frm">
     <input type="hidden" name="memberNo">
     <div id="memberinfo">
         <table>
             <tr>
                 <th>아이디</th>
-                <td><input type="text" id="MEMBER_ID" name="MEMBER_ID"></td>
+                <td><form:input type="text" id="MEMBER_ID" name="MEMBER_ID" path="MEMBER_ID"/>
+                    <form:errors path="MEMBER_ID"  cssStyle="color: red" />
+                </td>
+
             </tr>
             <tr>
                 <th>비밀번호</th>
-                <td><input type="password"  id="MEMBER_PWD" name="MEMBER_PWD"></td>
+                <td><form:input type="password"  id="MEMBER_PWD" name="MEMBER_PWD" path="MEMBER_PWD"/>
+                    <form:errors path="MEMBER_PWD"  cssStyle="color: red" />
+
+                </td>
             </tr>
             <tr>
                 <th>비밀번호 확인</th>
-                <td><input type="password"  id="pwdCheck" name="pwdCheck"></td>
+                <td><form:input type="password"  id="pwdCheck" name="MEMBER_PWD_CHECK" path="MEMBER_PWD_CHECK"/>
+                    <form:errors path="MEMBER_PWD_CHECK" cssStyle="color: red"/>
+                </td>
             </tr>
             <tr>
                 <th>이름</th>
-                <td><input type="text" name="MEMBER_NAME" id="MEMBER_NAME"></td>
+                <td>
+                    <form:input type="text" name="MEMBER_NAME" id="MEMBER_NAME" path="MEMBER_NAME"/>
+                    <form:errors path="MEMBER_NAME" cssStyle="color: red"/>
+                </td>
             </tr>
             <tr>
                 <th>이메일</th>
-                <td><input type="text" size="16" id="email1" name="MEMBER_EMAIL1"> @
-                    <input type="text" size="20" id="email2" name="MEMBER_EMAIL2" value="naver.com">
+                <td><input type="text" size="16" id="email1" name="MEMBER_EMAIL1" path="MEMBER_EMAIL1"/> @
+                    <input type="text" size="20" id="email2" name="MEMBER_EMAIL2" value="naver.com" path="MEMBER_EMAIL2"/>
                     <select name="emails" id="emails" size="1" onchange="mailCheck()">
                         <option value="naver.com" selected>naver.com</option>
                         <option value="hanmail.net">hanmail.net</option>
@@ -56,8 +68,12 @@
                     <option value="018">018</option>
                 </select>
                     -
-                    <input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE2" id="secnum">-
-                    <input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE3" id="thrnum"></td>
+                    <form:input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE2" id="secnum" path="MEMBER_PHONE2"/>-
+                    <form:input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE3" id="thrnum" path="MEMBER_PHONE3"/></td>
+
+                <c:if test="${empty param.MEMBER_PHONE2 or empty param.MEMBER_PHONE3}">
+                    <td><span style="color: red;">휴대폰 번호를 입력해주세요.</span></td>
+                </c:if>
             </tr>
             <tr>
                 <th>주소</th>
@@ -66,7 +82,7 @@
                     <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
                     <input type="text" name="MEMBER_ADDRESS2" id="sample6_address" placeholder="주소" readonly>
                     <input type="text" name="MEMBER_ADDRESS3" id="sample6_detailAddress" placeholder="상세주소">
-                    <!--<input type="text" id="sample6_extraAddress" placeholder="참고항목">-->
+
                 </td>
             </tr>
             <tr>
@@ -75,7 +91,7 @@
             </tr>
         </table>
     </div>
-</form>
+</form:form>
 <footer>
     <%@include file="../../tags/footer.jsp" %>
 </footer>

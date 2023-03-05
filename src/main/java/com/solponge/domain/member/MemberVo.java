@@ -17,30 +17,37 @@ public class MemberVo {
     @NotEmpty
     private String MEMBER_PWD;
     @NotEmpty
+    private String MEMBER_PWD_CHECK;
+    @NotEmpty
     private String MEMBER_NAME;
     /**
      * 주소
      */
+
     private String MEMBER_ADDRESS;
     @NotEmpty
     private String MEMBER_ADDRESS1;
     @NotEmpty
     private String MEMBER_ADDRESS2;
-
     private String MEMBER_ADDRESS3;
     /**
      * 이메일
      */
-
+    @NotEmpty
     private String MEMBER_EMAIL;
+    @NotEmpty
     private String MEMBER_EMAIL1;
+    @NotEmpty
     private String MEMBER_EMAIL2;
     /**
      * 휴대폰
      */
     private String MEMBER_PHONE;
+    @NotEmpty
     private String MEMBER_PHONE1;
+    @NotEmpty
     private String MEMBER_PHONE2;
+    @NotEmpty
     private String MEMBER_PHONE3;
 
     private String MEMBER_DATE;
