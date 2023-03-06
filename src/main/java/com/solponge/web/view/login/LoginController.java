@@ -61,6 +61,7 @@ public class LoginController {
         if (session!=null){
             session.invalidate();
         }
+
         return "redirect:/com.solponge/main";
 
 

@@ -52,11 +52,7 @@ public class HomeController {
             }
         }
 
-        if (member.getMEMBER_PHONE2()==null||member.getMEMBER_PHONE3()==null) {
-            bindingResult.rejectValue("MEMBER_PHONE", "NotEmpty", "휴대폰번호를 모두 입력해주세요.");
-        }
-
-        if(member.getMEMBER_PWD()!=member.getMEMBER_PWD_CHECK()){
+        if(!member.getMEMBER_PWD().equals(member.getMEMBER_PWD_CHECK())){
             bindingResult.rejectValue("MEMBER_PWD_CHECK","pwdCheckFail","비밀번호가 일치하지 않습니다.");
             log.info("join.bindingResult={}",bindingResult);
         }

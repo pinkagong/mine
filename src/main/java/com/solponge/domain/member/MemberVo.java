@@ -25,15 +25,15 @@ public class MemberVo {
      */
 
     private String MEMBER_ADDRESS;
-    @NotEmpty
+
     private String MEMBER_ADDRESS1;
-    @NotEmpty
+
     private String MEMBER_ADDRESS2;
     private String MEMBER_ADDRESS3;
     /**
      * 이메일
      */
-    @NotEmpty
+
     private String MEMBER_EMAIL;
     @NotEmpty
     private String MEMBER_EMAIL1;

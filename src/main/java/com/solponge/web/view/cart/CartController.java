@@ -89,7 +89,6 @@ public class CartController {
      */
     @PostMapping("/deleteCartItem")
     public String cartItemDelete(@RequestParam("cartItemNum") int cartItemNum,
-                                 Model model,
                                  HttpServletRequest request){
         MemberVo loginMember = getLoginMember(request);
         log.info("delete.loginMember={}",loginMember);

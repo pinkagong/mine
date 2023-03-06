@@ -65,11 +65,11 @@
     <form method="post" action="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart">
         <c:forEach items="${cart.cartItems}" var="entry">
             <c:set var="product" value="${entry.value.product}" />
-            <div class="cart__item">
-                <img class="cart__item-img" src="${product.product_img}" alt="${cartItem.product.product_title}">
+            <div class="cart__item" >
+                <img class="cart__item-img" src="${product.product_img}" alt="${cartItem.product.product_title}" onclick="location.href='/com.solponge/product/${product.product_num}'">
                 <div class="cart__item-info">
                     <div class="cart__item-num">${entry.value.CART_ITEM_NUM}</div>
-                    <div class="cart__item-title">${product.product_title}</div>
+                    <div class="cart__item-title" onclick="location.href='/com.solponge/product/${product.product_num}'">${product.product_title}</div>
                     <div class="cart__item-price">가격: ${product.product_price}원</div>
                     <div class="cart__item-quantity">상태: <input type="text" value="${entry.value.CART_ITEM_STOCK}" style="width: 20px;"></div>
                     <input type="hidden" name="cartItems" value="${product.product_num},${entry.value.CART_ITEM_STOCK},${loginMember.MEMBER_NO},${entry.value.CART_ITEM_NUM}">

@@ -127,6 +127,20 @@
             document.getElementById('date').innerHTML = formattedDate;
 
         };
+
+        function addToCart() {
+            // 로그인 여부 확인
+            var isLogin = <%= session.getAttribute("loginMember") != null %>;
+
+            if(!isLogin) {
+                alert("로그인이 필요합니다!");
+                location.href="/loginForm.jsp";
+                return false;
+            }
+
+            // 장바구니에 담겼다는 알람 띄우기
+            alert("장바구니에 담겼습니다!");
+        }
     </script>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
@@ -180,7 +194,7 @@
             <script></script>
             <div id="button_prt">
                 <button id="buy_button" type="submit" name="button1" value="Button 1">구매하기</button>
-                <button id="cart_button" type="submit" name="button2" value="Button 2">장바구니 담기</button>
+                <button id="cart_button" type="submit" name="button2" value="Button 2" onclick="addToCart()">장바구니 담기</button>
             </div>
         </div>
     </form>
