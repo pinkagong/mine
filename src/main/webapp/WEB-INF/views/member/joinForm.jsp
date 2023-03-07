@@ -121,10 +121,10 @@
                     <option value="018">018</option>
                 </select>
                     -
-                    <form:input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE2" id="secnum" path="MEMBER_PHONE2"/>-
-                    <form:input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE3" id="thrnum" path="MEMBER_PHONE3"/></td>
+                    <input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE2" id="secnum" path="MEMBER_PHONE2"/>-
+                    <input type="text" size="4" maxlength="4" minlength="4" name="MEMBER_PHONE3" id="thrnum" path="MEMBER_PHONE3"/></td>
 
-                <td id="phoneError"></td>  <!-- 오류 메시지 출력 영역 -->
+
             </tr>
             <tr>
                 <th>주소</th>

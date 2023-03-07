@@ -45,13 +45,34 @@
 
         .cart__item-total-price {
             margin-top: 10px;
-            font-weight: bold;
+
         }
+
 
         .cart__item-remove {
             margin-left: 20px;
             cursor: pointer;
         }
+
+
+        .deleteButton{
+            border: none;
+            background-color: snow;
+        }
+        .cart-total-price {
+            width: 500px;
+            padding: 10px;
+            margin: 30px 0px 30px 0px;
+            font-weight: normal;
+            font-size: larger;
+        }
+
+        .cart-total-price div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
 
     </style>
 </head>
@@ -71,6 +92,7 @@
                     <div class="cart__item-num">${entry.value.CART_ITEM_NUM}</div>
                     <div class="cart__item-title" onclick="location.href='/com.solponge/product/${product.product_num}'">${product.product_title}</div>
                     <div class="cart__item-price">가격: ${product.product_price}원</div>
+                    <div class="cart__item-total-price">소계: ${entry.value.totalPrice}원</div>
                     <div class="cart__item-quantity">상태: <input type="text" value="${entry.value.CART_ITEM_STOCK}" style="width: 20px;"></div>
                     <input type="hidden" name="cartItems" value="${product.product_num},${entry.value.CART_ITEM_STOCK},${loginMember.MEMBER_NO},${entry.value.CART_ITEM_NUM}">
                 </div>
@@ -78,15 +100,28 @@
                     <input type="checkbox" checked name="order" value="${entry.key}"><img src="${pageContext.request.contextPath}/img/basket.png" alt="cart.ico" style="width: 25px;">
                 </div>
                 <div class="cart__item-remove">
-                    <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart/deleteCartItem" name="cartItemNum" value="${entry.value.CART_ITEM_NUM}">
+                    <button type="submit" class="deleteButton" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart/deleteCartItem" name="cartItemNum" value="${entry.value.CART_ITEM_NUM}">
                         <img src="${pageContext.request.contextPath}/img/delete.png" alt="delete.ico" style="width: 25px;"/>
                     </button>
                 </div>
             </div>
         </c:forEach>
         <br>
-        <div id="cart_total_price" style="align-content: center">
-            총 결제 금액 : ${cart.totalPrice} 원
+        <div class="cart-total-price">
+            <div><span>총 상품 가격 :</span> <span>${cart.totalPrice} 원</span></div>
+            <div><span>총 배송비 :
+            </span> <span>
+               <c:choose>
+                   <c:when test="${cart.totalPrice >= 50000}">
+                       0 원
+                   </c:when>
+                   <c:otherwise>
+                       +2,500 원
+                   </c:otherwise>
+               </c:choose>
+            </span></div>
+            <hr>
+            <div><span>총 결제 금액 :</span> <span>${cart.totalPrice+2500} 원</span></div>
         </div>
         <br>
 
@@ -96,5 +131,9 @@
 
 
 </div>
+
+<footer>
+    <%@include file="../../tags/footer.jsp" %>
+</footer>
 </body>
 </html>
