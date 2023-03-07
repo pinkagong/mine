@@ -80,6 +80,37 @@
 <header>
     <%@include file="../../tags/header.jsp"%>
 </header>
+
+<%-- 장바구니가 비어있는 경우 메시지 출력 --%>
+<c:if test="${empty cart.cartItems}">
+    <div class="cart" style="min-height: 500px">
+        <h1>${loginMember.MEMBER_NAME}님의 장바구니</h1>
+        <p style="text-align: center; font-size: 1.5rem; font-weight: bold;">장바구니가 비어있습니다</p>
+        <div style="
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+">
+            <button onclick="location.href='/com.solponge/productList'"
+                    style="
+      width: 500px;
+      padding: 10px;
+      background-color: rgb(102,153,255);
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 10px;
+    ">
+                상품 보러 가기
+            </button>
+        </div>
+    </div>
+</c:if>
+<%-- 장바구니 아이템이 있는 경우 --%>
+<c:if test="${not empty cart.cartItems}">
 <div class="cart">
     <h1>${loginMember.MEMBER_NAME}님의 장바구니</h1>
     <hr>
@@ -131,6 +162,7 @@
 
 
 </div>
+</c:if>
 
 <footer>
     <%@include file="../../tags/footer.jsp" %>

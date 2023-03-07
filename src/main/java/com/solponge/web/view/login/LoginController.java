@@ -51,8 +51,16 @@ public class LoginController {
         //세션에 로그인 회원정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-        log.info("member={}",form);
-        return "redirect:/com.solponge/main";
+        // 이전 페이지 URL 가져오기
+        String redirectURL = request.getHeader("referer");
+
+        // 이전 페이지 URL이 없는 경우 기본값으로 main 페이지로 이동하도록 함
+        if (redirectURL == null || redirectURL.isEmpty()) {
+            redirectURL = "/com.solponge/main";
+        }
+
+        // 로그인 성공 후 이전 페이지로 redirect
+        return "redirect:" + redirectURL;
     }
 
     @GetMapping("/logout")
