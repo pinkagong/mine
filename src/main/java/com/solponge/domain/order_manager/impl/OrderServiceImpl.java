@@ -11,19 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Slf4j
-@Service
+@Service("OrderService")
 public class OrderServiceImpl implements OrderService {
-    private final OrderDAO orderDAO;
-
-    public OrderServiceImpl(OrderDAO orderDAO) {
-        this.orderDAO = orderDAO;
-    }
-
-
     @Autowired
-    private com.solponge.domain.order_manager.impl.OrderDAO OrderDAO;
-
-
+    private OrderDAO OrderDAO;
 
     @Override
     public String insertOrder(OrderVo vo) {

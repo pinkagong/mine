@@ -38,4 +38,8 @@ public class OrderVo {
         this.visible = visible;
         this.success = success;
     }
+
+    public OrderVo() {
+
+    }
 }

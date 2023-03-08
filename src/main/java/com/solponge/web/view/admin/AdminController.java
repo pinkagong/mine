@@ -224,14 +224,17 @@ public class AdminController {
         //model.addAttribute("orders", orderService.getBoardList());
         return "admin/orderManager";
     }
-
+//    public String update(@PathVariable String paymentNum, @ModelAttribute OrderVo order, RedirectAttributes redirectAttributes) {
     @PostMapping("/order/{paymentNum}/update")
-    public String update(@PathVariable int paymentNum, @ModelAttribute OrderVo order, RedirectAttributes redirectAttributes) {
+    public String update(OrderVo order, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         System.out.println("update 불러옴");
+        System.out.println(order.getDelivery_num());
+        System.out.println(order.getPayment_num());
         orderService.updateOrder(order);
-        redirectAttributes.addAttribute("status", "edit");
+//        redirectAttributes.addAttribute("status", "edit");
         System.out.println("호출됨");
-        return "admin/orderManager";
+//        return "admin/orderManager";
+//        return null;
+        return "redirect:/com.solponge/admin/order";
     }
-
 }

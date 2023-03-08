@@ -10,15 +10,42 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
-    <script>
+   <%-- <script>
         function submitForm(button) {
             const form = document.querySelector('#contact-form');
             form.action = "/admin/order/${order.payment_num}/update";
             form.method = "post";
             form.submit();
         }
-    </script>
+    </script>--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/proStyle.css?ver=1">
+
+    <script>
+        function sendPostRequest(btnId) {
+            const url = "https://example.com/api/endpoint";
+            const data = { key1: "value1", key2: "value2" }; // POST 요청에 포함할 데이터
+
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data); // POST 요청이 성공하면 받은 응답 데이터 출력
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                });
+        }
+    </script>
 </head>
 <body>
 <header>
@@ -56,36 +83,41 @@
                 <th width="10%"></th>
             </tr>
             </thead>
-            <tbody>
+
             <c:forEach var="order" items="${paginatedProducts}">
-                <c:if test="${order.success == 1}">
-                        <td width="10%"></td>
-                        <td>${order.payment_num}</td>
-                        <td>${order.member_no}</td>
-                        <td>${order.product_num}</td>
-                        <td>${order.payment_stock}</td>
-                        <td>${order.payment_date}</td>
-                        <td>${order.payment_phone}</td>
-                        <td>${order.payment_address}</td>
-                        <td>${order.delivery_info}</td>
-                        <td id = "contact-form">
-                        <input type="hidden" name="paymentNum" value="${order.payment_num}">
-                        <input type="text" name="deliveryNum" value="${order.delivery_num}">
-                        </td>
-                        <td>
-                        <p id="demo">
-                            <c:choose>
-                                <c:when test="${order.success==1}">결제완료</c:when>
-                                <c:when test="${order.success==2}">배송시작</c:when>
-                                <c:otherwise>알수없음</c:otherwise>
-                            </c:choose>
-                        </p></td>
-                        <td><button type="button" onclick="submitForm(this)">수정</button></td>
-                        <td width="10%"></td>
-                    </tr>
-                </c:if>
+            <form method="post" action="order/${order.payment_num}/update">
+            <c:if test="${order.success == 1}">
+                <tr>
+                    <td width="10%"></td>
+                    <td>${order.payment_num}</td>
+                    <td>${order.member_no}</td>
+                    <td>${order.product_num}</td>
+                    <td>${order.payment_stock}</td>
+                    <td>${order.payment_date}</td>
+                    <td>${order.payment_phone}</td>
+                    <td>${order.payment_address}</td>
+                    <td>${order.delivery_info}</td>
+                    <td>
+                    <input type="hidden" name="payment_num" value="${order.payment_num}">
+                    <input type="text" id="delivery_num" name="delivery_num" value="${order.delivery_num}">
+                    </td>
+                    <td>
+                    <p id="demo">
+                        <c:choose>
+                            <c:when test="${order.success==1}">결제완료</c:when>
+                            <c:when test="${order.success==2}">배송시작</c:when>
+                            <c:otherwise>알수없음</c:otherwise>
+                        </c:choose>
+                    </p></td>
+                    <td>
+                        <div><button type="submit" id="${order.payment_num}" onclick="sendPostRequest(this.id)">submit</button></div>
+                    </td>
+                    <td width="10%"></td>
+                </tr>
+            </c:if>
+            </form>
             </c:forEach>
-            </tbody>
+
         </table>
         <br>
     </div>
