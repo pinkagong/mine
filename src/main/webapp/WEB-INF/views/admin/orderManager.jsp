@@ -68,51 +68,47 @@
         <table class="table">
             <thead>
             <tr>
-                <th width="10%"></th>
-                <th>주문번호</th>
-                <th>회원번호</th>
-                <th>상품번호</th>
-                <th>수량</th>
-                <th>주문일자</th>
-                <th>주문자번호</th>
-                <th>주소</th>
-                <th>배송메세지</th>
-                <th>운송장번호</th>
-                <th>상태</th>
+                <th width="10%">주문번호</th>
+                <th width="7%">회원번호</th>
+                <th width="10%">상품명</th>
+                <th width="4%">수량</th>
+                <th width="10%">주문일자</th>
+                <th width="10%">주문자번호</th>
+                <th width="13%">주소</th>
+                <th width="10%">배송메세지</th>
+                <th width="10%">운송장번호</th>
+                <th width="7%">상태</th>
                 <th></th>
-                <th width="10%"></th>
             </tr>
             </thead>
 
-            <c:forEach var="order" items="${paginatedProducts}">
-            <form method="post" action="order/${order.payment_num}/update">
+            <c:forEach var="order" items="${paymentEntities}">
+            <form method="post" action="order/${order.payment.paymentNum}/update">
             <c:if test="${order.success == 1}">
                 <tr>
-                    <td width="10%"></td>
-                    <td>${order.payment_num}</td>
-                    <td>${order.member_no}</td>
-                    <td>${order.product_num}</td>
-                    <td>${order.payment_stock}</td>
-                    <td>${order.payment_date}</td>
-                    <td>${order.payment_phone}</td>
-                    <td>${order.payment_address}</td>
-                    <td>${order.delivery_info}</td>
+                    <td>${order.payment.paymentNum}</td>
+                    <td>${order.member.MEMBER_ID}</td>
+                    <td>${order.product.product_title}</td>
+                    <td>${order.payment.paymentStockNumber}</td>
+                    <td>${order.payment.paymentDate}</td>
+                    <td>${order.payment.paymentPhone}</td>
+                    <td>${order.payment.paymentAddress}</td>
+                    <td>${order.delivery.deliveryInfo}</td>
                     <td>
-                    <input type="hidden" name="payment_num" value="${order.payment_num}">
-                    <input type="text" id="delivery_num" name="delivery_num" value="${order.delivery_num}">
+                    <input type="hidden" name="payment_num" value="${order.payment.paymentNum}">
+                    <input type="text" id="delivery_num" name="delivery_num" value="${order.delivery.deliveryNum}">
                     </td>
                     <td>
                     <p id="demo">
                         <c:choose>
                             <c:when test="${order.success==1}">결제완료</c:when>
-                            <c:when test="${order.success==2}">배송시작</c:when>
+                            <c:when test="${order.success==2}">발송완료</c:when>
                             <c:otherwise>알수없음</c:otherwise>
                         </c:choose>
                     </p></td>
                     <td>
-                        <div><button type="submit" id="${order.payment_num}" onclick="sendPostRequest(this.id)">submit</button></div>
+                        <div><button type="submit" id="${order.payment.paymentNum}" onclick="sendPostRequest(this.id)">발송</button></div>
                     </td>
-                    <td width="10%"></td>
                 </tr>
             </c:if>
             </form>
@@ -125,43 +121,41 @@
         <table class="table">
             <thead>
             <tr>
-                <th width="10%"></th>
-                <th>주문번호</th>
-                <th>회원번호</th>
-                <th>상품번호</th>
-                <th>수량</th>
-                <th>주문일자</th>
-                <th>주문자번호</th>
-                <th>주소</th>
-                <th>배송메세지</th>
-                <th>운송장번호</th>
-                <th>상태</th>
-                <th width="10%"></th>
+                <th width="10%">주문번호</th>
+                <th width="7%">회원번호</th>
+                <th width="10%">상품명</th>
+                <th width="4%">수량</th>
+                <th width="10%">주문일자</th>
+                <th width="10%">주문자번호</th>
+                <th width="13%">주소</th>
+                <th width="10%">배송메세지</th>
+                <th width="10%">운송장번호</th>
+                <th width="7%">상태</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="order" items="${paginatedProducts}">
+            <c:forEach var="order" items="${paymentEntities}">
                 <c:if test="${order.success == 2}">
                     <tr>
-                        <td width="10%"></td>
-                        <td>${order.payment_num}</td>
-                        <td>${order.member_no}</td>
-                        <td>${order.product_num}</td>
-                        <td>${order.payment_stock}</td>
-                        <td>${order.payment_date}</td>
-                        <td>${order.payment_phone}</td>
-                        <td>${order.payment_address}</td>
-                        <td>${order.delivery_info}</td>
-                        <td>${order.delivery_num}</td>
+                        <td>${order.payment.paymentNum}</td>
+                        <td>${order.member.MEMBER_ID}</td>
+                        <td>${order.product.product_title}</td>
+                        <td>${order.payment.paymentStockNumber}</td>
+                        <td>${order.payment.paymentDate}</td>
+                        <td>${order.payment.paymentPhone}</td>
+                        <td>${order.payment.paymentAddress}</td>
+                        <td>${order.delivery.deliveryInfo}</td>
+                        <td>${order.delivery.deliveryNum}</td>
                         <td>
                             <p id="Completion">
                                 <c:choose>
                                     <c:when test="${order.success==1}">결제완료</c:when>
-                                    <c:when test="${order.success==2}">배송시작</c:when>
+                                    <c:when test="${order.success==2}">발송완료</c:when>
                                     <c:otherwise>알수없음</c:otherwise>
                                 </c:choose>
                             </p></td>
-                        <td width="15%"></td>
+                        <td></td>
                     </tr>
                 </c:if>
             </c:forEach>

@@ -1,8 +1,7 @@
 package com.solponge.web.view.admin;
 
 
-import com.solponge.domain.order_manager.OrderService;
-import com.solponge.domain.order_manager.OrderVo;
+import com.solponge.domain.order_manager.*;
 import com.solponge.domain.order_manager.impl.OrderServiceImpl;
 import com.solponge.domain.product.productVo;
 import com.solponge.domain.product.impl.productServiceImpl;
@@ -22,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -206,6 +206,36 @@ public class AdminController {
     @GetMapping("/order")
     public String order(Model model, HttpServletRequest request) {
         List<OrderVo> data = orderService.getBoardList();
+        List<PaymentEntity> paymentEntities = new ArrayList<>();
+        for (OrderVo datum : data) {
+            String paymentNum = datum.getPayment_num();
+            int paymentStock = datum.getPayment_stock();
+            String paymentEmail = datum.getPayment_email();
+            Date paymentDate = datum.getPayment_date();
+            String paymentAddress = datum.getPayment_address();
+            String paymentPhone = datum.getPayment_phone();
+
+            productVo getProduct = productService.getproduct(datum.getProduct_num());
+            MemberVo getMember = memberService.findByNo(datum.getMember_no());
+
+            Payment payment = new Payment(paymentNum,
+                    paymentStock,
+                    paymentDate,
+                    paymentPhone,
+                    paymentEmail,
+                    paymentAddress);
+
+
+
+            Delivery delivery = new Delivery(datum.getDelivery_info(),datum.getDelivery_num());
+
+            PaymentEntity paymentEntity = new PaymentEntity(payment, getMember, getProduct,delivery);
+            paymentEntity.setVisible(datum.getVisible());
+            paymentEntity.setSuccess(datum.getSuccess());
+            paymentEntities.add(paymentEntity);
+        }
+
+        model.addAttribute("paymentEntities",paymentEntities);
         System.out.println("data" + data.toString());
         int pageSize = 20; // number of items per page
         int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;

@@ -6,6 +6,27 @@
     <select id="list" resultType="com.solponge.domain.order_manager.OrderVo">
         SELECT * FROM PAYMENT
     </select>
+
+<!--    <select id="list" resultType="com.solponge.domain.order_manager.OrderPrdVo">
+        select * from (
+          SELECT
+              pm.PAYMENT_NUM,
+              pm.MEMBER_NO,
+              p.product_title,
+              pm.PAYMENT_STOCK,
+              pm.PAYMENT_DATE,
+              pm.PAYMENT_PHONE,
+              pm.PAYMENT_ADDRESS,
+              pm.DELIVERY_INFO,
+              pm.DELIVERY_NUM,
+              pm.VISIBLE,
+              pm.SUCCESS
+          FROM
+              PAYMENT pm
+            JOIN PRODUCT p ON pm.PRODUCT_NUM = p.product_num
+      ) tmp
+    </select>-->
+
     <select id="selectOrder" resultType="com.solponge.domain.order_manager.OrderVo" >
         select * from PAYMENT where MEMBER_NO=#{member_no, jdbcType=NUMERIC}
     </select>
