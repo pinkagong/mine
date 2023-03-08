@@ -1,9 +1,14 @@
 package com.solponge.web.view.member;
 
+import com.solponge.domain.cart.*;
+import com.solponge.domain.cart.impl.CartServiceImpl;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
+import com.solponge.domain.product.productService;
+import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -19,52 +28,21 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/com.solponge/member")
 public class MemberController {
     private final MemberServiceImpl memberService;
+    private final productService productService;
+    private final CartService cartService;
 
-    /**
-     * 장바구니
-     */
-    @GetMapping("/{MEMBER_NO}/myPage/cart")
-    public String cart(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
-        //세션에 회원 데이터가 없으면 home
-        if(loginMember==null){
-            return "redirect:/com.solponge/login";
-        }
-        //로그인 시
-        model.addAttribute("member",loginMember);
-        return "member/cart";
-
-    }
-
-    /**
-     * 마이페이지
-     */
-
-/*    @GetMapping("/{MEMBER_NO}/myPage")
-    public String PostMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
-        //세션에 회원 데이터가 없으면 home
-        if(loginMember==null){
-            return "/login";
-        }
-        //로그인 시
-        model.addAttribute("member",loginMember);
-        return "member/myPage";
-
-    }*/
 
     @GetMapping("/{MEMBER_NO}/myPage")
-    public String getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberVo loginMember, Model model) {
-        //세션에 로그인한 회원 데이터가 없으면 home
-        if(loginMember == null) {
-            return "redirect:/com.solponge/main";
-        }
+    public String getMyPage(Model model, HttpServletRequest request) {
+        MemberVo loginMember = getLoginMember(request);
+
         //회원 정보 조회
         model.addAttribute("member", loginMember);
         return "member/updateForm";
     }
 
     @PostMapping("/{MEMBER_NO}/myPage")
-    public String updateMember(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberVo loginMember,
-                               HttpSession Session,
+    public String updateMember(HttpSession Session,
                                RedirectAttributes redirectAttributes,
                                @RequestParam String member_pwd,
                                @RequestParam String email1,
@@ -75,12 +53,9 @@ public class MemberController {
                                @RequestParam String firstnum,
                                @RequestParam String secnum,
                                @RequestParam String thrnum,
-                               Model model) {
-        model.addAttribute("member",loginMember);
-        //세션에 로그인한 회원 데이터가 없으면 메인페이지로
-        if(loginMember==null){
-            return "redirect:/com.solponge/main";
-        }
+                               Model model,
+                               HttpServletRequest request) {
+        MemberVo loginMember = getLoginMember(request);
         //회원 정보 업데이트
         updateMember(loginMember, member_pwd, email1, email2,
                 sample6_postcode, sample6_address, sample6_detailAddress,
@@ -109,8 +84,8 @@ public class MemberController {
     }
 
     @GetMapping("/{MEMBER_NO}/myPage/delete")
-    public String deleteMember(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
-                               @PathVariable Long MEMBER_NO, HttpServletRequest request) {
+    public String deleteMember(@PathVariable Long MEMBER_NO, HttpServletRequest request) {
+        MemberVo loginMember = getLoginMember(request);
         MemberVo member = memberService.findByNo(MEMBER_NO);
         memberService.withdrawal(member);
         HttpSession session = request.getSession(false);
@@ -118,6 +93,17 @@ public class MemberController {
             session.invalidate();
         }
         return "redirect:/com.solponge/main";
+    }
+
+    /**
+     * 세션에서 회원정보 받아옴
+     * @param request
+     * @return
+     */
+
+    private MemberVo getLoginMember(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
     }
 
 }

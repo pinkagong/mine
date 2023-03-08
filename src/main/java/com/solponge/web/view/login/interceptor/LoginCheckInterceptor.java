@@ -1,5 +1,6 @@
 package com.solponge.web.view.login.interceptor;
 
+import com.solponge.domain.member.MemberVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,7 +16,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("인증 체크 인터셉터 실행{}",requestURI);
         HttpSession session = request.getSession(false);
-        if(session==null||session.getAttribute(SessionConst.LOGIN_MEMBER)==null){
+        session.setAttribute("prevPage",request.getHeader("referer"));
+        MemberVo loginMember = (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if(session==null||loginMember==null){
             log.info("미인증 사용자 요청");
             //로그인으로 redirect
             response.sendRedirect("/com.solponge/login?redirectURL="+requestURI);
