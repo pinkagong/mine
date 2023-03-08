@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/proStyle.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
     <style>
         .container {
@@ -62,6 +60,9 @@
                 <label for="product_price">가격</label>
                 <input type="text" id="product_price" name="product_price" class="form-control" value="${product.product_price}">
             </div>
+            <div>
+              <img src=${product.product_img} alt="img">
+            </div><br>
             <div class="mb-3">
               <label for="product_img" class="form-label">이미지</label>
               <input type="text" id="product_img" name="product_img" class="form-control" value="${product.product_img}">

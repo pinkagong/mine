@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>상품 상세 정보</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/proStyle.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/proStyle.css?ver=2">
 </head>
 <body>
 <header>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <th>이미지</th>
-                    <td>${product.product_img}</td>
+                    <td><img src=${product.product_img} alt="img"></td>
                 </tr>
                 <tr>
                     <th>출간일</th>

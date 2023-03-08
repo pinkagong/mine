@@ -1,6 +1,9 @@
 package com.solponge.web.view.admin;
 
 
+import com.solponge.domain.order_manager.OrderService;
+import com.solponge.domain.order_manager.OrderVo;
+import com.solponge.domain.order_manager.impl.OrderServiceImpl;
 import com.solponge.domain.product.productVo;
 import com.solponge.domain.product.impl.productServiceImpl;
 import com.solponge.domain.member.Grade;
@@ -9,6 +12,8 @@ import com.solponge.domain.member.impl.MemberServiceImpl;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,6 +34,9 @@ public class AdminController {
     MemberServiceImpl memberService;
     @Autowired
     productServiceImpl productService;
+
+    @Autowired
+    OrderServiceImpl orderService;
 
     /**
      * 회원정보 리스트
@@ -194,5 +203,35 @@ public class AdminController {
         return session != null ? (productVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
     }
 
+    @GetMapping("/order")
+    public String order(Model model, HttpServletRequest request) {
+        List<OrderVo> data = orderService.getBoardList();
+        System.out.println("data" + data.toString());
+        int pageSize = 20; // number of items per page
+        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
+        int start = (currentPage - 1) * pageSize;
+        System.out.println("시작"+start);
+        int end = Math.min(start + pageSize, data.size());
+        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
+        List<OrderVo> paginatedProducts = new ArrayList<>();
+        if (start < end) { // Check if there are any products to display on the current page
+            paginatedProducts = data.subList(start, end); // get the current page of products
+        }
+        model.addAttribute("paginatedProducts", paginatedProducts);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("url", "?");
+        //model.addAttribute("orders", orderService.getBoardList());
+        return "admin/orderManager";
+    }
+
+    @PostMapping("/order/{paymentNum}/update")
+    public String update(@PathVariable int paymentNum, @ModelAttribute OrderVo order, RedirectAttributes redirectAttributes) {
+        System.out.println("update 불러옴");
+        orderService.updateOrder(order);
+        redirectAttributes.addAttribute("status", "edit");
+        System.out.println("호출됨");
+        return "admin/orderManager";
+    }
 
 }
