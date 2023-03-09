@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 @Setter
@@ -84,4 +85,5 @@ public class MemberVo {
         this.MEMBER_ID = MEMBER_ID;
         this.MEMBER_NAME = MEMBER_NAME;
     }
+
 }

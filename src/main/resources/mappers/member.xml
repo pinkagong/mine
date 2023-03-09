@@ -6,6 +6,15 @@
     <select id="list" resultType="com.solponge.domain.member.MemberVo">
         SELECT * FROM MEMBER2
     </select>
+    <select id="Searchlist_ALL" resultType="com.solponge.domain.member.MemberVo">
+        SELECT * FROM MEMBER2 WHERE MEMBER_ID LIKE '%' || #{SearchValue} || '%' OR MEMBER_NAME LIKE '%' || #{SearchValue} || '%'
+    </select>
+    <select id="Searchlist_MEMBER_ID" resultType="com.solponge.domain.member.MemberVo">
+        SELECT * FROM MEMBER2 WHERE MEMBER_ID LIKE '%' || #{SearchValue} || '%'
+    </select>
+    <select id="Searchlist_MEMBER_NAME" resultType="com.solponge.domain.member.MemberVo">
+        SELECT * FROM MEMBER2 WHERE MEMBER_NAME LIKE '%' || #{SearchValue} || '%'
+    </select>
     <select id="selectMember" resultType="com.solponge.domain.member.MemberVo" >
         select * from MEMBER2 where MEMBER_NO=#{member_no, jdbcType=NUMERIC}
     </select>
