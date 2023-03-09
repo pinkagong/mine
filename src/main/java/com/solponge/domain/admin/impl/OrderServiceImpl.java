@@ -50,6 +50,11 @@ public class OrderServiceImpl implements OrderService {
         return OrderDAO.getBoardList();
     }
 
+    @Override
+    public List<AdminOrderVo> ordersearchlist(String SearchSelect, String SearchValue) {
+        return OrderDAO.ordersearchlist(SearchSelect, SearchValue);
+    }
+
     public List<AdminOrderVo> getMemberOrders(String paymentNum) {
         System.out.println("OrderServiceImpl...");
         return OrderDAO.getBoardList();

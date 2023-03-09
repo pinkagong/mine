@@ -17,6 +17,22 @@ public class OrderDAO {
     @Autowired
     SqlSessionTemplate sqlSession;
 
+    public List<AdminOrderVo> ordersearchlist(String SearchSelect, String SearchValue) {
+        System.out.println("===> Spring JDBC로 produtsearchlist() 기능 처리");
+        System.out.println(SearchSelect);
+        System.out.println(SearchValue);
+        Map<String, Object> param = new HashMap<>();
+        switch (SearchSelect){
+            case "payment_num":
+                param.put("SearchValue", SearchValue);
+                break;
+            case "MEMBER_ID":
+                param.put("SearchValue", SearchValue);
+                break;
+        }
+        return sqlSession.selectList("order.Searchlist_"+SearchSelect, param);
+    }
+
     public List<productVo> produtsearchlist(String SearchSelect, String SearchValue) {
         System.out.println("===> Spring JDBC로 produtsearchlist() 기능 처리");
         System.out.println(SearchSelect);

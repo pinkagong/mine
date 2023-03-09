@@ -12,6 +12,7 @@ import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/com.solponge/admin")
 public class AdminController {
+
+    @Autowired
+    OrderService os;
 
    private final MemberServiceImpl memberService;
    private final productService productService;
@@ -185,6 +189,70 @@ public class AdminController {
     /**
      * 주문 관리 정보
      */
+    @GetMapping("/order/search")
+    public String ordersearchlist(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
+                                  Model model, HttpServletRequest request,
+                                  @RequestParam("SearchSelect") String SearchSelec,
+                                  @RequestParam("SearchValue") String SearchValue){
+        model.addAttribute("member",loginMember);
+        List<AdminOrderVo> data = os.ordersearchlist(SearchSelec, SearchValue);
+        List<PaymentEntity> paymentEntities = new ArrayList<>();
+        for (AdminOrderVo datum : data) {
+            String paymentNum = datum.getPayment_num();
+            int paymentStock = datum.getPayment_stock();
+            String paymentEmail = datum.getPayment_email();
+            Date paymentDate = datum.getPayment_date();
+            String paymentAddress = datum.getPayment_address();
+            String paymentPhone = datum.getPayment_phone();
+
+            productVo getProduct = productService.getproduct(datum.getProduct_num());
+            MemberVo getMember = memberService.findByNo(datum.getMember_no());
+
+            Payment payment = new Payment(paymentNum,
+                    paymentStock,
+                    paymentDate,
+                    paymentPhone,
+                    paymentEmail,
+                    paymentAddress);
+
+
+
+            Delivery delivery = new Delivery(datum.getDelivery_info(),datum.getDelivery_num());
+
+            PaymentEntity paymentEntity = new PaymentEntity(payment, getMember, getProduct,delivery);
+            paymentEntity.setVisible(datum.getVisible());
+            paymentEntity.setSuccess(datum.getSuccess());
+            paymentEntities.add(paymentEntity);
+        }
+
+        model.addAttribute("paymentEntities",paymentEntities);
+        System.out.println("data" + data.toString());
+        int pageSize = 20; // number of items per page
+        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
+        int start = (currentPage - 1) * pageSize;
+        int end = Math.min(start + pageSize, data.size());
+        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
+        List<AdminOrderVo> paginatedProducts = data.subList(start, end); // get the current page of products
+        model.addAttribute("paginatedProducts", paginatedProducts);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+        String url = request.getQueryString();
+        System.out.println(SearchSelec);
+        System.out.println(SearchValue);
+        url = url.replaceAll("&page=[0-9]", "");
+        String inputurl ="";
+        if (url.contains("SearchSelect")){
+            inputurl += "search?"+url+"&";
+        } else {
+            inputurl += "?";
+        }
+        inputurl = inputurl.substring(0, inputurl.length()-1);
+        model.addAttribute("url", inputurl);
+        model.addAttribute("status", "Yes");
+
+        System.out.println(inputurl);
+        return "admin/orderManager";
+    }
 
     @GetMapping("/order")
     public String order(Model model, HttpServletRequest request) {
