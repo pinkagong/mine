@@ -91,13 +91,26 @@ public class MemberController {
             return "redirect:/com.solponge/main";
         }
         model.addAttribute("member", loginMember);
-
         List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(loginMember.getMEMBER_NO());
         List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(loginMember.getMEMBER_NO());
-
-
-        String[] company_names = new String[cvo.size()];
-        String[] info_names = new String[ivo.size()];
+        String[] company_names;
+        String[] info_names;
+        if(cvo.size() == 0){
+            System.out.println("company_names 비어있음");
+            company_names = new String[1];
+            company_names[0] = "N o n e";
+            model.addAttribute("company_state", "NO");
+        } else {
+            company_names = new String[cvo.size()];
+        }
+        if(ivo.size() == 0){
+            System.out.println("info_names 비어있음");
+            info_names = new String[1];
+            info_names[0] = "N o n e";
+            model.addAttribute("jobinfo_state", "NO");
+        } else {
+            info_names = new String[ivo.size()];
+        }
 
         int index = 0;
         for(companyScrapVO c :cvo){
@@ -110,16 +123,9 @@ public class MemberController {
             index++;
         }
 
-        HashSet<String> hashSet = new HashSet<>(Arrays.asList(company_names));
-        String[] resultCompanyNames = hashSet.toArray(new String[0]);
-        System.out.println(resultCompanyNames.length); // 4
-        System.out.println(Arrays.toString(resultCompanyNames));
-
-
         List<JopInfoVo> response_c_info = jobinfoService.getCompanyInScrapList(company_names);
         Map<String, Map<String, Object>> responseData = new HashMap<>();
         List<JopInfoVo> data = jobinfoService.getInfoInScrapList(info_names);
-
         int div_company_count = 1;
         if (company_names.length%8!=0){
             div_company_count = (company_names.length/8)+1;
@@ -144,8 +150,6 @@ public class MemberController {
         model.addAttribute("div_company_count", div_company_count);
         model.addAttribute("company_names", company_names);
         model.addAttribute("responseData", responseData);
-//        model.addAttribute("response_i_info", response_i_info);
-
 
         System.out.println(data);
         int pageSize = 10; // number of items per page
@@ -181,7 +185,6 @@ public class MemberController {
             System.out.println("오류발생");
         }
 
-//        return "member/myscrap";
         return "member/scrap";
     }
 
@@ -199,8 +202,24 @@ public class MemberController {
         List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(loginMember.getMEMBER_NO());
         List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(loginMember.getMEMBER_NO());
 
-        String[] company_names = new String[cvo.size()];
-        String[] info_names = new String[ivo.size()];
+        String[] company_names;
+        String[] info_names;
+        if(cvo.size() == 0){
+            System.out.println("company_names 비어있음");
+            company_names = new String[1];
+            company_names[0] = "N o n e";
+            model.addAttribute("company_state", "NO");
+        } else {
+            company_names = new String[cvo.size()];
+        }
+        if(ivo.size() == 0){
+            System.out.println("info_names 비어있음");
+            info_names = new String[1];
+            info_names[0] = "N o n e";
+            model.addAttribute("jobinfo_state", "NO");
+        } else {
+            info_names = new String[ivo.size()];
+        }
 
         int index = 0;
         for(companyScrapVO c :cvo){
@@ -212,13 +231,6 @@ public class MemberController {
             info_names[index] = c.getInfoname();
             index++;
         }
-
-        HashSet<String> hashSet = new HashSet<>(Arrays.asList(company_names));
-        String[] resultCompanyNames = hashSet.toArray(new String[0]);
-        System.out.println(resultCompanyNames.length); // 4
-        System.out.println(Arrays.toString(resultCompanyNames));
-
-
         List<JopInfoVo> response_c_info = jobinfoService.getCompanyInScrapList(company_names);
         Map<String, Map<String, Object>> responseData = new HashMap<>();
 

@@ -1,5 +1,7 @@
 package com.solponge.web.view.admin;
 
+
+
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -9,17 +11,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.UUID;
 
+
 @Controller
 @RequestMapping("/adm/")
 public class CkeditorFileUploadController {
+
+
+
     /**
      * 상품 추가
      */
+
     @PostMapping("/fileupload.do")
     @ResponseBody
     public String fileUpload(HttpServletRequest request, HttpServletResponse response,

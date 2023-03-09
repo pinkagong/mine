@@ -25,8 +25,13 @@
             text-align: left;
             font-size: 17px;
         }
+        #company_state, #jobinfo_state {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            text-align: center;
+        }
 
-        #companyNameContainer {
+        #companyNameContainer, #company_state {
             width: 1200px;
             margin: 0 auto;
         }
@@ -235,73 +240,80 @@
 
     </div>
     <div>
-        <div id="companyNameContainer">
-            <div class="companyScrap">
-                <div class="companies">
-                    <c:set var="count" value="0" />
-                    <c:forEach begin="0" end="${div_company_count-1}">
-                        <div class="company">
-                            <c:forEach begin="0" end="1">
-                                <%--반복 시작--%>
-                                <div class="flex-container">
-                                    <c:forEach begin="0" end="3">
-                                        <c:set var="apple" value="${company_names[count]}" />
-                                        <c:set var="apple2" value="${company_names[count]}count" />
-                                        <c:set var="apple3" value="${company_names[count]}OneInfoName" />
-                                        <c:set var="apple4" value="${company_names[count]}OneInfoNum" />
-                                        <c:choose>
-                                            <c:when test="${apple.length()>=1}">
-                                                <%--반복 시작--%>
-                                                <input type="hidden" name="company_name" id="companyName_${apple}" value="${apple}">
-                                                <div class="flex-item color-gray" style="float: left;">
-                                                    <div class="item_container">
-                                                        <div class="logo" onclick="location.href='/com.solponge/jobinfolist/${apple}'">
-                                                            <img src="${pageContext.request.contextPath}/img/icons8-business-buildings-100.png" />
+        <c:choose>
+            <c:when test="${company_state.equals('NO')}">
+                <h3 id="company_state">관심 기업을 스크랩 해주세요!</h3>
+            </c:when>
+            <c:otherwise>
+                <div id="companyNameContainer">
+                    <div class="companyScrap">
+                        <div class="companies">
+                            <c:set var="count" value="0" />
+                            <c:forEach begin="0" end="${div_company_count-1}">
+                                <div class="company">
+                                    <c:forEach begin="0" end="1">
+                                        <%--반복 시작--%>
+                                        <div class="flex-container">
+                                            <c:forEach begin="0" end="3">
+                                                <c:set var="apple" value="${company_names[count]}" />
+                                                <c:set var="apple2" value="${company_names[count]}count" />
+                                                <c:set var="apple3" value="${company_names[count]}OneInfoName" />
+                                                <c:set var="apple4" value="${company_names[count]}OneInfoNum" />
+                                                <c:choose>
+                                                    <c:when test="${apple.length()>=1}">
+                                                        <%--반복 시작--%>
+                                                        <input type="hidden" name="company_name" id="companyName_${apple}" value="${apple}">
+                                                        <div class="flex-item color-gray" style="float: left;">
+                                                            <div class="item_container">
+                                                                <div class="logo" onclick="location.href='/com.solponge/jobinfolist/${apple}'">
+                                                                    <img src="${pageContext.request.contextPath}/img/icons8-business-buildings-100.png" />
+                                                                </div>
+                                                                <c:set var="appleCount" value="${responseData.get(apple).get(apple2)}" />
+                                                                <div class="company_name" onclick="location.href='/com.solponge/jobinfolist/${apple}'">${apple}
+                                                                    <br /><span  style="font-size: 12px;">채용중 ${appleCount} 건</span>
+                                                                </div>
+                                                                <button class="delete_bt" type="button" style="float: right;" id="${apple}" onclick="submitForm(this.id)">x</button>
+                                                                <c:set var="infotitle" value="${responseData.get(apple).get(apple3)}"/>
+                                                                <c:choose>
+                                                                    <c:when test="${fn:length(infotitle) > 15}">
+                                                                        <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${fn:substring(infotitle, 0, 14)}...</a></div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${infotitle}</a></div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </div>
                                                         </div>
-                                                        <c:set var="appleCount" value="${responseData.get(apple).get(apple2)}" />
-                                                        <div class="company_name" onclick="location.href='/com.solponge/jobinfolist/${apple}'">${apple}
-                                                            <br /><span  style="font-size: 12px;">채용중 ${appleCount} 건</span>
+                                                        <%--반복 끝--%>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <%--반복 시작--%>
+                                                        <div class="flex-item color-gray" style="text-align: center;">
+                                                            <div style="top: 32px;  position:relative;">solponge</div>
                                                         </div>
-                                                        <button class="delete_bt" type="button" style="float: right;" id="${apple}" onclick="submitForm(this.id)">x</button>
-                                                        <c:set var="infotitle" value="${responseData.get(apple).get(apple3)}"/>
-                                                        <c:choose>
-                                                            <c:when test="${fn:length(infotitle) > 15}">
-                                                                <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${fn:substring(infotitle, 0, 14)}...</a></div>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${infotitle}</a></div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </div>
-                                                </div>
-                                                <%--반복 끝--%>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <%--반복 시작--%>
-                                                <div class="flex-item color-gray" style="text-align: center;">
-                                                    <div style="top: 32px;  position:relative;">solponge</div>
-                                                </div>
-                                                <%--반복 끝--%>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <c:set var="count" value="${count + 1}" />
+                                                        <%--반복 끝--%>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:set var="count" value="${count + 1}" />
+                                            </c:forEach>
+                                        </div>
                                     </c:forEach>
+                                        <%--반복 끝--%>
                                 </div>
                             </c:forEach>
-                                <%--반복 끝--%>
                         </div>
-                    </c:forEach>
+                    </div>
+                    <div style="display: inline-block; float: right; margin-right: 20px;">
+                        <button class="prev">
+                            &#60;
+                        </button>
+                        <button class="next">
+                            &#62;
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div style="display: inline-block; float: right; margin-right: 20px;">
-                <button class="prev">
-                    &#60;
-                </button>
-                <button class="next">
-                    &#62;
-                </button>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
         <script>
             const items = document.querySelectorAll('.company');
             const itemCount = items.length - 1;
@@ -456,6 +468,11 @@
         <div style="width: 1050px; margin: 0 auto; position: relative; left: 55px;">
             <br>
             <hr>
+            <c:choose>
+            <c:when test="${jobinfo_state.equals('NO')}">
+                <h3 id="jobinfo_state">관심 구직 공고를 스크랩해주세요!</h3>
+            </c:when>
+            <c:otherwise>
             <div id="container_booklist">
                 <div id="row2">
                     <form action = "/com.solponge/member/${member.MEMBER_NO}/myPage/jobScrap/search" accept-charset="utf-8" name = "book_info" method = "get">
@@ -544,6 +561,8 @@
                     </nav>
                 </div>
             </div>
+            </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

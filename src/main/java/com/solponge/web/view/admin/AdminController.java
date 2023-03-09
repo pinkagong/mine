@@ -1,8 +1,12 @@
 package com.solponge.web.view.admin;
 
 
+
 import com.solponge.domain.admin.*;
 import com.solponge.domain.admin.impl.OrderServiceImpl;
+import com.solponge.domain.product.productVo;
+import com.solponge.domain.product.impl.productServiceImpl;
+
 import com.solponge.domain.member.Grade;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
@@ -11,6 +15,8 @@ import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,6 +92,100 @@ public class AdminController {
         MemberVo member = memberService.findByNo(member_No);
         memberService.withdrawal(member);
         return "redirect:/com.solponge/admin/member";
+    }
+
+    @GetMapping("/product") //수정완료
+    public String product(Model model, HttpServletRequest request) {
+        List<productVo> data = productService.findAll();
+        int pageSize = 20; // number of items per page
+        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
+        int start = (currentPage - 1) * pageSize;
+        int end = Math.min(start + pageSize, data.size());
+        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
+        List<productVo> paginatedProducts = data.subList(start, end); // get the current page of products
+        model.addAttribute("paginatedProducts", paginatedProducts);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("url", "?");
+//        model.addAttribute("products", productService.getBoardList());
+        log.info("findAll={}", productService.findAll());
+        return "admin/inqProduct";
+    }
+
+
+    @GetMapping("/product/{productNum}")
+    public String deProduct(@PathVariable int productNum, Model model) {
+        productVo product = productService.getproduct(productNum);
+        System.out.println(product.getProduct_num());
+        System.out.println(productNum);
+        model.addAttribute("product", product);
+        return "admin/deProduct";
+    }
+
+    @GetMapping("/product/add")
+    public String addProduct() {
+        return "admin/addProduct";
+    }
+    @PostMapping("/product/add")
+    public String addProduct(productVo product, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        System.out.println("컨트롤러");
+        String productcode = request.getParameter("myInput");
+        System.out.println("addProduct_"+productcode);
+        product.setProduct_code(productcode);
+        String productNum = productService.insertproduct(product);
+        redirectAttributes.addAttribute("productNum", productNum);
+        redirectAttributes.addAttribute("status", "add");
+
+        return "redirect:/com.solponge/admin/product";
+    }
+
+    @GetMapping("/product/{productNum}/edit") //수정중
+    public String editProduct(@PathVariable int productNum, Model model, HttpServletRequest request) {
+        System.out.println(productNum);
+        MemberVo memberVo = getLoginMember(request);
+        if (memberVo == null || memberVo.getMEMBER_GRADE() != Grade.ADMIN) {
+            return "redirect:/com.solponge/main";
+        }
+        productVo product = productService.getproduct(productNum);
+        log.info("product={}",product);
+        System.out.println(product.getProduct_code());
+        model.addAttribute("product", product);
+        return "admin/editProduct";
+    }
+
+    @PostMapping("/product/{productNum}/edit") //수정중
+    public String edit(@PathVariable int productNum, @ModelAttribute productVo product, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        System.out.println("컨트롤러");
+        MemberVo memberVo = getLoginMember(request);
+        if (memberVo == null || memberVo.getMEMBER_GRADE() != Grade.ADMIN) {
+            return "redirect:/com.solponge/main";
+        }
+        log.info("productNum={}",productNum);
+        log.info("product={}",product);
+        String productcode = request.getParameter("myInput"); //, @RequestBody Map<String, String> request
+//        productcode = productcode.replace("<p><br data-cke-filler=\"true\"></p>", "");
+//        productcode = productcode.replace("<p><br data-cke-filler=\"true\"></p>", "");
+//        productcode = ""+ productcode + "";
+        System.out.println(productcode);
+        product.setProduct_code(productcode);
+        productService.updateproduct(product);
+//        redirectAttributes.addAttribute("status", "edit");
+        System.out.println("Call");
+        return "redirect:";
+    }
+
+    @GetMapping("/product/{productNum}/delete")
+    public String deleteProduct(@PathVariable int productNum) {
+        System.out.println(productNum);
+        productService.deleteproduct(productNum);
+        return "redirect:/com.solponge/admin/product";
+    }
+
+    @PostMapping("/product/{productNum}/delete")
+    public String delete(@PathVariable int productNum) {
+        System.out.println(productNum);
+        productService.deleteproduct(productNum);
+        return "redirect:/com.solponge/admin/product";
     }
 
     /**
@@ -272,4 +372,138 @@ public class AdminController {
         return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
     }
 
+    private productVo getLoginProduct(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return session != null ? (productVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
+    }
+
+    @GetMapping("/order/search")
+    public String ordersearchlist(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
+                                   Model model, HttpServletRequest request,
+                                   @RequestParam("SearchSelect") String SearchSelec,
+                                   @RequestParam("SearchValue") String SearchValue){
+        model.addAttribute("member",loginMember);
+        List<OrderVo> data = orderService.ordersearchlist(SearchSelec, SearchValue);
+        List<PaymentEntity> paymentEntities = new ArrayList<>();
+        for (OrderVo datum : data) {
+            String paymentNum = datum.getPayment_num();
+            int paymentStock = datum.getPayment_stock();
+            String paymentEmail = datum.getPayment_email();
+            Date paymentDate = datum.getPayment_date();
+            String paymentAddress = datum.getPayment_address();
+            String paymentPhone = datum.getPayment_phone();
+
+            productVo getProduct = productService.getproduct(datum.getProduct_num());
+            MemberVo getMember = memberService.findByNo(datum.getMember_no());
+
+            Payment payment = new Payment(paymentNum,
+                    paymentStock,
+                    paymentDate,
+                    paymentPhone,
+                    paymentEmail,
+                    paymentAddress);
+
+
+
+            Delivery delivery = new Delivery(datum.getDelivery_info(),datum.getDelivery_num());
+
+            PaymentEntity paymentEntity = new PaymentEntity(payment, getMember, getProduct,delivery);
+            paymentEntity.setVisible(datum.getVisible());
+            paymentEntity.setSuccess(datum.getSuccess());
+            paymentEntities.add(paymentEntity);
+        }
+
+        model.addAttribute("paymentEntities",paymentEntities);
+        System.out.println("data" + data.toString());
+        int pageSize = 20; // number of items per page
+        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
+        int start = (currentPage - 1) * pageSize;
+        int end = Math.min(start + pageSize, data.size());
+        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
+        List<OrderVo> paginatedProducts = data.subList(start, end); // get the current page of products
+        model.addAttribute("paginatedProducts", paginatedProducts);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+        String url = request.getQueryString();
+        System.out.println(SearchSelec);
+        System.out.println(SearchValue);
+        url = url.replaceAll("&page=[0-9]", "");
+        String inputurl ="";
+        if (url.contains("SearchSelect")){
+            inputurl += "search?"+url+"&";
+        } else {
+            inputurl += "?";
+        }
+        inputurl = inputurl.substring(0, inputurl.length()-1);
+        model.addAttribute("url", inputurl);
+        model.addAttribute("status", "Yes");
+
+        System.out.println(inputurl);
+        return "admin/orderManager";
+    }
+
+    @GetMapping("/order")
+    public String order(Model model, HttpServletRequest request) {
+        List<OrderVo> data = orderService.getBoardList();
+        List<PaymentEntity> paymentEntities = new ArrayList<>();
+        for (OrderVo datum : data) {
+            String paymentNum = datum.getPayment_num();
+            int paymentStock = datum.getPayment_stock();
+            String paymentEmail = datum.getPayment_email();
+            Date paymentDate = datum.getPayment_date();
+            String paymentAddress = datum.getPayment_address();
+            String paymentPhone = datum.getPayment_phone();
+
+            productVo getProduct = productService.getproduct(datum.getProduct_num());
+            MemberVo getMember = memberService.findByNo(datum.getMember_no());
+
+            Payment payment = new Payment(paymentNum,
+                    paymentStock,
+                    paymentDate,
+                    paymentPhone,
+                    paymentEmail,
+                    paymentAddress);
+
+
+
+            Delivery delivery = new Delivery(datum.getDelivery_info(),datum.getDelivery_num());
+
+            PaymentEntity paymentEntity = new PaymentEntity(payment, getMember, getProduct,delivery);
+            paymentEntity.setVisible(datum.getVisible());
+            paymentEntity.setSuccess(datum.getSuccess());
+            paymentEntities.add(paymentEntity);
+        }
+
+        model.addAttribute("paymentEntities",paymentEntities);
+        System.out.println("data" + data.toString());
+        int pageSize = 20; // number of items per page
+        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
+        int start = (currentPage - 1) * pageSize;
+        System.out.println("시작"+start);
+        int end = Math.min(start + pageSize, data.size());
+        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
+        List<OrderVo> paginatedProducts = new ArrayList<>();
+        if (start < end) { // Check if there are any products to display on the current page
+            paginatedProducts = data.subList(start, end); // get the current page of products
+        }
+        model.addAttribute("paginatedProducts", paginatedProducts);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("url", "?");
+        //model.addAttribute("orders", orderService.getBoardList());
+        return "admin/orderManager";
+    }
+//    public String update(@PathVariable String paymentNum, @ModelAttribute OrderVo order, RedirectAttributes redirectAttributes) {
+    @PostMapping("/order/{paymentNum}/update")
+    public String update(OrderVo order, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        System.out.println("update 불러옴");
+        System.out.println(order.getDelivery_num());
+        System.out.println(order.getPayment_num());
+        orderService.updateOrder(order);
+//        redirectAttributes.addAttribute("status", "edit");
+        System.out.println("호출됨");
+//        return "admin/orderManager";
+//        return null;
+        return "redirect:/com.solponge/admin/order";
+    }
 }
