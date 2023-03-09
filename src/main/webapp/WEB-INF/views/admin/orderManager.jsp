@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="com.solponge.domain.order_manager.OrderVo" %>
+
+<%@ page import="com.solponge.domain.admin.AdminOrderVo" %>
 <%@ page import="java.util.List" %>
 
 
@@ -10,13 +11,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
-   <%-- <script>
+
+    <script>
+
         function submitForm(button) {
             const form = document.querySelector('#contact-form');
             form.action = "/admin/order/${order.payment_num}/update";
             form.method = "post";
             form.submit();
         }
+
     </script>--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/proStyle.css?ver=1">
 
@@ -46,6 +50,7 @@
                 });
         }
     </script>
+
 </head>
 <body>
 <header>
@@ -58,6 +63,7 @@
     <div class="row">
         <div class="col">
 
+
             <form method="get" action="/com.solponge/admin/order/search">
                 <select name="SearchSelect">
                     <option value="payment_num">주문번호</option>
@@ -66,6 +72,7 @@
                 <input type="text" name="SearchValue">
                 <button type="submit"><img src="/img/Magnifier.png" style="width: 20px;" alt="Search"></button>
             </form>
+
         </div>
     </div>
     <hr class="my-4">
@@ -73,6 +80,7 @@
         <table class="table">
             <thead>
             <tr>
+
                 <th width="10%">주문번호</th>
                 <th width="7%">회원번호</th>
                 <th width="10%">상품명</th>
@@ -119,6 +127,7 @@
             </form>
             </c:forEach>
 
+
         </table>
         <br>
     </div>
@@ -126,6 +135,7 @@
         <table class="table">
             <thead>
             <tr>
+
                 <th width="10%">주문번호</th>
                 <th width="7%">회원번호</th>
                 <th width="10%">상품명</th>
@@ -137,6 +147,7 @@
                 <th width="10%">운송장번호</th>
                 <th width="7%">상태</th>
                 <th></th>
+
             </tr>
             </thead>
             <tbody>
@@ -156,11 +167,13 @@
                             <p id="Completion">
                                 <c:choose>
                                     <c:when test="${order.success==1}">결제완료</c:when>
+
                                     <c:when test="${order.success==2}">발송완료</c:when>
                                     <c:otherwise>알수없음</c:otherwise>
                                 </c:choose>
                             </p></td>
                         <td></td>
+
                     </tr>
                 </c:if>
             </c:forEach>

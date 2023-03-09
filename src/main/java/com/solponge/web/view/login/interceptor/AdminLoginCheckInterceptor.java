@@ -11,6 +11,14 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 public class AdminLoginCheckInterceptor extends LoginCheckInterceptor {
+    /**
+     * 어드민 여부 체크 인터셉터
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler chosen handler to execute, for type and/or instance evaluation
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
@@ -23,12 +31,13 @@ public class AdminLoginCheckInterceptor extends LoginCheckInterceptor {
             return false;
         }
 
-        MemberVo memberVo = (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (memberVo.getMEMBER_GRADE() != Grade.ADMIN) {
-            log.info("미인증 사용자 요청 id={}", memberVo.getMEMBER_ID());
+        MemberVo loginMember = (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (loginMember.getMEMBER_GRADE() != Grade.ADMIN) {
+            log.info("미인증 사용자 요청 id={}", loginMember.getMEMBER_ID());
             response.sendRedirect("/com.solponge/login");
             return false;
         }
+        session.setAttribute("member",loginMember);
         return true;
     }
 }

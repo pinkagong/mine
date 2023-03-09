@@ -15,26 +15,26 @@
     </a>
     <ul class="navbar-nav ml-auto">
       <li>
-        <C:if test="${member==null}">
+        <C:if test="${loginMember==null}">
           <a href="/com.solponge/login" class="btn btn-primary btn-sm">로그인</a>
           <a href="/com.solponge/join" class="btn btn-primary btn-sm">회원가입</a>
           <a href="/com.solponge/login" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">장바구니</a></li>
         </C:if>
 
-      <c:if test="${member.MEMBER_GRADE=='BASIC'}">
-          <p>${member.MEMBER_NAME}님 환영합니다.</p>
+      <c:if test="${loginMember.MEMBER_GRADE=='BASIC'}">
+          <p>${loginMember.MEMBER_NAME}님 환영합니다.</p>
           <a href="/com.solponge/logout" class="btn btn-primary btn-sm">로그아웃</a>
-          <a href="/com.solponge/member/${member.MEMBER_NO}/myPage" class="btn btn-primary btn-sm">마이페이지</a>
-          <a href="/com.solponge/member/${member.MEMBER_NO}/myPage/cart" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">&nbsp;장바구니</a></li>
+          <a href="/com.solponge/member/${loginMember.MEMBER_NO}/myPage" class="btn btn-primary btn-sm">마이페이지</a>
+          <a href="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">&nbsp;장바구니</a></li>
         </c:if>
 
-      <c:if test="${member.MEMBER_GRADE=='ADMIN'}">
-        <p>${member.MEMBER_NAME}님 환영합니다.</p>
+      <c:if test="${loginMember.MEMBER_GRADE=='ADMIN'}">
+        <p>${loginMember.MEMBER_NAME}님 환영합니다.</p>
         <a href="/com.solponge/logout" class="btn btn-primary btn-sm">로그아웃</a>
         <a href="/com.solponge/admin/member" class="btn btn-primary btn-sm">회원관리</a>
-        <a href="/com.solponge/admin/product" class="btn btn-primary btn-sm">상품관리</a>
+
         <a href="/com.solponge/admin/order" class="btn btn-primary btn-sm">주문관리</a>
-        </li>
+        <a href="/com.solponge/admin/product" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">&nbsp;상품관리</a></li>
       </c:if>
     </ul>
   </div>

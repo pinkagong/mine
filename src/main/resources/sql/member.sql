@@ -19,14 +19,3 @@ CREATE SEQUENCE MEMBER_SEQ
 
 
 
-CREATE SEQUENCE book_seq START WITH 1 INCREMENT BY 1;
-drop table book;
-CREATE TABLE book (
-                      book_no NUMBER(38) PRIMARY KEY,
-                      book_name VARCHAR2(50),
-                      book_quantity NUMBER(38),
-                      book_price NUMBER(38),
-                      book_author VARCHAR2(50),
-                      book_publisher VARCHAR2(50)
-);
-

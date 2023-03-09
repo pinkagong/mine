@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="collection_of_sql_job_info">
+    <select id="Searchlist_count_all" resultType="int">
+        SELECT COUNT(*) FROM job_info WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%' OR INFONAME LIKE '%'||#{SearchValue}||'%' OR FTAGLIST LIKE '%'||#{SearchValue}||'%' OR WORKTYPE LIKE '%'||#{SearchValue}||'%' OR QUALIFICAT LIKE '%'||#{SearchValue}||'%'
+    </select>
+    <select id="Searchlist_all" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT t.*, ROWNUM rnum
+                 FROM (SELECT * FROM job_info WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%' OR INFONAME LIKE '%'||#{SearchValue}||'%' OR FTAGLIST LIKE '%'||#{SearchValue}||'%' OR WORKTYPE LIKE '%'||#{SearchValue}||'%' OR QUALIFICAT LIKE '%'||#{SearchValue}||'%' ORDER BY INFONUM DESC) t
+                 WHERE ROWNUM <= #{end}
+             )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="Searchlist_count_JopInfo_COMPANYNAME" resultType="int">
+        SELECT COUNT(*) FROM job_info WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%'
+    </select>
+    <select id="Searchlist_JopInfo_COMPANYNAME" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT t.*, ROWNUM rnum
+                 FROM (SELECT * FROM job_info WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%' ORDER BY INFONUM DESC) t
+                 WHERE ROWNUM <= #{end}
+             )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="Searchlist_count_JopInfo_INFONAME" resultType="int">
+        SELECT COUNT(*) FROM job_info WHERE INFONAME LIKE '%'||#{SearchValue}||'%'
+    </select>
+    <select id="Searchlist_JopInfo_INFONAME" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT t.*, ROWNUM rnum
+                 FROM (SELECT * FROM job_info WHERE INFONAME LIKE '%'||#{SearchValue}||'%' ORDER BY INFONUM DESC) t
+                 WHERE ROWNUM <= #{end}
+             )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="Searchlist_count_JopInfo_FTAGLIST" resultType="int">
+        SELECT COUNT(*) FROM job_info WHERE FTAGLIST LIKE '%'||#{SearchValue}||'%'
+    </select>
+    <select id="Searchlist_JopInfo_FTAGLIST" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT t.*, ROWNUM rnum
+                 FROM (SELECT * FROM job_info WHERE FTAGLIST LIKE '%'||#{SearchValue}||'%' ORDER BY INFONUM DESC) t
+                 WHERE ROWNUM <= #{end}
+             )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="Searchlist_count_JopInfo_WORKTYPE" resultType="int">
+        SELECT COUNT(*) FROM job_info WHERE WORKTYPE LIKE '%'||#{SearchValue}||'%'
+    </select>
+    <select id="Searchlist_JopInfo_WORKTYPE" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT t.*, ROWNUM rnum
+                 FROM (SELECT * FROM job_info WHERE WORKTYPE LIKE '%'||#{SearchValue}||'%' ORDER BY INFONUM DESC) t
+                 WHERE ROWNUM <= #{end}
+             )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="Searchlist_count_JopInfo_QUALIFICAT" resultType="int">
+        SELECT COUNT(*) FROM job_info WHERE QUALIFICAT LIKE '%'||#{SearchValue}||'%'
+    </select>
+    <select id="Searchlist_JopInfo_QUALIFICAT" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT t.*, ROWNUM rnum
+                 FROM (SELECT * FROM job_info WHERE QUALIFICAT LIKE '%'||#{SearchValue}||'%' ORDER BY INFONUM DESC) t
+                 WHERE ROWNUM <= #{end}
+             )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="list_count" resultType="int">
+        SELECT COUNT(*) FROM job_info
+    </select>
+    <select id="list_page" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT t.*, ROWNUM rnum
+            FROM (SELECT * FROM job_info ORDER BY INFONUM DESC) t
+            WHERE ROWNUM <= #{end}
+        )
+        WHERE rnum >= #{start}
+        ]]>
+    </select>
+    <select id="list_new_8" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        <![CDATA[
+        SELECT *
+        FROM (
+                 SELECT DISTINCT infonum, jinfoField, companyname, infoname, ftaglist, qualificat, worktype, workarea, Deadline, pagecode, infolink
+                 FROM job_info
+                 ORDER BY infonum DESC
+             )
+        WHERE ROWNUM <= 8
+        ]]>
+    </select>
+
+    <select id="job_info" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info where infonum=#{infonum}
+    </select>
+
+    <select id="ompanyTojobinfoList" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info where companyname=#{companyname}
+    </select>
+
+    <insert id="insertjob_info" useGeneratedKeys="true" keyProperty="product_num" keyColumn="product_num">
+        INSERT INTO job_info (infonum, jinfoField, companyname, infoname, ftaglist, qualificat, worktype, workarea, Deadline, pagecode, infolink)
+        VALUES (job_info_SEQ.NEXTVAL, #{jinfoField},#{companyname},#{infoname},#{ftaglist},#{qualificat},#{worktype},#{workarea},#{Deadline},#{pagecode}, #{infolink});
+    </insert>
+    <delete id="deletejob_info">
+        delete job_info where infonum=#{infonum}
+    </delete>
+    <update id="updatejob_info">
+        update job_info set infoname=#{infoname}, product_price=#{product_price}, product_stock=#{product_stock} where infonum=#{infonum}
+    </update>
+    <select id="companyInScrap" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info where companyname IN
+        <foreach collection="companynames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+    <select id="infoInScrap" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info where INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+
+
+    <select id="Mypage_Searchlist_all" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+<!--        select * from job_info WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%' OR INFONAME LIKE '%'||#{SearchValue}||'%' OR FTAGLIST LIKE '%'||#{SearchValue}||'%' OR WORKTYPE LIKE '%'||#{SearchValue}||'%' OR QUALIFICAT LIKE '%'||#{SearchValue}||'%'-->
+<!--        AND (INFONAME IN-->
+<!--        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">-->
+<!--            #{arr}-->
+<!--        </foreach>-->
+<!--        )-->
+<!--        ORDER BY INFONUM-->
+        select * from (SELECT * FROM job_info WHERE INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ) WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%' OR INFONAME LIKE '%'||#{SearchValue}||'%' OR FTAGLIST LIKE '%'||#{SearchValue}||'%' OR WORKTYPE LIKE '%'||#{SearchValue}||'%' OR QUALIFICAT LIKE '%'||#{SearchValue}||'%'
+        ORDER BY INFONUM
+    </select>
+    <select id="Mypage_Searchlist_JopInfo_COMPANYNAME" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info WHERE COMPANYNAME LIKE '%'||#{SearchValue}||'%'
+        AND INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+
+    <select id="Mypage_Searchlist_JopInfo_INFONAME" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info WHERE INFONAME LIKE '%'||#{SearchValue}||'%'
+        AND INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+
+    <select id="Mypage_Searchlist_JopInfo_FTAGLIST" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info WHERE FTAGLIST LIKE '%'||#{SearchValue}||'%'
+        AND INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+
+    <select id="Mypage_Searchlist_JopInfo_WORKTYPE" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info WHERE WORKTYPE LIKE '%'||#{SearchValue}||'%'
+        AND INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+
+    <select id="Mypage_Searchlist_JopInfo_QUALIFICAT" resultType="com.solponge.domain.jobinfo.JopInfoVo">
+        select * from job_info WHERE QUALIFICAT LIKE '%'||#{SearchValue}||'%'
+        AND INFONAME IN
+        <foreach collection="infonames" item="arr" open="(" close=")" separator=",">
+            #{arr}
+        </foreach>
+        ORDER BY INFONUM
+    </select>
+
+
+
+</mapper>

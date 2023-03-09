@@ -11,9 +11,161 @@
           content="Start your development with Pigga landing page.">
     <meta name="author" content="Devcrud">
     <title>Home Shopping Site</title>
+
+    <style>
+        .url{
+            float: left;
+        }
+        .url:hover {
+            cursor: pointer;
+        }
+        .heart {
+            width: 25px;
+            font-size: 15px;
+            color: gray;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+        }
+
+        .heart.red {
+            width: 25px;
+            font-size: 15px;
+            color: red;
+            background-color: transparent;
+            border: none;
+        }
+        .star {
+            width: 25px;
+            font-size: 15px;
+            color: gray;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+        }
+
+        .star.yellow {
+            width: 25px;
+            font-size: 15px;
+            color: sandybrown;
+            background-color: transparent;
+            border: none;
+        }
+    </style>
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/headerFooter.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script language="JavaScript">
+        function submitForm(clicked_id) {
+            var buttonElement = document.getElementById(clicked_id);
+            var usercheck = '${member.MEMBER_ID}';
+            let MEMBER_NO = parseInt(${member.MEMBER_NO});
+            var companyName = "companyName_"+clicked_id;
+            var data2 = document.getElementById(companyName).value;
+            if (buttonElement.value === 'Click') {
+                buttonElement.value = 'Clicked';
+                buttonElement.classList.add('red');
+                if (usercheck.length !== 0) {
+                    console.log('보낼 값: ' + data2);
+                    console.log('용자사 번호: ' + MEMBER_NO);
+                    console.log(typeof(MEMBER_NO))
+                    let scrapCompany = JSON.stringify({"member_No": MEMBER_NO,"companyName": data2});
+                    $.ajax({
+                        type: "POST"
+                        , url: "/scrap/company"
+                        , contentType: "application/json"
+                        , data: scrapCompany
+                        , success: function() {
+                            alert('성공');
+                        }
+                        , error: function() {
+                            alert('찜 등록에 실패했습니다. 관리자에게 문의해주세요.');
+                        }
+                    });
+                } else {
+                    alert('찜 등록에 실패했습니다. 로그인을 해주세요');
+                    location.href = "/main";
+                }
+            } else {
+                buttonElement.value = 'Click';
+                buttonElement.classList.remove('red');
+                if (usercheck.length !== 0) {
+                    console.log('보낼 값: ' + data2);
+                    console.log('용자사 번호: ' + MEMBER_NO);
+                    console.log(typeof(MEMBER_NO))
+                    let scrapCompany = JSON.stringify({"member_No": MEMBER_NO,"companyName": data2});
+                    $.ajax({
+                        type: "POST"
+                        , url: "/scrap/company/delete"
+                        , contentType: "application/json"
+                        , data: scrapCompany
+                        , success: function() {
+                            alert('성공');
+                        }
+                        , error: function() {
+                            alert('찜 삭제 실패했습니다. 관리자에게 문의해주세요.');
+                        }
+                    });
+                }
+            }
+        }
+        function submitForm2(clicked_id) {
+            var buttonElement = document.getElementById(clicked_id);
+            var usercheck = '${member.MEMBER_ID}';
+            let MEMBER_NO = parseInt(${member.MEMBER_NO});
+            var infoname = "infoname_"+clicked_id;
+            console.log(infoname)
+            var infoname_re = infoname.replace("_star","");
+            console.log(infoname_re)
+            var data2 = document.getElementById(infoname_re).value;
+            if (buttonElement.value === 'Click') {
+                buttonElement.value = 'Clicked';
+                buttonElement.classList.add('yellow');
+                if (usercheck.length !== 0) {
+                    console.log('보낼 값: ' + data2);
+                    console.log('용자사 번호: ' + MEMBER_NO);
+                    console.log(typeof(MEMBER_NO))
+                    let scrapinfo = JSON.stringify({"member_No": MEMBER_NO,"infoname": data2});
+                    $.ajax({
+                        type: "POST"
+                        , url: "/scrap/job"
+                        , contentType: "application/json"
+                        , data: scrapinfo
+                        , success: function() {
+                            alert('성공');
+                        }
+                        , error: function() {
+                            alert('찜 등록에 실패했습니다. 관리자에게 문의해주세요.');
+                        }
+                    });
+                } else {
+                    alert('찜 등록에 실패했습니다.');
+                    location.href = "/main";
+                }
+            } else {
+                buttonElement.value = 'Click';
+                buttonElement.classList.remove('yellow');
+                if (usercheck.length !== 0) {
+                    console.log('보낼 값: ' + data2);
+                    console.log('용자사 번호: ' + MEMBER_NO);
+                    console.log(typeof(MEMBER_NO))
+                    let scrapinfo = JSON.stringify({"member_No": MEMBER_NO,"infoname": data2});
+                    $.ajax({
+                        type: "POST"
+                        , url: "/scrap/job/delete"
+                        , contentType: "application/json"
+                        , data: scrapinfo
+                        , success: function() {
+                            alert('성공');
+                        }
+                        , error: function() {
+                            alert('찜 삭제 실패했습니다. 관리자에게 문의해주세요.');
+                        }
+                    });
+                }
+            }
+        }
+
         $(document).ready(function () {
             var $banner = $(".banner").find("ul");
             var $bannerWidth = $banner.children().outerWidth();//이미지의 폭
@@ -76,9 +228,10 @@
                 </li>
             </ul>
         </div>
+
         <div id="row">
             <h3 id="newbook">
-                새로나온책<span><a href="/com.solponge/productList">전체보기</a></span>
+                새로나온책!!!<span><a href="/com.solponge/productList">전체보기</a></span>
             </h3>
             <c:forEach var="productNew" items="${getproductNewTop8List}">
                 <div class="column">
@@ -99,6 +252,48 @@
                     <a href="/com.solponge/product/${productNew.product_num}"><p>${productNew.product_price}원</p></a>
                 </div>
             </c:forEach>
+            <hr style="clear:both;">
+            <h3 id="newbook">
+                새로 등록된 공고!!!<span><a href="/com.solponge/jobinfolist">전체보기</a></span>
+            </h3>
+            <form id="my-form">
+                <table id="Newjob8" style="font-size: 13px;">
+                    <tr id="Newjob8th" style="text-align: center; background: #f2f9fe">
+                        <td style="width: 160px; height: 44px">기업명</td>
+                        <td style="width: 360px; height: 44px">제목</td>
+                        <td style="width: 160px; height: 44px">지원자격</td>
+                        <td style="width: 150px; height: 44px">근무조건</td>
+                        <td>마감일</td>
+                    </tr>
+                    <c:forEach var="NewJopInfo" items="${getJopInfoNewTop8List}" varStatus="status" >
+                        <input type="hidden" id="infoname_${NewJopInfo.infonum}" value="${NewJopInfo.infoname}"/>
+                        <input type="hidden" id="companyName_${NewJopInfo.infonum}" value="${NewJopInfo.companyname}"/>
+                        <tr id="Newjob8td">
+                            <c:set var="comname" value="response_${NewJopInfo.companyname}"/>
+                            <c:choose>
+                                <c:when test="${JobScrap.containsKey(comname)}">
+                                    <td class="infonum" style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfolist/${NewJopInfo.companyname}'">${NewJopInfo.companyname}</div><button class="heart red" id="${NewJopInfo.infonum}" type="button" onclick="submitForm(this.id)" value="Clicked">&#10084;</button></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td class="infonum" style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfolist/${NewJopInfo.companyname}'">${NewJopInfo.companyname}</div><button class="heart" id="${NewJopInfo.infonum}" type="button" onclick="submitForm(this.id)" value="Click">&#10084;</button></td>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:set var="infoname" value="response_${NewJopInfo.infoname}"/>
+                            <c:choose>
+                                <c:when test="${JobScrap2.containsKey(infoname)}">
+                                    <td style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfo/${NewJopInfo.infonum}'">${NewJopInfo.infoname}</div><button class="star yellow" id="${NewJopInfo.infonum}_star" type="button" onclick="submitForm2(this.id)" value="Clicked">&#10029;</button><br><span style="font-size: 10px">${NewJopInfo.ftaglist}</span></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfo/${NewJopInfo.infonum}'">${NewJopInfo.infoname}</div><button class="star" id="${NewJopInfo.infonum}_star" type="button" onclick="submitForm2(this.id)" value="Click">&#10029;</button><br><span style="font-size: 10px">${NewJopInfo.ftaglist}</span></td>
+                                </c:otherwise>
+                            </c:choose>
+                            <td style="height: 54px">${NewJopInfo.qualificat}</td>
+                            <td style="text-align: center; height: 54px">${NewJopInfo.worktype}<br>${NewJopInfo.workarea}</td>
+                            <td style="height: 54px">${NewJopInfo.deadline}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </form>
         </div>
     </div>
     <div class="container_right">
