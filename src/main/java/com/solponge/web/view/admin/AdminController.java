@@ -28,17 +28,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/com.solponge/admin")
 public class AdminController {
-    @Autowired
-    MemberServiceImpl memberService;
 
-    @Autowired
-    productService productService;
-
-    @Autowired
-    OrderServiceImpl orderService;
+   private final MemberServiceImpl memberService;
+   private final productService productService;
+   private final OrderServiceImpl orderService;
 
     /**
-     * 회원정보 리스트
+     * 회원정보
      */
     @GetMapping("/member")
     public String member(Model model) {
@@ -48,9 +44,7 @@ public class AdminController {
     }
 
 
-    /**
-     * 회원정보 수정
-     */
+    /*회원정보 수정*/
 
     @GetMapping("/member/{member_No}/update")
     public String editMember(@PathVariable Long member_No, Model model,HttpServletRequest request) {
@@ -84,9 +78,7 @@ public class AdminController {
         return "redirect:/com.solponge/admin/member";
     }
 
-    /**
-     * 회원 삭제
-     */
+    /*회원 삭제*/
 
     @GetMapping("/member/{member_No}/delete")
     public String deleteMember(@PathVariable Long member_No) {
@@ -250,7 +242,7 @@ public class AdminController {
         model.addAttribute("url", "?");
         return "admin/orderManager";
     }
-    /*주문 수정*/
+    /*송장번호 입력, 주문업데이트*/
     @PostMapping("/order/{paymentNum}/update")
     public String update(@PathVariable String paymentNum,
                          @RequestParam String deliveryNum,

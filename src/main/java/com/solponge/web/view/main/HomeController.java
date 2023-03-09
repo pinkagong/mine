@@ -37,9 +37,12 @@ public class HomeController {
    private final MemberServiceImpl memberService;
    private final productService productService;
    private final CartService cartService;
+   private final JopInfoService jopinfoService;
+   private final JobScrapService jobscrapService;
 
-    private final JopInfoService jopinfoService;
-    private final JobScrapService jobscrapService;
+    /**
+     * 메인 페이지
+     */
     @GetMapping("/main")
     public String home(Model model, HttpServletRequest request){
         MemberVo loginMember = getLoginMember(request);

@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -37,9 +36,9 @@ public class OrderController {
     @Autowired
     private PaymentService ps;
     @Autowired
-    private productService ptsd;
+    private productService productService;
     @Autowired
-    private MemberService ms;
+    private MemberService memberService;
 
     @PostMapping("/payments")
     public String postItem(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems, @RequestParam(value = "order", required = false) List<String> orderProductNums,
@@ -86,7 +85,7 @@ public class OrderController {
         Map<String, Object> param = new HashMap<>();
         int total_price = 0;
         for (int i = 0; i < data.size(); i++){
-            productVo input_product = ptsd.getproduct(data.get(i).getPRODUCT_NUM());
+            productVo input_product = productService.getproduct(data.get(i).getPRODUCT_NUM());
             int input_num = input_product.getProduct_num();
             param.put("img_"+input_num, input_product.getProduct_img());
             param.put("title_"+input_num, input_product.getProduct_title());
@@ -97,7 +96,7 @@ public class OrderController {
 
         model.addAttribute("pinfo", param);
         model.addAttribute("oinfo", data);
-        model.addAttribute("minfo", ms.findByNo(loginMember.getMEMBER_NO()));
+        model.addAttribute("minfo", memberService.findByNo(loginMember.getMEMBER_NO()));
         model.addAttribute("total_price",total_price);
 
 
