@@ -2,8 +2,6 @@ package com.solponge.domain.order_manager;
 
 
 
-import com.solponge.domain.member.MemberVo;
-import com.solponge.domain.product.productVo;
 import org.hibernate.criterion.Order;
 
 import java.util.List;
@@ -20,4 +18,7 @@ public interface OrderService {
     Order getBoard(Long itemId);
 
     List<OrderVo> getBoardList();
+
+    // CRUD
+    List<OrderVo> ordersearchlist(String SearchSelect, String SearchValue);
 }

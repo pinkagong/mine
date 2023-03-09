@@ -57,10 +57,15 @@
     </div>
     <div class="row">
         <div class="col">
-            <li class="btn btn-primary float-end">
-                <input type="text" name="Search" size="20">
-                <a href="components.html"><img src="/img/Magnifier.png" style="width: 20px;" alt="Search"></a>
-            </li>
+
+            <form method="get" action="/com.solponge/admin/order/search">
+                <select name="SearchSelect">
+                    <option value="payment_num">주문번호</option>
+                    <option value="MEMBER_ID">아이디</option>
+                </select>
+                <input type="text" name="SearchValue">
+                <button type="submit"><img src="/img/Magnifier.png" style="width: 20px;" alt="Search"></button>
+            </form>
         </div>
     </div>
     <hr class="my-4">

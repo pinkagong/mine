@@ -17,6 +17,22 @@ public class OrderDAO {
     @Autowired
     SqlSessionTemplate sqlSession;
 
+    public List<OrderVo> ordersearchlist(String SearchSelect, String SearchValue) {
+        System.out.println("===> Spring JDBC로 produtsearchlist() 기능 처리");
+        System.out.println(SearchSelect);
+        System.out.println(SearchValue);
+        Map<String, Object> param = new HashMap<>();
+        switch (SearchSelect){
+            case "payment_num":
+                param.put("SearchValue", SearchValue);
+                break;
+            case "MEMBER_ID":
+                param.put("SearchValue", SearchValue);
+                break;
+        }
+        return sqlSession.selectList("order.Searchlist_"+SearchSelect, param);
+    }
+
     //CRUD
     // 글 상세 조회
     public productVo getproduct(int product_num){
@@ -51,7 +67,12 @@ public class OrderDAO {
         sqlSession.delete("collection_of_sql_statements.deletepro", param);
     }
 
+    public OrderVo getMyOrder(String paymentNum){
+        Map<String,Object> param=new HashMap<>();
+        param.put("PAYMENT_NUM",paymentNum);
+        return sqlSession.selectOne("order.getMyOrder",param);
 
+    }
 
     // 글 목록 조회
     public List<OrderVo> getBoardList() {

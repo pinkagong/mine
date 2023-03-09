@@ -36,8 +36,14 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+
     public List<OrderVo> getBoardList() {
         System.out.println("OrderServiceImpl...");
         return OrderDAO.getBoardList();
+    }
+
+    @Override
+    public List<OrderVo> ordersearchlist(String SearchSelect, String SearchValue) {
+        return OrderDAO.ordersearchlist(SearchSelect, SearchValue);
     }
 }
