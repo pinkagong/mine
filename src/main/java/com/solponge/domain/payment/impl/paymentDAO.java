@@ -37,6 +37,7 @@ public class paymentDAO {
         param.put("payment_address", payment_address);
         param.put("deliver_info", delivery_info);
         sqlSession.insert("payment.insertPayment", param);
+        sqlSession.update("collection_of_sql_statements.updateProductSale", param);
         return param.get("payment_num").toString();
     }
 

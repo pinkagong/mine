@@ -54,4 +54,10 @@
         SET product_code = #{CODE, jdbcType=CLOB}
         WHERE product_num = #{NUM, jdbcType=INTEGER}
     </update>
+
+    <update id="updateProductSale">
+        UPDATE product
+        SET PRODUCT_SALE=(SELECT PRODUCT_SALE FROM product WHERE product_num=#{product_num})+#{payment_stock}
+        WHERE product_num =#{product_num}
+    </update>
 </mapper>

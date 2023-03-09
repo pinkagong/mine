@@ -84,8 +84,9 @@ public class PaymentController {
         String[] payment_stock = request.getParameterValues("payment_stock");
         String[] cartItem_num = request.getParameterValues("cartItem_num");
         for (int i = 0; i < product_num.length; i++){
+            int product_stock = productService.getproduct(Integer.parseInt(product_num[i])).getProduct_stock();
             try{
-                if(Integer.parseInt(product_num[i]) - Integer.parseInt(payment_stock[i]) < 0){
+                if(product_stock - Integer.parseInt(payment_stock[i]) < 0){
                     throw new OutOfStockException("상품의 재고가 부족합니다.");
                 }
             }catch (Exception e){

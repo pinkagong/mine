@@ -89,8 +89,8 @@
             const num1 = document.getElementById('remaining_stock');
             console.log(num1);
             // 현재 화면에 표시된 값
-            let number = resultElement.innerText;
-            let number2 = num1.innerText;
+            let number = parseInt(resultElement.innerText);
+            let number2 = parseInt(num1.innerText);
 
             // 더하기/빼기
             if (type === 'plus') {
@@ -193,8 +193,14 @@
             </table>
             <script></script>
             <div id="button_prt">
-                <button id="buy_button" type="submit" name="button1" value="Button 1">구매하기</button>
-                <button id="cart_button" type="submit" name="button2" value="Button 2" onclick="addToCart()">장바구니 담기</button>
+                <c:if test="${productVo.product_stock==0}">
+                    <button id="buy_button" type="submit" name="button1" value="Button 1" disabled>구매하기</button>
+                    <button id="cart_button" type="submit" name="button2" value="Button 2" onclick="addToCart()" disabled>장바구니 담기</button>
+                </c:if>
+                <c:if test="${productVo.product_stock!=0}">
+                    <button id="buy_button" type="submit" name="button1" value="Button 1">구매하기</button>
+                    <button id="cart_button" type="submit" name="button2" value="Button 2" onclick="addToCart()">장바구니 담기</button>
+                </c:if>
             </div>
         </div>
     </form>

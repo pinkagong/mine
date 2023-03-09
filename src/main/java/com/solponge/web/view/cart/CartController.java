@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,7 +32,6 @@ public class CartController {
     /**
      * 장바구니
      */
-    @SneakyThrows
     @GetMapping
     public String getCart(Model model,
                        HttpServletRequest request){
@@ -54,7 +54,13 @@ public class CartController {
             //cartItemVo에 담겨있는 cart_item_num 값을 받아와 만들어진 cartItem 에 적용
             cartItem.setCART_ITEM_NUM(cartListVo.getCART_ITEM_NUM());
             //변환시킨 cartItem 을 미리 만든 cartItems 에 넣기
-            cart.addCartItem(cartItem);
+
+            try{
+                cart.addCartItem(cartItem);
+            }catch (RuntimeException e){
+                log.info("exception=",e);
+                return "redirect:com.solponge/main";
+            }
 
         }
         //----------------------------------------------------------
