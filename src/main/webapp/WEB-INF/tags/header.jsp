@@ -32,8 +32,8 @@
         <p>${loginMember.MEMBER_NAME}님 환영합니다.</p>
         <a href="/com.solponge/logout" class="btn btn-primary btn-sm">로그아웃</a>
         <a href="/com.solponge/admin/member" class="btn btn-primary btn-sm">회원관리</a>
-        <a href="/com.solponge/admin/order" class="btn btn-primary btn-sm">회원관리</a>
-        <a href="/com.solponge/admin/product" class="btn btn-primary btn-sm"><img src="${pageContext.request.contextPath}/img/basket.png" style="width: 20px;" alt="basket">&nbsp;상품관리</a></li>
+        <a href="/com.solponge/admin/order" class="btn btn-primary btn-sm">주문관리</a>
+        <a href="/com.solponge/admin/product" class="btn btn-primary btn-sm">상품관리</a></li>
       </c:if>
     </ul>
   </div>
@@ -51,14 +51,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li><a class="nav-link" href="#">BEST</a>
+        <li><a class="nav-link" href="/com.solponge/productList">BOOK</a>
         </li>
-        <li><a class="nav-link" href="#">NEW</a>
+        <li><a class="nav-link" href="/com.solponge/jobinfolist">JOB</a>
         </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="btn btn-primary btn-sm"><input type = "text" name = "Search" size = "15">&nbsp;<a href="components.html">
-          <img src="${pageContext.request.contextPath}/img/Magnifier.png" style="width: 20px;" alt="Search"></a></li>
       </ul>
     </div>
   </div>

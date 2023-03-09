@@ -17,19 +17,19 @@
         <h2>회원목록</h2>
     </div>
     <div class="row">
-        <form method="get" action="/com.solponge/admin/member/search">
-            <select name="SearchSelect">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<form method="get" action="/com.solponge/admin/member/search">
+            <select name="SearchSelect" class="search-select">
                 <option value="ALL">전체</option>
                 <option value="MEMBER_NAME">이름</option>
                 <option value="MEMBER_ID">아이디</option>
             </select>
             <input type="text" name="SearchValue">
-            <button type="submit"><img src="/img/Magnifier.png" style="width: 20px;" alt="Search"></button>
+            <button type="submit">검색</button>
         </form>
         </div>
     <hr class="my-4">
     <div>
-        <table class="table">
+        <table class="yogi">
             <thead>
             <tr>
                <th width="10%"></th>
