@@ -187,16 +187,12 @@
             document.getElementById("payment_num").value = total;
         });
 
-        function delivery(){
+        function delivering(){
             if(document.frm.memo.value === "6"){
                 document.frm.email2.readOnly = false;
                 frm.delivery_info.value = "";
                 frm.delivery_info.type = "text"
                 frm.delivery_info.focus();
-            }else if(document.frm.memo.value === "0"){
-                frm.delivery_info.readOnly = true;
-                frm.delivery_info.type = "hidden"
-                frm.delivery_info.value = "";
             }else if(document.frm.memo.value === "1"){
                 frm.delivery_info.readOnly = true;
                 frm.delivery_info.type = "text"
@@ -217,6 +213,10 @@
                 frm.delivery_info.readOnly = true;
                 frm.delivery_info.type = "text"
                 frm.delivery_info.value = "부재 시 택배함에 넣어주세요.";
+            }else{
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "hidden"
+                frm.delivery_info.value = "";
             }
         }
         function emailchang(){
@@ -224,7 +224,7 @@
                 document.frm.email2.readOnly = false;
                 frm.delivery_info.value = "";
                 frm.delivery_info.focus();
-            }else if(frm.emails.value !== "1"){
+            }else {
                 frm.email2.readOnly = true;
                 frm.email2.value = frm.emails.value;
             }
@@ -239,7 +239,6 @@
                 var sample6_address = document.getElementById("sample6_address").value;
                 var sample6_detailAddress = document.getElementById("sample6_detailAddress").value;
                 var delivery_info = document.getElementById("delivery_info").value;
-
                 if(m_name.length===0||secnum2.length===0||thrnum2.length===0||sample6_postcode.length===0||
                     sample6_address.length===0|| sample6_detailAddress.length===0||delivery_info.length===0){
                     alert("배송지 정보를 잘 입력해 주세요")
@@ -267,15 +266,15 @@
                     <c:set var="ppri" value="price_${o.PRODUCT_NUM}"/>
                     <c:set var="psto" value="stock_${o.PRODUCT_NUM}"/>
                     <c:set var="cait" value="cartItem_${o.PRODUCT_NUM}"/>
-                <tr>
-                    <td rowspan="2" class="product_image"><img src="${pinfo.get(pimg)}" class="product_images"> </td>
-                    <td class="product_title">${pinfo.get(ptit)}</td>
-                    <td class="stock">주문수량</td>
-                </tr>
-                <tr>
-                    <td class="product_title">단가 : ${pinfo.get(ppri)}</td>
-                    <td class="stock">${pinfo.get(psto)}</td>
-                </tr>
+                    <tr>
+                        <td rowspan="2" class="product_image"><img src="${pinfo.get(pimg)}" class="product_images"> </td>
+                        <td class="product_title">${pinfo.get(ptit)}</td>
+                        <td class="stock">주문수량</td>
+                    </tr>
+                    <tr>
+                        <td class="product_title">단가 : ${pinfo.get(ppri)}</td>
+                        <td class="stock">${pinfo.get(psto)}</td>
+                    </tr>
                     <input type="hidden" value="${o.PRODUCT_NUM}" class="product_num" name="product_num">
                     <input type="hidden" value="${pinfo.get(psto)}" class="payment_stock" name="payment_stock">
                     <input type="hidden" value="${pinfo.get(ppri)}" class="product_price" name="product_price">
@@ -318,7 +317,7 @@
                     <td class="eee">
                         <input type="text" value="${fn:split(minfo.MEMBER_EMAIL,"@")[0]}" size="16" id="email1" name="email1"/> @
                         <input type="text" size="20" id="email2" value="${fn:split(minfo.MEMBER_EMAIL,"@")[1]}" name="email2"/>
-                        <select name="emails" id="emails" size="1" onchange="mailCheck()">
+                        <select name="emails" id="emails" size="1" onchange="emailchang()">
                             <option value="" selected>선택하세요</option>
                             <option value="naver.com">naver.com</option>
                             <option value="hanmail.net">hanmail.net</option>
@@ -371,21 +370,21 @@
                 <tr>
                     <td class="fff">요청사항</td>
                     <td class="eee">
-                        <select id="memo" name="memo" onchange="">
-                            <option value="0">배송시 요청사항을 선택해 주세요.</option>
-                            <option value="직접 수령하겠습니다.">직접 수령하겠습니다.
+                        <select id="memo" name="memo" onchange="delivering()">
+                            <option value="0" selected>배송시 요청사항을 선택해 주세요.</option>
+                            <option value="1">직접 수령하겠습니다.
                             </option>
-                            <option value="배송 전 연락바랍니다.">배송 전 연락바랍니다.
+                            <option value="2">배송 전 연락바랍니다.
                             </option>
-                            <option value="부재 시 경비실에 맡겨주세요.">부재 시 경비실에 맡겨주세요.
+                            <option value="3">부재 시 경비실에 맡겨주세요.
                             </option>
-                            <option value="부재 시 문 앞에 놓아주세요.">부재 시 문 앞에 놓아주세요.
+                            <option value="4">부재 시 문 앞에 놓아주세요.
                             </option>
-                            <option value="부재 시 택배함에 넣어주세요.">부재 시 택배함에 넣어주세요.
+                            <option value="5">부재 시 택배함에 넣어주세요.
                             </option>
                             <option value="6">직접 입력</option>
                         </select>
-                        <input type="text" placeholder="최대 50자 입력이 가능합니다." id="delivery_info" name="delivery_info"/>
+                        <input type="hidden" placeholder="최대 50자 입력이 가능합니다." id="delivery_info" name="delivery_info"/>
                     </td>
                 </tr>
             </table>

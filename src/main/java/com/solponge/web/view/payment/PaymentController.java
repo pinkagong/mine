@@ -131,12 +131,16 @@ public class PaymentController {
 
 
     @GetMapping(value = "/payments/success")
-    public String successmove(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember) {
+    public String successmove(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
+                              Model model) {
+        model.addAttribute("member_No",loginMember.getMEMBER_NO());
         return "product/success";
     }
 
     @GetMapping(value = "/payments/fail")
-    public String failmove(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember) {
+    public String failmove(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
+                           Model model) {
+        model.addAttribute("member_No",loginMember.getMEMBER_NO());
         return "product/fail";
     }
 
