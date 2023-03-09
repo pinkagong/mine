@@ -12,7 +12,7 @@
         SELECT * FROM PRODUCT WHERE product_writer LIKE '%' || #{SearchValue} || '%'
     </select>
     <select id="list" resultType="com.solponge.domain.product.productVo">
-        SELECT * FROM product ORDER BY product_num DESC
+        SELECT * FROM product ORDER BY product_num ASC
     </select>
     <select id="list_new_8" resultType="com.solponge.domain.product.productVo">
         <![CDATA[
