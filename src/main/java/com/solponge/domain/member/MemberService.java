@@ -13,4 +13,6 @@ public interface MemberService {
     MemberVo findByNo(Long memberNo);
 
     List<MemberVo> findAll();
+
+    List<MemberVo> membersearchlist(String SearchSelect, String SearchValue);
 }

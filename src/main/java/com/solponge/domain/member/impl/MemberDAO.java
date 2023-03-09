@@ -20,7 +20,27 @@ public class MemberDAO {
     }
     // CRUD 기능의 메소드 구현
     // 회원가입
-
+    public List<MemberVo> membersearchlist(String SearchSelect, String SearchValue) {
+        System.out.println("===> Spring JDBC로 membersearchlist() 기능 처리");
+        System.out.println(SearchSelect);
+        System.out.println(SearchValue);
+        Map<String, Object> param = new HashMap<>();
+        if(SearchValue.length()==0){
+            SearchValue = "N o n e";
+        }
+        switch (SearchSelect){
+            case "ALL":
+                param.put("SearchValue", SearchValue);
+                break;
+            case "MEMBER_NAME":
+                param.put("SearchValue", SearchValue);
+                break;
+            case "MEMBER_ID":
+                param.put("SearchValue", SearchValue);
+                break;
+        }
+        return sqlSession.selectList("member.Searchlist_"+SearchSelect, param);
+    }
 
 
     public String memberSave(MemberVo member) {

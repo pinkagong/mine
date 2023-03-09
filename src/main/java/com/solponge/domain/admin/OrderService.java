@@ -16,4 +16,6 @@ public interface OrderService {
     AdminOrderVo getBoard(String paymentNum);
 
     List<AdminOrderVo> getBoardList();
+
+    List<AdminOrderVo> ordersearchlist(String SearchSelect, String SearchValue);
 }
