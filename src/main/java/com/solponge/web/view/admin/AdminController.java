@@ -4,6 +4,7 @@ package com.solponge.web.view.admin;
 import com.solponge.domain.admin.*;
 import com.solponge.domain.admin.impl.OrderServiceImpl;
 import com.solponge.domain.member.Grade;
+import com.solponge.domain.member.MemberService;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
 import com.solponge.domain.pageing.pageing;
@@ -32,6 +33,8 @@ public class AdminController {
 
     @Autowired
     OrderService os;
+    @Autowired
+    MemberService ms;
 
    private final MemberServiceImpl memberService;
    private final productService productService;
@@ -42,6 +45,19 @@ public class AdminController {
     /**
      * 회원관리 정보
      */
+
+    @GetMapping("/member/search")
+    public String produtslist(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
+                              Model model, HttpServletRequest request,
+                              @RequestParam("SearchSelect") String SearchSelect,
+                              @RequestParam("SearchValue") String SearchValue){
+        model.addAttribute("member",loginMember);
+        List<MemberVo> data = ms.membersearchlist(SearchSelect, SearchValue);
+        model.addAttribute("members",data);
+//        model.addAttribute("members", memberService.findAll());
+        log.info("findAll={}", memberService.findAll());
+        return "admin/member";
+    }
     @GetMapping("/member")
     public String member(Model model) {
         model.addAttribute("members", memberService.findAll());
@@ -96,6 +112,22 @@ public class AdminController {
     /**
      * 상품관리 정보
      */
+
+    @GetMapping("/product/search")
+    public String inqprodutsearchlist(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
+                                   Model model, HttpServletRequest request,
+                                   @RequestParam("SearchSelect") String SearchSelec,
+                                   @RequestParam("SearchValue") String SearchValue){
+        model.addAttribute("member",loginMember);
+
+        List<productVo> data = productService.produtsearchlist(SearchSelec, SearchValue);
+
+        String url = request.getQueryString();
+        new pageing(20, request, data, model,"paginatedProducts", url);
+
+        return "admin/inqProduct";
+
+    }
 
     @GetMapping("/product") //수정완료
     public String product(Model model, HttpServletRequest request) {

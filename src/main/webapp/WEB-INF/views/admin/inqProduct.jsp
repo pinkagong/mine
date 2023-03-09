@@ -24,6 +24,17 @@
                 <td width="80%"></td>
                 <td>
                     <div>
+                        <form action = "/com.solponge/admin/product/search" accept-charset="utf-8" name = "book_info" method = "get">
+                    <select name="SearchSelect">
+                      <option value="all">전체</option>
+                      <option value="product_title">도서명</option>
+                      <option value="product_writer">저자</option>
+                    </select>
+                    <input type="text" name="SearchValue" size="15" value="검색 내용">
+                    <button type="submit"><img src="/img/Magnifier.png" style="width: 20px;" alt="Search"></button>
+                        </form>
+                    </div>
+                    <div>
                         <button onclick="location.href='product/add'" type="button">상품 등록 </button>
                     </div>
                 </td>
@@ -72,7 +83,7 @@
                             </td>
                             <td>
                                <div class="col">
-                                <form id="delete" action="product/${product.product_num}/delete" method="post">
+                                <form id="delete" action="../product/${product.product_num}/delete" method="post">
                                     <input type="hidden" name="_method" value="DELETE"/>
                                     <button onclick="return confirm('정말 삭제하시겠습니까?')" type="submit">삭제 </button>
                                 </form>

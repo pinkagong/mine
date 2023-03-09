@@ -46,4 +46,9 @@ public class MemberServiceImpl implements MemberService {
         return memberDAO.memberFindAll();
     }
 
+    @Override
+    public List<MemberVo> membersearchlist(String SearchSelect, String SearchValue) {
+        return memberDAO.membersearchlist(SearchSelect, SearchValue);
+    }
+
 }
