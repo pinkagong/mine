@@ -1,3 +1,4 @@
+/*
 package com.solponge;
 
 import com.solponge.web.view.login.interceptor.AdminLoginCheckInterceptor;
@@ -22,6 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/com.solponge/join",
                         "/com.solponge/login",
                         "/com.solponge/product/**",
+                        "/com.solponge/productList/**",
+                        "/com.solponge/jobinfolist/**",
+                        "/com.solponge/jobinfo/**",
                         "/css/**",
                         "/img/**",
                         "/js/**"
@@ -30,3 +34,4 @@ public class WebConfig implements WebMvcConfigurer {
         
     }
 }
+*/

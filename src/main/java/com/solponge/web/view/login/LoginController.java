@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +29,9 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    String loginPost(@Validated @ModelAttribute("loginForm")LoginForm form, BindingResult bindingResult, HttpServletRequest request, Model model){
+
+    String loginPost(@Validated @ModelAttribute("loginForm")LoginForm form, BindingResult bindingResult, HttpServletRequest request, Model model,
+                     @RequestParam(defaultValue = "/com.solponge/main")String redirectURL){
 
         if(bindingResult.hasErrors()){
             return "member/loginForm";
@@ -42,7 +41,6 @@ public class LoginController {
         if (loginMember==null){//회원을 못 찾을때
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
             log.info("bindingResult={}",bindingResult);
-            //model.addAttribute("bindingResult", bindingResult);
             return "member/loginForm";
         }
         //로그인 성공처리
@@ -51,16 +49,18 @@ public class LoginController {
         //세션에 로그인 회원정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-        // 이전 페이지 URL 가져오기
-        String redirectURL = request.getHeader("referer");
 
-        // 이전 페이지 URL이 없는 경우 기본값으로 main 페이지로 이동하도록 함
-        if (redirectURL == null || redirectURL.isEmpty()) {
-            redirectURL = "/com.solponge/main";
+        String prevPage = (String) session.getAttribute("prevPage");
+
+
+        // 이전 페이지 URL이 없는 경우, 그리고 현재 요청 url이 존재할 경우
+        if (prevPage == null || prevPage.isEmpty()) {
+            return "redirect:"+redirectURL;
         }
 
         // 로그인 성공 후 이전 페이지로 redirect
-        return "redirect:" + redirectURL;
+        return "redirect:" + prevPage;
+
     }
 
     @GetMapping("/logout")
