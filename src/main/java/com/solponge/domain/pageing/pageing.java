@@ -13,6 +13,11 @@ public class pageing {
     int start;
     int end;
     int totalPages;
+
+    public pageing(){
+
+    }
+
     public pageing(int pageSize, HttpServletRequest request, List<?> data, Model model, String AttriButeName){
         this.pageSize=pageSize;
         this.currentPage=(request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
@@ -69,7 +74,7 @@ public class pageing {
         url_handler(url, model);
 
     }
-    private void url_handler(String url, Model model){
+    public void url_handler(String url, Model model){
         System.out.println("url은"+url);
         if (url.contains("&page=")){
             int idx = url.indexOf("&page=");

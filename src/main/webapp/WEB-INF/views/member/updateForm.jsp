@@ -43,11 +43,11 @@
             <table>
                 <tr>
                     <th>아이디</th>
-                    <td><input type="text" id="member_id)" name="member_id" value="${member.MEMBER_ID}" readonly></td>
+                    <td><input type="text" id="member_id" name="member_id" value="${member.MEMBER_ID}" readonly></td>
                 </tr>
                 <tr>
                     <th>비밀번호</th>
-                    <td><input type="password" id="MEMBER_PWD" name="member_pwd" value="${member.MEMBER_PWD}"></td>
+                    <td><input type="password" id="member_pwd" name="member_pwd" value="${member.MEMBER_PWD}"></td>
                 </tr>
                 <tr>
                     <th>비밀번호 확인</th>
@@ -92,11 +92,64 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"  id="buttons"><input type="submit" value="변경" onclick="infocheck()" id="submitbtn">
+                    <td colspan="2"  id="buttons">
+                        <%--                        <input type="submit" value="변경" id="submitbtn" onclick="infocheck()">--%>
+                        <input type="submit" value="변경" id="submitbtn">
                         <input type="button" onclick="location.href='/com.solponge/main'" value="돌아가기">
                         <input type="button" onclick="location.href='/com.solponge/member/${member.MEMBER_NO}/myPage/delete'" value="회원 탈퇴"> </td>
                 </tr>
             </table>
+            <script>
+                document.getElementById('submitbtn').onclick = function(){
+                    var emailExp = /^[a-z0-9]{1}[a-z0-9\-]+[a-z0-9]{1}\.(([a-z]{1}[a-z.]+[a-z]{1}[a-z]+)|([a-z]+))$/;
+                    var phonExp = /^[0-9]{4}$/;
+                    if(document.frm.MEMBER_NAME.value === "") {
+                        alert("MEMBER_NAME 입력해주세요.");
+                        return false;
+                    }
+                    if (document.frm.member_pwd.value === ""){
+                        alert("비밀번호를 입력해주세요.");
+                        document.frm.member_pwd.focus();
+                        return false;
+                    }
+                    if(document.frm.member_pwd.value !== document.frm.member_pwdCheck.value){
+                        alert("비밀번호가 틀렸습니다.");
+                        document.frm.member_pwd.focus();
+                        return false;
+                    }
+                    if (document.frm.MEMBER_NAME.value === ""){
+                        alert("이름을 입력해주세요.");
+                        document.frm.MEMBER_NAME.focus();
+                        return false;
+                    }
+                    if (document.frm.email1.value === "" || document.frm.email2.value === ""){
+                        alert("이메일을 입력해주세요.");
+                        document.frm.email1.focus();
+                        return false;
+                    }
+                    if (emailExp.test(document.frm.email2.value) === false){
+                        alert("정확한 이메일 주소를 입력해주세요");
+                        document.frm.email1.focus();
+                        return false;
+                    }
+                    if (document.frm.secnum.value === "" || document.frm.thrnum.value === ""){
+                        alert("전화번호를 입력해주세요.");
+                        document.frm.secnum.focus();
+                        return false;
+                    }
+                    if (document.frm.secnum.value.match(phonExp) === null){
+                        alert("전화번호가 틀렸습니다.");
+                        document.frm.secnum.focus();
+                        return false;
+                    }
+                    if (document.frm.sample6_postcode.value === "" || document.frm.sample6_detailAddress.value === "" || document.frm.sample6_address.value === ""){
+                        alert("주소를 입력해주세요.");
+                        document.frm.sample6_detailAddress.focus();
+                        return false;
+                    }
+                    alert("변경이 완료됐습니다.");
+                };
+            </script>
         </div>
     </form>
 </div>

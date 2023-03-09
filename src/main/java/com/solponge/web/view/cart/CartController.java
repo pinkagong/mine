@@ -82,6 +82,8 @@ public class CartController {
         return "redirect:/com.solponge/product/"+productId;
     }
 
+
+
     /* 장바구니 아이템 삭제*/
     @PostMapping("/deleteCartItem")
     public String cartItemDelete(@RequestParam("cartItemNum") int cartItemNum,

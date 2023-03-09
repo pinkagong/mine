@@ -3,12 +3,14 @@ package com.solponge.web.view.payment;
 import com.solponge.domain.cart.CartService;
 import com.solponge.domain.member.MemberService;
 import com.solponge.domain.member.MemberVo;
+import com.solponge.domain.payment.OutOfStockException;
 import com.solponge.domain.payment.PaymentService;
 import com.solponge.domain.payment.PaymentVO;
 import com.solponge.domain.product.productService;
 import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/com.solponge/member/{MEMBER_NO}")
 @SessionAttributes(names = SessionConst.LOGIN_MEMBER)
@@ -80,6 +82,16 @@ public class PaymentController {
         String email = email1 + "@" + email2;
         String[] product_num = request.getParameterValues("product_num");
         String[] payment_stock = request.getParameterValues("payment_stock");
+        String[] cartItem_num = request.getParameterValues("cartItem_num");
+        for (int i = 0; i < product_num.length; i++){
+            try{
+                if(Integer.parseInt(product_num[i]) - Integer.parseInt(payment_stock[i]) < 0){
+                    throw new OutOfStockException("상품의 재고가 부족합니다.");
+                }
+            }catch (Exception e){
+                return "product/stockfail";
+            }
+        }
         model.addAttribute("member_No", loginMember.getMEMBER_NO());
         model.addAttribute("payment_num", payment_num);
         model.addAttribute("total_price", total_price);
@@ -90,6 +102,7 @@ public class PaymentController {
         model.addAttribute("delivery_info", delivery_info);
         model.addAttribute("product_num", product_num);
         model.addAttribute("payment_stock", payment_stock);
+        model.addAttribute("cartItem_num", cartItem_num);
         return "product/pay";
     }
 

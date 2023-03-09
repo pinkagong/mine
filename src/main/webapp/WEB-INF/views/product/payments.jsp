@@ -186,10 +186,73 @@
             // $('payment_num').val(total);
             document.getElementById("payment_num").value = total;
         });
+
+        function delivery(){
+            if(document.frm.memo.value === "6"){
+                document.frm.email2.readOnly = false;
+                frm.delivery_info.value = "";
+                frm.delivery_info.type = "text"
+                frm.delivery_info.focus();
+            }else if(document.frm.memo.value === "0"){
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "hidden"
+                frm.delivery_info.value = "";
+            }else if(document.frm.memo.value === "1"){
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "text"
+                frm.delivery_info.value = "직접 수령하겠습니다.";
+            }else if(document.frm.memo.value === "2"){
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "text"
+                frm.delivery_info.value = "배송 전 연락바랍니다.";
+            }else if(document.frm.memo.value === "3"){
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "text"
+                frm.delivery_info.value = "부재 시 경비실에 맡겨주세요.";
+            }else if(document.frm.memo.value === "4"){
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "text"
+                frm.delivery_info.value = "부재 시 문 앞에 놓아주세요.";
+            }else if(document.frm.memo.value === "5"){
+                frm.delivery_info.readOnly = true;
+                frm.delivery_info.type = "text"
+                frm.delivery_info.value = "부재 시 택배함에 넣어주세요.";
+            }
+        }
+        function emailchang(){
+            if(frm.emails.value === "1"){
+                document.frm.email2.readOnly = false;
+                frm.delivery_info.value = "";
+                frm.delivery_info.focus();
+            }else if(frm.emails.value !== "1"){
+                frm.email2.readOnly = true;
+                frm.email2.value = frm.emails.value;
+            }
+        }
+
+        $(document).ready(function (){
+            $("#paybutton").click(function (){
+                var m_name = document.getElementById("m_name").value;
+                var secnum2 = document.getElementById("secnum2").value;
+                var thrnum2 = document.getElementById("thrnum2").value;
+                var sample6_postcode = document.getElementById("sample6_postcode").value;
+                var sample6_address = document.getElementById("sample6_address").value;
+                var sample6_detailAddress = document.getElementById("sample6_detailAddress").value;
+                var delivery_info = document.getElementById("delivery_info").value;
+
+                if(m_name.length===0||secnum2.length===0||thrnum2.length===0||sample6_postcode.length===0||
+                    sample6_address.length===0|| sample6_detailAddress.length===0||delivery_info.length===0){
+                    alert("배송지 정보를 잘 입력해 주세요")
+                    return false;
+                }
+            })
+        })
     </script>
 </head>
 <body>
-
+<header>
+    <%@include file="../../tags/header.jsp"%>
+</header>
 <div id="shopbody">
     <form id="frm" name="frm" method="post" action="/com.solponge/member/${minfo.MEMBER_NO}/payments/pay">
         <div class="box">
@@ -203,6 +266,7 @@
                     <c:set var="ptit" value="title_${o.PRODUCT_NUM}"/>
                     <c:set var="ppri" value="price_${o.PRODUCT_NUM}"/>
                     <c:set var="psto" value="stock_${o.PRODUCT_NUM}"/>
+                    <c:set var="cait" value="cartItem_${o.PRODUCT_NUM}"/>
                 <tr>
                     <td rowspan="2" class="product_image"><img src="${pinfo.get(pimg)}" class="product_images"> </td>
                     <td class="product_title">${pinfo.get(ptit)}</td>
@@ -215,9 +279,10 @@
                     <input type="hidden" value="${o.PRODUCT_NUM}" class="product_num" name="product_num">
                     <input type="hidden" value="${pinfo.get(psto)}" class="payment_stock" name="payment_stock">
                     <input type="hidden" value="${pinfo.get(ppri)}" class="product_price" name="product_price">
+                    <input type="hidden" value="${pinfo.get(cait)}" class="cartItem_num" name="cartItem_num">
                 </c:forEach>
                 <tr>
-                    <td colspan="3" style="text-align: right; padding-right: 50px;">합계 금액 : ${total_price}</td>
+                    <td colspan="3" style="text-align: right; padding-right: 50px;">합계 금액 : ${total_price}(배송비 포함)</td>
                     <input type="hidden" value="${total_price}" name="total_price">
                 </tr>
 
@@ -330,5 +395,8 @@
         </div>
     </form>
 </div>
+<footer>
+    <%@include file="../../tags/footer.jsp" %>
+</footer>
 </body>
 </html>

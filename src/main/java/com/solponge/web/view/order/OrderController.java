@@ -1,5 +1,8 @@
 package com.solponge.web.view.order;
 
+import com.solponge.domain.cart.Cart;
+import com.solponge.domain.cart.CartItem;
+import com.solponge.domain.cart.CartItemVo;
 import com.solponge.domain.cart.CartService;
 
 import com.solponge.domain.member.MemberService;
@@ -14,9 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,6 +34,26 @@ import java.util.*;
 public class OrderController {
     private final productService productService;
     private final MemberService memberService;
+    private final CartService cartService;
+
+    @GetMapping("/{productId}/{quantityinput}/true")
+    public String addItem(@PathVariable int productId,
+                              @PathVariable int quantityinput,
+                              HttpServletRequest request){
+
+        MemberVo loginMember = getLoginMember(request);
+        //받아온 상품번호로 상품객체 소환
+        productVo getproduct = productService.getproduct(productId);
+        //cartItem 객체를 생성하여 필요한 값을 cartItemVo로 전달
+        CartItemVo cartItemVo = new CartItemVo(new CartItem(loginMember,getproduct, quantityinput));
+        //받아온 상품정보를 CART_ITEM 에 저장
+        int cart_Item_num = cartService.addItem(cartItemVo);
+        log.info("구매하기에 추가된 상품정보={}",cartService.findItem(cart_Item_num));
+
+        return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/myPage/cart";
+    }
+
+
 
     @PostMapping("/payments")
     public String postItem(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems, @RequestParam(value = "order", required = false) List<String> orderProductNums,
@@ -52,10 +73,12 @@ public class OrderController {
                 int cartItemNum = Integer.parseInt(cartItemArray[3]);
                 if (orderProductNums != null && orderProductNums.contains(Integer.toString(cartItemNum))) {
                     OrderVo order = new OrderVo();
+                    order.setCART_ITEM_NUM(cartItemNum);
                     order.setMEMBER_NUM(memberNum);
                     order.setPRODUCT_NUM(productNum);
                     order.setORDER_STOCK(orderStock);
                     orderList.add(order);
+                    log.info("order.getORDER_STOCK()={}",order.getORDER_STOCK());
                 }
             }
             }else{
@@ -67,6 +90,7 @@ public class OrderController {
             if (cartItems.contains(Integer.toString(cartItemNum))) {
                 //확인된 아이템들은 orderVo에 설정되어 orderList 에 저장됨
                 OrderVo order = new OrderVo();
+                order.setCART_ITEM_NUM(cartItemNum);
                 order.setMEMBER_NUM(memberNum);
                 order.setPRODUCT_NUM(productNum);
                 order.setORDER_STOCK(orderStock);
@@ -85,8 +109,10 @@ public class OrderController {
             param.put("title_"+input_num, input_product.getProduct_title());
             param.put("price_"+input_num, input_product.getProduct_price());
             param.put("stock_"+input_num, data.get(i).getORDER_STOCK());
+            param.put("cartItem_"+input_num,data.get(i).getCART_ITEM_NUM());
             total_price += input_product.getProduct_price() * data.get(i).getORDER_STOCK()+2500;
         }
+
 
         model.addAttribute("pinfo", param);
         model.addAttribute("oinfo", data);
@@ -98,6 +124,8 @@ public class OrderController {
         return "product/payments";
 
     }
+
+
 
 
     private MemberVo getLoginMember(HttpServletRequest request) {

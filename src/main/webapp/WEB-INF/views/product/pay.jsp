@@ -17,7 +17,12 @@
         <c:forEach items="${payment_stock}" var="i" varStatus="kk">
         arrl2[${kk.index}] = ${i};
         </c:forEach>
-        console.log(arrl2);
+        var arrl3 = [];
+        <c:forEach items="${cartItem_num}" var="i" varStatus="kk">
+        arrl3[${kk.index}] = ${i};
+        </c:forEach>
+
+        console.log(arrl3);
         console.log("${payment_stock[0]}");
         var lists = {
             payment_num:`${payment_num}`,
@@ -26,7 +31,8 @@
             email:`${email}`,
             delivery_info:`${delivery_info}`,
             product_num:arrl,
-            payment_stock:arrl2
+            payment_stock:arrl2,
+            cartItem_num:arrl3
         }
         console.log("${product_num}");
         console.log(typeof("${product_num}"));
