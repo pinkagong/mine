@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-<%--    <link rel="stylesheet" href="/css/hdcss.css">--%>
+    <%--    <link rel="stylesheet" href="/css/hdcss.css">--%>
     <link rel="stylesheet" href="/css/mypageForm.css">
-<%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/myscrap.css">--%>
+    <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/myscrap.css">--%>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
     <style>
@@ -25,8 +25,13 @@
             text-align: left;
             font-size: 17px;
         }
+        #company_state, #jobinfo_state {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            text-align: center;
+        }
 
-        #companyNameContainer {
+        #companyNameContainer, #company_state {
             width: 1200px;
             margin: 0 auto;
         }
@@ -235,73 +240,80 @@
 
     </div>
     <div>
-        <div id="companyNameContainer">
-            <div class="companyScrap">
-                <div class="companies">
-                    <c:set var="count" value="0" />
-                    <c:forEach begin="0" end="${div_company_count-1}">
-                        <div class="company">
-                            <c:forEach begin="0" end="1">
-                                <%--반복 시작--%>
-                                <div class="flex-container">
-                                    <c:forEach begin="0" end="3">
-                                        <c:set var="apple" value="${company_names[count]}" />
-                                        <c:set var="apple2" value="${company_names[count]}count" />
-                                        <c:set var="apple3" value="${company_names[count]}OneInfoName" />
-                                        <c:set var="apple4" value="${company_names[count]}OneInfoNum" />
-                                        <c:choose>
-                                            <c:when test="${apple.length()>=1}">
-                                                <%--반복 시작--%>
-                                                <input type="hidden" name="company_name" id="companyName_${apple}" value="${apple}">
-                                                <div class="flex-item color-gray" style="float: left;">
-                                                    <div class="item_container">
-                                                        <div class="logo" onclick="location.href='/com.solponge/jobinfolist/${apple}'">
-                                                            <img src="${pageContext.request.contextPath}/img/icons8-business-buildings-100.png" />
+        <c:choose>
+            <c:when test="${company_state.equals('NO')}">
+                <h3 id="company_state">관심 기업을 스크랩 해주세요!</h3>
+            </c:when>
+            <c:otherwise>
+                <div id="companyNameContainer">
+                    <div class="companyScrap">
+                        <div class="companies">
+                            <c:set var="count" value="0" />
+                            <c:forEach begin="0" end="${div_company_count-1}">
+                                <div class="company">
+                                    <c:forEach begin="0" end="1">
+                                        <%--반복 시작--%>
+                                        <div class="flex-container">
+                                            <c:forEach begin="0" end="3">
+                                                <c:set var="apple" value="${company_names[count]}" />
+                                                <c:set var="apple2" value="${company_names[count]}count" />
+                                                <c:set var="apple3" value="${company_names[count]}OneInfoName" />
+                                                <c:set var="apple4" value="${company_names[count]}OneInfoNum" />
+                                                <c:choose>
+                                                    <c:when test="${apple.length()>=1}">
+                                                        <%--반복 시작--%>
+                                                        <input type="hidden" name="company_name" id="companyName_${apple}" value="${apple}">
+                                                        <div class="flex-item color-gray" style="float: left;">
+                                                            <div class="item_container">
+                                                                <div class="logo" onclick="location.href='/com.solponge/jobinfolist/${apple}'">
+                                                                    <img src="${pageContext.request.contextPath}/img/icons8-business-buildings-100.png" />
+                                                                </div>
+                                                                <c:set var="appleCount" value="${responseData.get(apple).get(apple2)}" />
+                                                                <div class="company_name" onclick="location.href='/com.solponge/jobinfolist/${apple}'">${apple}
+                                                                    <br /><span  style="font-size: 12px;">채용중 ${appleCount} 건</span>
+                                                                </div>
+                                                                <button class="delete_bt" type="button" style="float: right;" id="${apple}" onclick="submitForm(this.id)">x</button>
+                                                                <c:set var="infotitle" value="${responseData.get(apple).get(apple3)}"/>
+                                                                <c:choose>
+                                                                    <c:when test="${fn:length(infotitle) > 15}">
+                                                                        <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${fn:substring(infotitle, 0, 14)}...</a></div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${infotitle}</a></div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </div>
                                                         </div>
-                                                        <c:set var="appleCount" value="${responseData.get(apple).get(apple2)}" />
-                                                        <div class="company_name" onclick="location.href='/com.solponge/jobinfolist/${apple}'">${apple}
-                                                            <br /><span  style="font-size: 12px;">채용중 ${appleCount} 건</span>
+                                                        <%--반복 끝--%>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <%--반복 시작--%>
+                                                        <div class="flex-item color-gray" style="text-align: center;">
+                                                            <div style="top: 32px;  position:relative;">solponge</div>
                                                         </div>
-                                                        <button class="delete_bt" type="button" style="float: right;" id="${apple}" onclick="submitForm(this.id)">x</button>
-                                                        <c:set var="infotitle" value="${responseData.get(apple).get(apple3)}"/>
-                                                        <c:choose>
-                                                            <c:when test="${fn:length(infotitle) > 15}">
-                                                                <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${fn:substring(infotitle, 0, 14)}...</a></div>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="jobinfo"><a href="/com.solponge/jobinfo/${responseData.get(apple).get(apple4)}">최근 공고: ${infotitle}</a></div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </div>
-                                                </div>
-                                                <%--반복 끝--%>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <%--반복 시작--%>
-                                                <div class="flex-item color-gray" style="text-align: center;">
-                                                    <div style="top: 32px;  position:relative;">solponge</div>
-                                                </div>
-                                                <%--반복 끝--%>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <c:set var="count" value="${count + 1}" />
+                                                        <%--반복 끝--%>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <c:set var="count" value="${count + 1}" />
+                                            </c:forEach>
+                                        </div>
                                     </c:forEach>
+                                        <%--반복 끝--%>
                                 </div>
                             </c:forEach>
-                                <%--반복 끝--%>
                         </div>
-                    </c:forEach>
+                    </div>
+                    <div style="display: inline-block; float: right; margin-right: 20px;">
+                        <button class="prev">
+                            &#60;
+                        </button>
+                        <button class="next">
+                            &#62;
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div style="display: inline-block; float: right; margin-right: 20px;">
-                <button class="prev">
-                    &#60;
-                </button>
-                <button class="next">
-                    &#62;
-                </button>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
         <script>
             const items = document.querySelectorAll('.company');
             const itemCount = items.length - 1;
@@ -456,11 +468,16 @@
         <div style="width: 1050px; margin: 0 auto; position: relative; left: 55px;">
             <br>
             <hr>
-            <div id="container_booklist">
-                <div id="row2">
-                    <form action = "/com.solponge/member/${member.MEMBER_NO}/myPage/jobScrap/search" accept-charset="utf-8" name = "book_info" method = "get">
-                        <h3 id="newbook">
-                            스크랩된 공고<span>
+            <c:choose>
+                <c:when test="${jobinfo_state.equals('NO')}">
+                    <h3 id="jobinfo_state">관심 구직 공고를 스크랩해주세요!</h3>
+                </c:when>
+                <c:otherwise>
+                    <div id="container_booklist">
+                        <div id="row2">
+                            <form action = "/com.solponge/member/${member.MEMBER_NO}/myPage/jobScrap/search" accept-charset="utf-8" name = "book_info" method = "get">
+                                <h3 id="newbook">
+                                    스크랩된 공고<span>
                         <select name="SearchSelect">
                           <option value="all">전체</option>
                           <option value="JopInfo_COMPANYNAME">회사명</option>
@@ -472,78 +489,80 @@
                         <input type="text" name="SearchValue" size="15" value="검색 내용">
                         <button type="submit"><img src="/img/Magnifier.png" style="width: 20px;" alt="Search"></button>
                 </span>
-                        </h3>
-                    </form>
+                                </h3>
+                            </form>
 
-                    <form id="my-form">
-                        <table id="Newjob8" style="font-size: 13px;">
-                            <tr id="Newjob8th" style="text-align: center; background: #f2f9fe">
-                                <td style="width: 200px; height: 44px">기업명</td>
-                                <td style="width: 420px; height: 44px">제목</td>
-                                <td style="width: 180px; height: 44px">지원자격</td>
-                                <td style="width: 150px; height: 44px">근무조건</td>
-                                <td>마감일</td>
-                            </tr>
-                            <c:forEach var="NewJopInfo" items="${paginatedjobinfo}" varStatus="status" >
-                                <input type="hidden" id="infoname_${NewJopInfo.infonum}" value="${NewJopInfo.infoname}"/>
-                                <input type="hidden" id="companyName_${NewJopInfo.infonum}" value="${NewJopInfo.companyname}"/>
-                                <tr id="Newjob8td">
-                                    <c:set var="comname" value="response_${NewJopInfo.companyname}"/>
-                                    <td class="infonum" style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfolist/${NewJopInfo.companyname}'">${NewJopInfo.companyname}</div></td>
-                                    <c:set var="infoname" value="response_${NewJopInfo.infoname}"/>
+                            <form id="my-form">
+                                <table id="Newjob8" style="font-size: 13px;">
+                                    <tr id="Newjob8th" style="text-align: center; background: #f2f9fe">
+                                        <td style="width: 200px; height: 44px">기업명</td>
+                                        <td style="width: 420px; height: 44px">제목</td>
+                                        <td style="width: 180px; height: 44px">지원자격</td>
+                                        <td style="width: 150px; height: 44px">근무조건</td>
+                                        <td>마감일</td>
+                                    </tr>
+                                    <c:forEach var="NewJopInfo" items="${paginatedjobinfo}" varStatus="status" >
+                                        <input type="hidden" id="infoname_${NewJopInfo.infonum}" value="${NewJopInfo.infoname}"/>
+                                        <input type="hidden" id="companyName_${NewJopInfo.infonum}" value="${NewJopInfo.companyname}"/>
+                                        <tr id="Newjob8td">
+                                            <c:set var="comname" value="response_${NewJopInfo.companyname}"/>
+                                            <td class="infonum" style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfolist/${NewJopInfo.companyname}'">${NewJopInfo.companyname}</div></td>
+                                            <c:set var="infoname" value="response_${NewJopInfo.infoname}"/>
+                                            <c:choose>
+                                                <c:when test="${JobScrap2.containsKey(infoname)}">
+                                                    <td style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfo/${NewJopInfo.infonum}'">${NewJopInfo.infoname}</div><button class="star yellow" id="${NewJopInfo.infonum}_star" type="button" onclick="submitForm2(this.id)" value="Clicked">&#10029;</button><br><span style="font-size: 10px">${NewJopInfo.ftaglist}</span></td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfo/${NewJopInfo.infonum}'">${NewJopInfo.infoname}</div><button class="star" id="${NewJopInfo.infonum}_star" type="button" onclick="submitForm2(this.id)" value="Click">&#10029;</button><br><span style="font-size: 10px">${NewJopInfo.ftaglist}</span></td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <td style="height: 54px">${NewJopInfo.qualificat}</td>
+                                            <td style="text-align: center; height: 54px">${NewJopInfo.worktype}<br>${NewJopInfo.workarea}</td>
+                                            <td style="height: 54px">${NewJopInfo.deadline}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+                            </form>
+
+
+                            <nav id="paging" aria-label="Page navigation example" style="clear: both;">
+                                <ul class="pagination justify-content-center" style="padding: 0">
+                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="${url}page=${currentPage - 1}" tabindex="-1"
+                                           aria-disabled="${currentPage == 1}">Previous</a>
+                                    </li>
                                     <c:choose>
-                                        <c:when test="${JobScrap2.containsKey(infoname)}">
-                                            <td style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfo/${NewJopInfo.infonum}'">${NewJopInfo.infoname}</div><button class="star yellow" id="${NewJopInfo.infonum}_star" type="button" onclick="submitForm2(this.id)" value="Clicked">&#10029;</button><br><span style="font-size: 10px">${NewJopInfo.ftaglist}</span></td>
+                                        <c:when test="${totalPages <= 10}">
+                                            <c:set var="startPage" value="1"/>
+                                            <c:set var="endPage" value="${totalPages}"/>
+                                        </c:when>
+                                        <c:when test="${currentPage <= 6}">
+                                            <c:set var="startPage" value="1"/>
+                                            <c:set var="endPage" value="10"/>
+                                        </c:when>
+                                        <c:when test="${currentPage > totalPages - 6}">
+                                            <c:set var="startPage" value="${totalPages - 9}"/>
+                                            <c:set var="endPage" value="${totalPages}"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <td style="height: 54px"><div class="url" OnClick="location.href ='/com.solponge/jobinfo/${NewJopInfo.infonum}'">${NewJopInfo.infoname}</div><button class="star" id="${NewJopInfo.infonum}_star" type="button" onclick="submitForm2(this.id)" value="Click">&#10029;</button><br><span style="font-size: 10px">${NewJopInfo.ftaglist}</span></td>
+                                            <c:set var="startPage" value="${currentPage - 5}"/>
+                                            <c:set var="endPage" value="${currentPage + 4}"/>
                                         </c:otherwise>
                                     </c:choose>
-                                    <td style="height: 54px">${NewJopInfo.qualificat}</td>
-                                    <td style="text-align: center; height: 54px">${NewJopInfo.worktype}<br>${NewJopInfo.workarea}</td>
-                                    <td style="height: 54px">${NewJopInfo.deadline}</td>
-                                </tr>
-                            </c:forEach>
-                        </table>
-                    </form>
-
-
-                    <nav id="paging" aria-label="Page navigation example" style="clear: both;">
-                        <ul class="pagination justify-content-center" style="padding: 0">
-                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="${url}page=${currentPage - 1}" tabindex="-1"
-                                   aria-disabled="${currentPage == 1}">Previous</a>
-                            </li>
-                            <c:choose>
-                                <c:when test="${totalPages <= 10}">
-                                    <c:set var="startPage" value="1"/>
-                                    <c:set var="endPage" value="${totalPages}"/>
-                                </c:when>
-                                <c:when test="${currentPage <= 6}">
-                                    <c:set var="startPage" value="1"/>
-                                    <c:set var="endPage" value="10"/>
-                                </c:when>
-                                <c:when test="${currentPage > totalPages - 6}">
-                                    <c:set var="startPage" value="${totalPages - 9}"/>
-                                    <c:set var="endPage" value="${totalPages}"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:set var="startPage" value="${currentPage - 5}"/>
-                                    <c:set var="endPage" value="${currentPage + 4}"/>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:forEach begin="${startPage}" end="${endPage}" var="pageNum">
-                                <li class="page-item ${currentPage == pageNum ? 'active' : ''}">
-                                    <a class="page-link" href="${url}page=${pageNum}">${pageNum}</a>
-                                </li>
-                            </c:forEach>
-                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}" style="margin-right: 44px">
-                                <a class="page-link" href="${url}page=${currentPage + 1}" aria-disabled="${currentPage == totalPages}">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+                                    <c:forEach begin="${startPage}" end="${endPage}" var="pageNum">
+                                        <li class="page-item ${currentPage == pageNum ? 'active' : ''}">
+                                            <a class="page-link" href="${url}page=${pageNum}">${pageNum}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}" style="margin-right: 44px">
+                                        <a class="page-link" href="${url}page=${currentPage + 1}" aria-disabled="${currentPage == totalPages}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>
