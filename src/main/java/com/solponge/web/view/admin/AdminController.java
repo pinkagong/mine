@@ -12,7 +12,6 @@ import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +33,10 @@ public class AdminController {
    private final productService productService;
    private final OrderServiceImpl orderService;
 
+
+
     /**
-     * 회원정보
+     * 회원관리 정보
      */
     @GetMapping("/member")
     public String member(Model model) {
@@ -89,7 +90,7 @@ public class AdminController {
     }
 
     /**
-     * 상품
+     * 상품관리 정보
      */
 
     @GetMapping("/product") //수정완료
@@ -182,7 +183,7 @@ public class AdminController {
     }
 
     /**
-     * 주문 관리
+     * 주문 관리 정보
      */
 
     @GetMapping("/order")

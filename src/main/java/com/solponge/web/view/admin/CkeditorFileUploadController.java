@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequestMapping("/adm/")
 public class CkeditorFileUploadController {
     /**
-     * 상품관리 추가
+     * 상품 추가
      */
     @PostMapping("/fileupload.do")
     @ResponseBody

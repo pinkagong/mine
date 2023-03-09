@@ -3,14 +3,12 @@ package com.solponge.web.view.payment;
 import com.solponge.domain.cart.CartService;
 import com.solponge.domain.member.MemberService;
 import com.solponge.domain.member.MemberVo;
-import com.solponge.domain.order.OrderVo;
 import com.solponge.domain.payment.PaymentService;
 import com.solponge.domain.payment.PaymentVO;
 import com.solponge.domain.product.productService;
 import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,25 +24,17 @@ import java.util.Map;
 @SessionAttributes(names = SessionConst.LOGIN_MEMBER)
 @RequiredArgsConstructor // 초기화 되지 않게 알아서 실행되는 녀석
 public class PaymentController {
-
-    @Autowired
-    private PaymentService ps;
-    @Autowired
-    private productService ptsd;
-    @Autowired
-    private MemberService ms;
-    @Autowired
-    private CartService cs;
-
+    private final PaymentService paymentService;
+    private final productService productService;
 
     @GetMapping("/paymentList")
     public String produtslist(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
                               Model model, HttpServletRequest request){
-        List<PaymentVO> data = ps.getPaymentList(loginMember.getMEMBER_NO());
+        List<PaymentVO> data = paymentService.getPaymentList(loginMember.getMEMBER_NO());
 
         Map<String, Object> param = new HashMap<>();
         for(int i = 0; i < data.size(); i++){
-            productVo pvo = ptsd.getproduct(data.get(i).getProduct_num());
+            productVo pvo = productService.getproduct(data.get(i).getProduct_num());
             int nn = pvo.getProduct_num();
             param.put("title"+nn, pvo.getProduct_title());
             param.put("stock"+nn, data.get(i).getPayment_stock());
@@ -142,7 +132,7 @@ public class PaymentController {
     public String notVisible(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
                              @RequestParam String payment_num,@RequestParam int product_num
             ,Model model, HttpServletRequest request){
-        ps.notVisible(payment_num,product_num, loginMember.getMEMBER_NO());
+        paymentService.notVisible(payment_num,product_num, loginMember.getMEMBER_NO());
         return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/paymentList";
     }
 

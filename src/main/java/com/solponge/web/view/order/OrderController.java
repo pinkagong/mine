@@ -31,14 +31,8 @@ import java.util.*;
 
 @RequestMapping("/com.solponge/member/{MEMBER_NO}")
 public class OrderController {
-    private final CartService cartService;
-
-    @Autowired
-    private PaymentService ps;
-    @Autowired
-    private productService productService;
-    @Autowired
-    private MemberService memberService;
+    private final productService productService;
+    private final MemberService memberService;
 
     @PostMapping("/payments")
     public String postItem(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems, @RequestParam(value = "order", required = false) List<String> orderProductNums,
