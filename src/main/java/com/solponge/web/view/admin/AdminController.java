@@ -6,6 +6,7 @@ import com.solponge.domain.admin.impl.OrderServiceImpl;
 import com.solponge.domain.member.Grade;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
+import com.solponge.domain.pageing.pageing;
 import com.solponge.domain.product.productService;
 import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
@@ -94,17 +95,8 @@ public class AdminController {
     @GetMapping("/product") //수정완료
     public String product(Model model, HttpServletRequest request) {
         List<productVo> data = productService.getproductList();
-        int pageSize = 20; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data.size());
-        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
-        List<productVo> paginatedProducts = data.subList(start, end); // get the current page of products
-        model.addAttribute("paginatedProducts", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("url", "?");
-//        model.addAttribute("products", productService.getBoardList());
+        new pageing(20, request, data, model, "paginatedProducts");
+
         log.info("findAll={}", productService.getproductList());
         return "admin/inqProduct";
     }
@@ -226,20 +218,8 @@ public class AdminController {
         }
 
         model.addAttribute("paymentEntities",paymentEntities);
+        new pageing(10, request, data, model, "paginatedProducts");
 
-        int pageSize = 20; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data.size());
-        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
-        List<AdminOrderVo> paginatedProducts = new ArrayList<>();
-        if (start < end) { // Check if there are any products to display on the current page
-            paginatedProducts = data.subList(start, end); // get the current page of products
-        }
-        model.addAttribute("paginatedProducts", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("url", "?");
         return "admin/orderManager";
     }
     /*송장번호 입력, 주문업데이트*/

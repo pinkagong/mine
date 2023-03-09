@@ -2,6 +2,7 @@ package com.solponge.web.view.main;
 
 
 import com.solponge.domain.JobScrap.JobScrapService;
+import com.solponge.domain.JobScrap.responseScrap;
 import com.solponge.domain.cart.CartService;
 import com.solponge.domain.cart.CartVo;
 import com.solponge.domain.jobinfo.JopInfoService;
@@ -56,19 +57,7 @@ public class HomeController {
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-                System.out.println("비교시작");
-                List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(userNo);
-                List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(userNo);
-                Map<String, String> params_company = new HashMap<>();
-                Map<String, String> params_info = new HashMap<>();
-                for(companyScrapVO c :cvo){
-                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
-                }
-                for(InfScrapVO c :ivo){
-                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
-                }
-                model.addAttribute("JobScrap", params_company);
-                model.addAttribute("JobScrap2", params_info);
+                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
             }
         }catch (Exception e){
             System.out.println("오류발생");

@@ -4,9 +4,11 @@ package com.solponge.web.view.jobinfo;
 import com.solponge.domain.JobScrap.InfScrapVO;
 import com.solponge.domain.JobScrap.JobScrapService;
 import com.solponge.domain.JobScrap.companyScrapVO;
+import com.solponge.domain.JobScrap.responseScrap;
 import com.solponge.domain.jobinfo.JopInfoService;
 import com.solponge.domain.jobinfo.JopInfoVo;
 import com.solponge.domain.member.MemberVo;
+import com.solponge.domain.pageing.pageing;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,37 +38,16 @@ public class JobInfoController {
         model.addAttribute("member",loginMember);
 //        model.addAttribute("getJopInfoList", jopinfoService.getJopInfoList());
         int data = jopinfoService.getJopInfoList();
-        System.out.println(data);
-        int pageSize = 20; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data);
-        int totalPages = (int) Math.ceil((double) data / pageSize);
-//        List<JopInfoVo> paginatedProducts = data.subList(start, end); // get the current page of products
-        List<JopInfoVo> paginatedProducts = jopinfoService.getJopInfoListpage(start, end);
-        model.addAttribute("paginatedjobinfo", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("url", "?");
+
+        new pageing(20, request, data, model,"paginatedjobinfo",jopinfoService);
+
         try{
             Long userNo = loginMember.getMEMBER_NO();
             System.out.println(userNo);
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-                System.out.println("비교시작");
-                List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(userNo);
-                List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(userNo);
-                Map<String, String> params_company = new HashMap<>();
-                Map<String, String> params_info = new HashMap<>();
-                for(companyScrapVO c :cvo){
-                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
-                }
-                for(InfScrapVO c :ivo){
-                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
-                }
-                model.addAttribute("JobScrap", params_company);
-                model.addAttribute("JobScrap2", params_info);
+                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
             }
         }catch (Exception e){
             System.out.println("오류발생");
@@ -80,52 +61,17 @@ public class JobInfoController {
                                    @RequestParam("SearchSelect") String SearchSelec,
                                    @RequestParam("SearchValue") String SearchValue){
         model.addAttribute("member",loginMember);
-        int data = jopinfoService.JopInfosearchlist_count(SearchSelec, SearchValue);
-        System.out.println(data);
-        int pageSize = 20; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data);
-        int totalPages = (int) Math.ceil((double) data / pageSize);
-        List<JopInfoVo> paginatedProducts = jopinfoService.JopInfosearchlist_page(SearchSelec, SearchValue, start, end); // get the current page of products
-        model.addAttribute("paginatedjobinfo", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
         String url = request.getQueryString();
-        System.out.println(url);
-        if (url.contains("&page=")){
-            int idx = url.indexOf("&page=");
-            url = url.substring(0, idx);
-        }
-//        url = url.replaceAll("&page=\\w", "");
-        String inputurl ="";
-        if (url.contains("SearchSelect")){
-            inputurl += "search?"+url+"&";
-        } else {
-            inputurl += "?";
-        }
-        System.out.println("들어가는 url: "+inputurl);
-        model.addAttribute("url", inputurl);
-        model.addAttribute("status", "Yes");
+        int data = jopinfoService.JopInfosearchlist_count(SearchSelec, SearchValue);
+        new pageing(20, request, data, model,"paginatedjobinfo",jopinfoService, SearchSelec, SearchValue, url);
+
         try{
             Long userNo = loginMember.getMEMBER_NO();
             System.out.println(userNo);
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-                System.out.println("비교시작");
-                List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(userNo);
-                List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(userNo);
-                Map<String, String> params_company = new HashMap<>();
-                Map<String, String> params_info = new HashMap<>();
-                for(companyScrapVO c :cvo){
-                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
-                }
-                for(InfScrapVO c :ivo){
-                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
-                }
-                model.addAttribute("JobScrap", params_company);
-                model.addAttribute("JobScrap2", params_info);
+                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
             }
         }catch (Exception e){
             System.out.println("오류발생");
@@ -142,51 +88,17 @@ public class JobInfoController {
         System.out.println(companyname);
         model.addAttribute("member",loginMember);
         List<JopInfoVo> data = jopinfoService.getCompanyTojobinfoList(companyname);
-//        System.out.println(data);
-        int pageSize = 10; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data.size());
-        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
-        List<JopInfoVo> paginatedProducts = data.subList(start, end);
-        model.addAttribute("paginatedjobinfo", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
         String url = request.getRequestURI();
-        System.out.println("url은"+url);
-        if (url.contains("&page=")){
-            int idx = url.indexOf("&page=");
-            url = url.substring(0, idx);
-        }
-//        url = url.replaceAll("&page=\\w", "");
-        String inputurl ="";
-        if (url.contains("SearchSelect")){
-            inputurl += "search?"+url+"&";
-        } else {
-            inputurl += "?";
-        }
-        System.out.println("들어가는 url: "+inputurl);
-        model.addAttribute("url", inputurl);
-        model.addAttribute("status", "Yes");
+
+        new pageing(10, request, data, model,"paginatedjobinfo", url);
+
         try{
             Long userNo = loginMember.getMEMBER_NO();
             System.out.println(userNo);
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-                System.out.println("비교시작");
-                List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(userNo);
-                List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(userNo);
-                Map<String, String> params_company = new HashMap<>();
-                Map<String, String> params_info = new HashMap<>();
-                for(companyScrapVO c :cvo){
-                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
-                }
-                for(InfScrapVO c :ivo){
-                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
-                }
-                model.addAttribute("JobScrap", params_company);
-                model.addAttribute("JobScrap2", params_info);
+                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
             }
         }catch (Exception e){
             System.out.println("오류발생");
@@ -211,20 +123,7 @@ public class JobInfoController {
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-                System.out.println("비교시작");
-                List<companyScrapVO> cvo = jobscrapService.getcompanyScrapVOScrapList(userNo);
-                List<InfScrapVO> ivo = jobscrapService.getinfoScrapVOScrapList(userNo);
-                Map<String, String> params_company = new HashMap<>();
-                Map<String, String> params_info = new HashMap<>();
-                for(companyScrapVO c :cvo){
-                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
-                    System.out.println(c.getCompanyName());
-                }
-                for(InfScrapVO c :ivo){
-                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
-                }
-                model.addAttribute("JobScrap", params_company);
-                model.addAttribute("JobScrap2", params_info);
+                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
             }
         }catch (Exception e){
             System.out.println("오류발생");

@@ -36,7 +36,7 @@ public class produtController {
                               Model model, HttpServletRequest request){
         model.addAttribute("member",loginMember);
         List<productVo> data = ps.getproductList();
-        new pageing(20, request, data, model);
+        new pageing(20, request, data, model, "paginatedProducts");
 
         return "product/productlist";
     }
@@ -47,25 +47,11 @@ public class produtController {
                                    @RequestParam("SearchValue") String SearchValue){
         model.addAttribute("member",loginMember);
         List<productVo> data = ps.produtsearchlist(SearchSelec, SearchValue);
-
-        new pageing(20, request, data, model);
-
         String url = request.getQueryString();
-        System.out.println(url);
-        url = url.replaceAll("&page=[0-9]", "");
-        String inputurl ="";
-        if (url.contains("SearchSelect")){
-            inputurl += "search?"+url+"&";
-        } else {
-            inputurl += "?";
-        }
-        model.addAttribute("url", inputurl);
-        model.addAttribute("status", "Yes");
-//        redirectAttributes.addAttribute("status", "Search");
-        System.out.println(inputurl);
+        new pageing(20, request, data, model,"paginatedProducts", url);
+
         return "product/productlist";
-//        return "redirect:./";
-//        return "redirect:productlist";
+
     }
 
     @GetMapping("/product/{productId}")
