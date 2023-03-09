@@ -89,11 +89,13 @@ public class produtController {
                                 @RequestParam("quantityinput") String quantityinput){
         System.out.println("productId,"+productId);
         System.out.println("quantityinput,"+quantityinput);
+        boolean check = requestParams.containsKey("button1");
         model.addAttribute("product_num",productId);
         model.addAttribute("quantityinput",quantityinput);
         model.addAttribute("member",loginMember);
-        if (requestParams.containsKey("button1")) {
-            return "redirect:/button1-page";
+        model.addAttribute("check",check);
+        if (check) {
+            return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/"+ productId + "/" + quantityinput + "/true";
         } else {
             return "redirect:/com.solponge/member/"+loginMember.getMEMBER_NO()+"/myPage/cart/"+ productId + "/" + quantityinput;
         }
