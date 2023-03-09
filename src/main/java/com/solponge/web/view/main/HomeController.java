@@ -1,5 +1,6 @@
 package com.solponge.web.view.main;
 
+
 import com.solponge.domain.JobScrap.JobScrapService;
 import com.solponge.domain.cart.CartService;
 import com.solponge.domain.cart.CartVo;
@@ -14,16 +15,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.solponge.domain.JobScrap.companyScrapVO;
 import com.solponge.domain.JobScrap.InfScrapVO;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 
 @Controller
@@ -39,8 +41,8 @@ public class HomeController {
     private final JopInfoService jopinfoService;
     private final JobScrapService jobscrapService;
     @GetMapping("/main")
-    public String homeLogin(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember, Model model){
-        model.addAttribute("member",loginMember);
+    public String home(Model model, HttpServletRequest request){
+        MemberVo member = getLoginMember(request);
         model.addAttribute("getproductNewTop8List", productService.getproductNewTop8List());
         model.addAttribute("getproductpopularTop8List", productService.getproductpopularTop8List());
         model.addAttribute("getJopInfoNewTop8List", jopinfoService.getJopInfoNewTop8List());

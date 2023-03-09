@@ -29,6 +29,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
+
     String loginPost(@Validated @ModelAttribute("loginForm")LoginForm form, BindingResult bindingResult, HttpServletRequest request, Model model,
                      @RequestParam(defaultValue = "/com.solponge/main")String redirectURL){
 
@@ -48,6 +49,7 @@ public class LoginController {
         //세션에 로그인 회원정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
+
         String prevPage = (String) session.getAttribute("prevPage");
 
 
@@ -58,6 +60,7 @@ public class LoginController {
 
         // 로그인 성공 후 이전 페이지로 redirect
         return "redirect:" + prevPage;
+
     }
 
     @GetMapping("/logout")

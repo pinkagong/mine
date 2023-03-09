@@ -1,6 +1,7 @@
 package com.solponge.web.view.order;
 
 import com.solponge.domain.cart.CartService;
+
 import com.solponge.domain.member.MemberService;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.order.OrderVo;
@@ -22,9 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
+
+
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+
 @RequestMapping("/com.solponge/member/{MEMBER_NO}")
 public class OrderController {
     private final CartService cartService;
@@ -41,6 +46,7 @@ public class OrderController {
                            Model model) {
 
         MemberVo loginMember = getLoginMember(request);//사용자 확인
+
         List<OrderVo> orderList = new ArrayList<>();
         int oneItem=4;
 
@@ -75,6 +81,7 @@ public class OrderController {
             }
         }
 
+
         List<OrderVo> data = orderList;
         Map<String, Object> param = new HashMap<>();
         int total_price = 0;
@@ -96,6 +103,7 @@ public class OrderController {
 
         log.info("orderList={}", orderList);
         return "product/payments";
+
     }
 
 
