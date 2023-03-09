@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
 @Slf4j
@@ -25,6 +27,7 @@ public class JobcScrapController {
 
     @PostMapping("/scrap/company")
     public void scrapCompanyInsert(@RequestBody companyScrapVO companyscrapvO) {
+
         System.out.println("컨트롤러: " + companyscrapvO.getCompanyName());
         System.out.println("컨트롤러: " + companyscrapvO.getMember_No());
         jobscrapService.insertJobScrap_company(companyscrapvO);

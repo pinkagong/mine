@@ -42,10 +42,11 @@ public class HomeController {
     private final JobScrapService jobscrapService;
     @GetMapping("/main")
     public String home(Model model, HttpServletRequest request){
-        MemberVo member = getLoginMember(request);
+        MemberVo loginMember = getLoginMember(request);
         model.addAttribute("getproductNewTop8List", productService.getproductNewTop8List());
         model.addAttribute("getproductpopularTop8List", productService.getproductpopularTop8List());
         model.addAttribute("getJopInfoNewTop8List", jopinfoService.getJopInfoNewTop8List());
+        model.addAttribute("member",loginMember);
         try{
             Long userNo = loginMember.getMEMBER_NO();
             System.out.println(userNo);

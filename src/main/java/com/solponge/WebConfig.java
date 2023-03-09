@@ -1,4 +1,3 @@
-/*
 package com.solponge;
 
 import com.solponge.web.view.login.interceptor.AdminLoginCheckInterceptor;
@@ -34,4 +33,3 @@ public class WebConfig implements WebMvcConfigurer {
         
     }
 }
-*/
