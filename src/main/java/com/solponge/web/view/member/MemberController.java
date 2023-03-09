@@ -31,10 +31,16 @@ import java.util.*;
 @RequiredArgsConstructor
 @RequestMapping("/com.solponge/member")
 public class MemberController {
+    @Autowired
     private final MemberServiceImpl memberService;
-    private final productService productService;
-    private final CartService cartService;
+    @Autowired
+    private final JobScrapService jobscrapService;
+    @Autowired
+    private final JopInfoService jobinfoService;
 
+    /**
+     * 마이페이지
+     */
 
     @GetMapping("/{MEMBER_NO}/myPage")
     public String getMyPage(Model model, HttpServletRequest request) {
@@ -44,7 +50,6 @@ public class MemberController {
         model.addAttribute("member", loginMember);
         return "member/updateForm";
     }
-
     @PostMapping("/{MEMBER_NO}/myPage")
     public String updateMember(HttpSession Session,
                                RedirectAttributes redirectAttributes,
@@ -69,24 +74,6 @@ public class MemberController {
         return "main";
     }
 
-    private void sessionSave(MemberVo loginMember, HttpSession Session) {
-        // 업데이트된 멤버 객체 찾기
-        MemberVo updateMemeber = memberService.findByNo(loginMember.getMEMBER_NO());
-        log.info("updatedMember={}",updateMemeber);
-        //세션에 업데이트된 찾은 회원 정보 저장
-        Session.setAttribute(SessionConst.LOGIN_MEMBER,updateMemeber);
-    }
-
-    private void updateMember(MemberVo loginMember, String member_pwd, String email1, String email2, String sample6_postcode, String sample6_address, String sample6_detailAddress, String firstnum, String secnum, String thrnum) {
-        String email = email1 + "@" + email2;
-        String address = sample6_postcode + "/" + sample6_address + "/" + sample6_detailAddress;
-        String phone = firstnum + "-" + secnum + "-" + thrnum;
-        //멤버 수정정보 생성
-        MemberVo memberVo = new MemberVo(member_pwd,address,email,phone);
-        //멤버 업데이트
-        memberService.update(loginMember.getMEMBER_NO(),memberVo);
-    }
-
     @GetMapping("/{MEMBER_NO}/myPage/delete")
     public String deleteMember(@PathVariable Long MEMBER_NO, HttpServletRequest request) {
         MemberVo loginMember = getLoginMember(request);
@@ -98,23 +85,6 @@ public class MemberController {
         }
         return "redirect:/com.solponge/main";
     }
-
-    /**
-     * 세션에서 회원정보 받아옴
-     * @param request
-     * @return
-     */
-
-    private MemberVo getLoginMember(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
-    }
-
-    @Autowired
-    private final JobScrapService jobscrapService;
-    @Autowired
-    private final JopInfoService jobinfoService;
-
 
     @GetMapping("/{MEMBER_NO}/myPage/jobScrap")
     public String getjobScrap(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberVo loginMember, Model model,HttpServletRequest request) {
@@ -336,4 +306,33 @@ public class MemberController {
         return "member/scrap";
     }
 
+    /**
+     * 메서드
+     */
+
+    /*회원 정보 수정 시 해당 정보 세션에 저장*/
+    private void sessionSave(MemberVo loginMember, HttpSession Session) {
+        // 업데이트된 멤버 객체 찾기
+        MemberVo updateMemeber = memberService.findByNo(loginMember.getMEMBER_NO());
+        log.info("updatedMember={}",updateMemeber);
+        //세션에 업데이트된 찾은 회원 정보 저장
+        Session.setAttribute(SessionConst.LOGIN_MEMBER,updateMemeber);
+    }
+
+    /*문자열 합치기*/
+    private void updateMember(MemberVo loginMember, String member_pwd, String email1, String email2, String sample6_postcode, String sample6_address, String sample6_detailAddress, String firstnum, String secnum, String thrnum) {
+        String email = email1 + "@" + email2;
+        String address = sample6_postcode + "/" + sample6_address + "/" + sample6_detailAddress;
+        String phone = firstnum + "-" + secnum + "-" + thrnum;
+        //멤버 수정정보 생성
+        MemberVo memberVo = new MemberVo(member_pwd,address,email,phone);
+        //멤버 업데이트
+        memberService.update(loginMember.getMEMBER_NO(),memberVo);
+    }
+
+    /*회원정보 받음*/
+    private MemberVo getLoginMember(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;
+    }
 }

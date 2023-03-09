@@ -20,6 +20,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/com.solponge")
 public class LoginController {
+    /**
+     * 로그인 컨트롤러
+     */
     private final LoginService loginService;
 
     @GetMapping("/login")
@@ -28,8 +31,8 @@ public class LoginController {
         return "member/loginForm";
     }
 
+    /*로그인 검증*/
     @PostMapping("/login")
-
     String loginPost(@Validated @ModelAttribute("loginForm")LoginForm form, BindingResult bindingResult, HttpServletRequest request, Model model,
                      @RequestParam(defaultValue = "/com.solponge/main")String redirectURL){
 
@@ -63,6 +66,7 @@ public class LoginController {
 
     }
 
+    /*로그아웃*/
     @GetMapping("/logout")
     public String logOut(HttpServletRequest request){
         HttpSession session = request.getSession(false);
@@ -73,12 +77,6 @@ public class LoginController {
         return "redirect:/com.solponge/main";
 
 
-    }
-
-    private static void expiredCookie(HttpServletResponse response,String cookieName) {
-        Cookie cookie = new Cookie("memberId", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
     }
 
 

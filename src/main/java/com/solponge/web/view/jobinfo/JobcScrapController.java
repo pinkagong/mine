@@ -22,9 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @SessionAttributes(names = SessionConst.LOGIN_MEMBER)
 public class JobcScrapController {
+    /**
+     * 공고 스크랩
+     */
     @Autowired
     private final JobScrapService jobscrapService;
-
+    /*회사 스크랩*/
     @PostMapping("/scrap/company")
     public void scrapCompanyInsert(@RequestBody companyScrapVO companyscrapvO) {
 
@@ -33,6 +36,7 @@ public class JobcScrapController {
         jobscrapService.insertJobScrap_company(companyscrapvO);
     }
 
+    /*회사 스크랩 제거*/
     @PostMapping("/scrap/company/delete")
     public void scrapCompanyDelete(@RequestBody companyScrapVO companyscrapvO) {
         System.out.println("컨트롤러: " + companyscrapvO.getCompanyName());
@@ -42,6 +46,7 @@ public class JobcScrapController {
         jobscrapService.deleteJobScrap_company(meber_no, companyName);
     }
 
+    /*마이페이지 내 회사 스크랩*/
     @PostMapping("/scrap/company/delete/mypage")
     public String scrapCompanyDeleteMypage(@RequestBody companyScrapVO companyscrapvO) {
         System.out.println("컨트롤러: " + companyscrapvO.getCompanyName());
@@ -52,13 +57,15 @@ public class JobcScrapController {
         return "redirect:./";
     }
 
-
+    /*공고 찜*/
     @PostMapping("/scrap/job")
     public void scrapJobInsert(@RequestBody InfScrapVO infScrapVO) {
         System.out.println("컨트롤러: " + infScrapVO.getInfoname());
         System.out.println("컨트롤러: " + infScrapVO.getMember_No());
         jobscrapService.insertJobScrap_infoname(infScrapVO);
     }
+
+    /*공고 삭제*/
     @PostMapping("/scrap/job/delete")
     public void scrapJobDelete(@RequestBody InfScrapVO infScrapVO) {
         System.out.println("컨트롤러_삭제: " + infScrapVO.getInfoname());

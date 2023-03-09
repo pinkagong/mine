@@ -11,6 +11,14 @@ import javax.servlet.http.HttpSession;
 
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
+    /**
+     * 로그인 여부 체크 인터셉터
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler chosen handler to execute, for type and/or instance evaluation
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();

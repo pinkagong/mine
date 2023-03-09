@@ -72,6 +72,7 @@ public class HomeController {
         }
         return "main";
     }
+    /*회원가입*/
     @GetMapping("/join")
     String getJoin(@ModelAttribute("member") MemberVo member){
         return "member/joinForm";
@@ -107,7 +108,11 @@ public class HomeController {
     }
 
 
+    /**
+     * 메서드
+     */
 
+    /*회원가입 시 받은 문자열 합치기*/
     private static void combineString(MemberVo member) {
         String address = member.getMEMBER_ADDRESS1() + "/" + member.getMEMBER_ADDRESS2() + "/" + member.getMEMBER_ADDRESS3();
         member.setMEMBER_ADDRESS(address);
@@ -118,6 +123,8 @@ public class HomeController {
         String phone = member.getMEMBER_PHONE1() + "-" + member.getMEMBER_PHONE2() + "-" + member.getMEMBER_PHONE3();
         member.setMEMBER_PHONE(phone);
     }
+
+    /*세션 로그인 정보 받기*/
     private MemberVo getLoginMember(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return session != null ? (MemberVo) session.getAttribute(SessionConst.LOGIN_MEMBER) : null;

@@ -64,9 +64,7 @@ public class CartController {
     }
 
 
-    /**
-     * 장바구니 추가
-     */
+    /* 장바구니 추가*/
     @GetMapping("/{productId}/{quantityinput}")
     public String addCartItem(@PathVariable int productId,
                            @PathVariable int quantityinput,
@@ -84,9 +82,7 @@ public class CartController {
         return "redirect:/com.solponge/product/"+productId;
     }
 
-    /**
-     * 장바구니 아이템 삭제
-     */
+    /* 장바구니 아이템 삭제*/
     @PostMapping("/deleteCartItem")
     public String cartItemDelete(@RequestParam("cartItemNum") int cartItemNum,
                                  HttpServletRequest request){

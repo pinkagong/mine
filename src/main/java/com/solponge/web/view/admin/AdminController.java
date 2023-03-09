@@ -117,7 +117,7 @@ public class AdminController {
         return "admin/inqProduct";
     }
 
-
+    /*상품 상세*/
     @GetMapping("/product/{productNum}")
     public String deProduct(@PathVariable int productNum, Model model) {
         productVo product = productService.getproduct(productNum);
@@ -127,6 +127,7 @@ public class AdminController {
         return "admin/deProduct";
     }
 
+    /*상품 추가*/
     @GetMapping("/product/add")
     public String addProduct() {
         return "admin/addProduct";
@@ -144,6 +145,7 @@ public class AdminController {
         return "redirect:/com.solponge/admin/product";
     }
 
+    /*상품 수정*/
     @GetMapping("/product/{productNum}/edit") //수정중
     public String editProduct(@PathVariable int productNum, Model model, HttpServletRequest request) {
         System.out.println(productNum);
@@ -179,6 +181,8 @@ public class AdminController {
         return "redirect:";
     }
 
+    /*상품 삭제*/
+
     @GetMapping("/product/{productNum}/delete")
     public String deleteProduct(@PathVariable int productNum) {
         System.out.println(productNum);
@@ -194,7 +198,7 @@ public class AdminController {
     }
 
     /**
-     * 주문 정보
+     * 주문 관리
      */
 
     @GetMapping("/order")
@@ -246,7 +250,7 @@ public class AdminController {
         model.addAttribute("url", "?");
         return "admin/orderManager";
     }
-
+    /*주문 수정*/
     @PostMapping("/order/{paymentNum}/update")
     public String update(@PathVariable String paymentNum,
                          @RequestParam String deliveryNum,
@@ -268,7 +272,7 @@ public class AdminController {
     }
 
     /**
-     * 메서드
+     * 로그인 메서드
      */
     private MemberVo getLoginMember(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
