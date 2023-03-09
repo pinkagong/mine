@@ -27,7 +27,7 @@ public class produtController {
                               Model model, HttpServletRequest request){
         model.addAttribute("member",loginMember);
 
-        List<productVo> data = ps.getproductList();
+        List<productVo> data = productService.getproductList();
         new pageing(20, request, data, model, "paginatedProducts");
 
 
@@ -40,7 +40,7 @@ public class produtController {
                                    @RequestParam("SearchValue") String SearchValue){
         model.addAttribute("member",loginMember);
 
-        List<productVo> data = ps.produtsearchlist(SearchSelec, SearchValue);
+        List<productVo> data = productService.produtsearchlist(SearchSelec, SearchValue);
 
         String url = request.getQueryString();
         new pageing(20, request, data, model,"paginatedProducts", url);
