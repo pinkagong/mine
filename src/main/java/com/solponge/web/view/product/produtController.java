@@ -1,6 +1,7 @@
 package com.solponge.web.view.product;
 
 import com.solponge.domain.member.MemberVo;
+import com.solponge.domain.pageing.pageing;
 import com.solponge.domain.product.productService;
 import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
@@ -25,17 +26,11 @@ public class produtController {
     public String produtslist(@SessionAttribute(name = SessionConst.LOGIN_MEMBER,required = false) MemberVo loginMember,
                               Model model, HttpServletRequest request){
         model.addAttribute("member",loginMember);
-        List<productVo> data = productService.getproductList();
-        int pageSize = 20; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data.size());
-        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
-        List<productVo> paginatedProducts = data.subList(start, end); // get the current page of products
-        model.addAttribute("paginatedProducts", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("url", "?");
+
+        List<productVo> data = ps.getproductList();
+        new pageing(20, request, data, model, "paginatedProducts");
+
+
         return "product/productlist";
     }
     @GetMapping("/productList/search")
@@ -44,32 +39,14 @@ public class produtController {
                                    @RequestParam("SearchSelect") String SearchSelec,
                                    @RequestParam("SearchValue") String SearchValue){
         model.addAttribute("member",loginMember);
-        List<productVo> data = productService.produtsearchlist(SearchSelec, SearchValue);
-        int pageSize = 20; // number of items per page
-        int currentPage = (request.getParameter("page") != null) ? Integer.parseInt(request.getParameter("page")) : 1;
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, data.size());
-        int totalPages = (int) Math.ceil((double) data.size() / pageSize);
-        List<productVo> paginatedProducts = data.subList(start, end); // get the current page of products
-        model.addAttribute("paginatedProducts", paginatedProducts);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("currentPage", currentPage);
+
+        List<productVo> data = ps.produtsearchlist(SearchSelec, SearchValue);
+
         String url = request.getQueryString();
-        System.out.println(url);
-        url = url.replaceAll("&page=[0-9]", "");
-        String inputurl ="";
-        if (url.contains("SearchSelect")){
-            inputurl += "search?"+url+"&";
-        } else {
-            inputurl += "?";
-        }
-        model.addAttribute("url", inputurl);
-        model.addAttribute("status", "Yes");
-//        redirectAttributes.addAttribute("status", "Search");
-        System.out.println(inputurl);
+        new pageing(20, request, data, model,"paginatedProducts", url);
+
         return "product/productlist";
-//        return "redirect:./";
-//        return "redirect:productlist";
+
     }
 
     @GetMapping("/product/{productId}")
