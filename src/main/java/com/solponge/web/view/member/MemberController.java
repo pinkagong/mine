@@ -3,14 +3,12 @@ package com.solponge.web.view.member;
 import com.solponge.domain.JobScrap.InfScrapVO;
 import com.solponge.domain.JobScrap.JobScrapService;
 import com.solponge.domain.JobScrap.companyScrapVO;
-import com.solponge.domain.JobScrap.responseScrap;
 import com.solponge.domain.cart.*;
 import com.solponge.domain.cart.impl.CartServiceImpl;
 import com.solponge.domain.jobinfo.JopInfoService;
 import com.solponge.domain.jobinfo.JopInfoVo;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.member.impl.MemberServiceImpl;
-import com.solponge.domain.pageing.pageing;
 import com.solponge.domain.product.productService;
 import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
@@ -167,7 +165,17 @@ public class MemberController {
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
+                System.out.println("비교시작");
+                Map<String, String> params_company = new HashMap<>();
+                Map<String, String> params_info = new HashMap<>();
+                for(companyScrapVO c :cvo){
+                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
+                }
+                for(InfScrapVO c :ivo){
+                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
+                }
+                model.addAttribute("JobScrap", params_company);
+                model.addAttribute("JobScrap2", params_info);
             }
         }catch (Exception e){
             System.out.println("오류발생");
@@ -242,8 +250,6 @@ public class MemberController {
 //        model.addAttribute("response_i_info", response_i_info);
 
         List<JopInfoVo> data = jobinfoService.getInfoInScrapSearchList(SearchSelec, SearchValue, info_names);
-        String url = request.getQueryString();
-
 
         System.out.println(data.size());
         int pageSize = 10; // number of items per page
@@ -263,17 +269,39 @@ public class MemberController {
             String id = loginMember.getMEMBER_ID();
             System.out.println(id);
             if(id !=null) {
-
-                new responseScrap(model, userNo, jobscrapService, "JobScrap", "JobScrap2");
-
+                System.out.println("비교시작");
+                Map<String, String> params_company = new HashMap<>();
+                Map<String, String> params_info = new HashMap<>();
+                for(companyScrapVO c :cvo){
+                    params_company.put("response_"+c.getCompanyName(), c.getCompanyName());
+                }
+                for(InfScrapVO c :ivo){
+                    params_info.put("response_"+c.getInfoname(), c.getInfoname());
+                }
+                model.addAttribute("JobScrap", params_company);
+                model.addAttribute("JobScrap2", params_info);
             }
         }catch (Exception e){
             System.out.println("오류발생");
         }
-        pageing pg = new pageing();
+        String url = request.getQueryString();
+        System.out.println(url);
+        if (url.contains("&page=")){
+            int idx = url.indexOf("&page=");
+            url = url.substring(0, idx);
+        }
 
-        pg.url_handler(url, model);
+        String inputurl ="";
+        if (url.contains("SearchSelect")){
+            inputurl += "search?"+url+"&";
+        } else {
+            inputurl += "?";
+        }
+        System.out.println("들어가는 url: "+inputurl);
+        model.addAttribute("url", inputurl);
+        model.addAttribute("status", "Yes");
 
+//        return "member/myscrap";
         return "member/scrap";
     }
 
