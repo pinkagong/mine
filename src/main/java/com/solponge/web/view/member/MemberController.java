@@ -31,17 +31,15 @@ import java.util.*;
 @RequiredArgsConstructor
 @RequestMapping("/com.solponge/member")
 public class MemberController {
-    @Autowired
     private final MemberServiceImpl memberService;
-    @Autowired
     private final JobScrapService jobscrapService;
-    @Autowired
     private final JopInfoService jobinfoService;
 
     /**
      * 마이페이지
      */
 
+    /*회원정보 수정*/
     @GetMapping("/{MEMBER_NO}/myPage")
     public String getMyPage(Model model, HttpServletRequest request) {
         MemberVo loginMember = getLoginMember(request);
@@ -74,6 +72,7 @@ public class MemberController {
         return "main";
     }
 
+    /*회원 탈퇴*/
     @GetMapping("/{MEMBER_NO}/myPage/delete")
     public String deleteMember(@PathVariable Long MEMBER_NO, HttpServletRequest request) {
         MemberVo loginMember = getLoginMember(request);

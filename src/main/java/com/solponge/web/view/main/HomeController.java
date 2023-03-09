@@ -75,6 +75,7 @@ public class HomeController {
         }
         return "main";
     }
+
     /*회원가입*/
     @GetMapping("/join")
     String getJoin(@ModelAttribute("member") MemberVo member){

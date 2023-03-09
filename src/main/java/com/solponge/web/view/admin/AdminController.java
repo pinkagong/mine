@@ -28,13 +28,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/com.solponge/admin")
 public class AdminController {
-
    private final MemberServiceImpl memberService;
    private final productService productService;
    private final OrderServiceImpl orderService;
 
+
+
     /**
-     * 회원정보
+     * 회원관리 정보
      */
     @GetMapping("/member")
     public String member(Model model) {
@@ -88,7 +89,7 @@ public class AdminController {
     }
 
     /**
-     * 상품
+     * 상품관리 정보
      */
 
     @GetMapping("/product") //수정완료
@@ -190,7 +191,7 @@ public class AdminController {
     }
 
     /**
-     * 주문 관리
+     * 주문 관리 정보
      */
 
     @GetMapping("/order")

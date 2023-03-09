@@ -25,9 +25,7 @@ import java.util.Map;
 @SessionAttributes(names = SessionConst.LOGIN_MEMBER)
 @RequiredArgsConstructor // 초기화 되지 않게 알아서 실행되는 녀석
 public class JobInfoController {
-    @Autowired
     private final JobScrapService jobscrapService;
-    @Autowired
     private final JopInfoService jopinfoService;
 
     @GetMapping("/jobinfolist")
