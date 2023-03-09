@@ -5,30 +5,17 @@
     <meta charset="UTF-8">
     <title>Sign Up</title>
     <link rel="stylesheet" href="/css/hdcss.css">
-    <style>
-        /*body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            !* position: absolute; *!
-            bottom: 0;
-            width: 100%;
-        }*/
-    </style>
     <link rel="stylesheet" href="/css/mypageForm.css">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
+    <style>
+        #sidebar td{
+            text-align: center;
+        }
+        #sidebar td a{
+            text-align: center;
+        }
+    </style>
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
 <header>
@@ -39,18 +26,17 @@
     <div id="sidebar">
         <table>
             <tr>
-                <td><a class="link" href="myPage.jsp">마이페이지</a></td>
+                <td style="background-color: #007bff;"><a class="link" href="/com.solponge/member/${member.MEMBER_NO}/myPage" style="color:white;">정보수정</a></td>
             </tr>
             <tr>
-                <td><a href="https://tracker.delivery/#/kr.cjlogistics/111111111111" onclick="window.open(this.href,'배송정보','width=800, height=800');return false;" target="_blank" id="deliveryinfo" name="deliveryinfo" class="link">배송조회</a></td>
+                <td><a href="/com.solponge/member/${member.MEMBER_NO}/paymentList">구매목록</a></td>
             </tr>
             <tr>
-                <td><a>구매목록</a></td>
+                <td><a href="/com.solponge/member/${member.MEMBER_NO}/myPage/jobScrap">스크랩</a></td>
             </tr>
         </table>
 
     </div>
-
     <form method="post" action="/com.solponge/member/${member.MEMBER_NO}/myPage" name="frm">
         <input type="hidden" name="MEMBER_NO" id="MEMBER_NO" value="${member.MEMBER_NO}">
         <div id="memberinfo">

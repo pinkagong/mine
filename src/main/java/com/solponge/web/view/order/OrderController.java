@@ -1,32 +1,46 @@
 package com.solponge.web.view.order;
 
 import com.solponge.domain.cart.CartService;
+import com.solponge.domain.member.MemberService;
 import com.solponge.domain.member.MemberVo;
 import com.solponge.domain.order.OrderVo;
+import com.solponge.domain.payment.PaymentService;
+import com.solponge.domain.product.productService;
+import com.solponge.domain.product.productVo;
 import com.solponge.web.view.login.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping()
+@RequestMapping("/com.solponge/member/{MEMBER_NO}")
 public class OrderController {
     private final CartService cartService;
 
-    @PostMapping("/com.solponge/member/{MEMBER_NO}/myPage/cart")
-    public String postItem(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems, @RequestParam(value = "order", required = false) List<String> orderProductNums) {
-        getLoginMember(request); //사용자 확인
+    @Autowired
+    private PaymentService ps;
+    @Autowired
+    private productService ptsd;
+    @Autowired
+    private MemberService ms;
+
+    @PostMapping("/payments")
+    public String postItem(HttpServletRequest request, @RequestParam("cartItems") List<String> cartItems, @RequestParam(value = "order", required = false) List<String> orderProductNums,
+                           Model model) {
+
+        MemberVo loginMember = getLoginMember(request);//사용자 확인
         List<OrderVo> orderList = new ArrayList<>();
         int oneItem=4;
 
@@ -61,9 +75,27 @@ public class OrderController {
             }
         }
 
+        List<OrderVo> data = orderList;
+        Map<String, Object> param = new HashMap<>();
+        int total_price = 0;
+        for (int i = 0; i < data.size(); i++){
+            productVo input_product = ptsd.getproduct(data.get(i).getPRODUCT_NUM());
+            int input_num = input_product.getProduct_num();
+            param.put("img_"+input_num, input_product.getProduct_img());
+            param.put("title_"+input_num, input_product.getProduct_title());
+            param.put("price_"+input_num, input_product.getProduct_price());
+            param.put("stock_"+input_num, data.get(i).getORDER_STOCK());
+            total_price += input_product.getProduct_price() * data.get(i).getORDER_STOCK()+2500;
+        }
+
+        model.addAttribute("pinfo", param);
+        model.addAttribute("oinfo", data);
+        model.addAttribute("minfo", ms.findByNo(loginMember.getMEMBER_NO()));
+        model.addAttribute("total_price",total_price);
+
 
         log.info("orderList={}", orderList);
-        return null;
+        return "product/payments";
     }
 
 
