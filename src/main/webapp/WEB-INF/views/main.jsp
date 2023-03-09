@@ -56,6 +56,50 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/headerFooter.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script language="JavaScript">
+        // $(document).ready(function() {
+        // var formData = $('#myForm').serialize();
+        // console.log('데이터틀'+formData)
+        // $("#myButton").click(function() {
+        //     $.ajax({
+        //         url: "/myAjaxRequest",
+        //         type: "POST",
+        //         contentType: "application/json",
+        //         data: JSON.stringify({ "myData": "Hello world!" }),
+        //         success: function(responseData) {
+        //             alert(responseData);
+        //         },
+        //         error: function(jqXHR, textStatus, errorThrown) {
+        //             alert("Error: " + textStatus + " - " + errorThrown);
+        //         }
+        //     });
+        // });
+        // });
+        //
+        // function submitForm2() {
+        //     let abandonedAnimal = JSON.stringify({ "myData": "Hello world!" });
+        //     $.ajax({
+        //         type: "POST"
+        //         , url: "/abandoned/tag"
+        //         , contentType: "application/json"
+        //         , data: abandonedAnimal
+        //         , success: function(data) {
+        //                 alert('성공');
+        //         }
+        //         , error: function(e) {
+        //             alert('찜 등록에 실패했습니다. 관리자에게 문의해주세요.');
+        //         }
+        //     });
+        // }
+        // const button = document.getElementById('my-button');
+        //
+        // button.addEventListener('click', function() {
+        //     const buttonId = this.id;
+        //     console.log('Button id: ' + buttonId);
+        // });
+
+        <%--infoname_${NewJopInfo.infonum}"--%>
+        <%--companyName_${NewJopInfo.infonum--%>
+
         function submitForm(clicked_id) {
             var buttonElement = document.getElementById(clicked_id);
             var usercheck = '${member.MEMBER_ID}';
@@ -166,17 +210,57 @@
             }
         }
 
-        $(document).ready(function () {
-            var $banner = $(".banner").find("ul");
-            var $bannerWidth = $banner.children().outerWidth();//이미지의 폭
-            var $bannerHeight = $banner.children().outerHeight(); // 높이
-            var $length = $banner.children().length;//이미지의 갯수
-            var rollingId;
+        // function submitForm() {
+        //     var formData = $('#myForm').serialize();
+        //     var messageDTO={
+        //         result:formData
+        //     };
+        //     console.log('데이터틀'+formData)
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: './myControllerEndpoint',
+        //         data: messageDTO
+        //     }).done(function () {
+        //         console.log('보내기 성공')
+        //     });
+        // }
 
-            //정해진 초마다 함수 실행
-            rollingId = setInterval(function () {
-                rollingStart();
-            }, 3000);//다음 이미지로 롤링 애니메이션 할 시간차
+        // function sendAjaxRequest(event) {
+        //     var buttonId = event.target.id;
+        //     var responeId = "data_"+buttonId
+        //     var data = document.getElementById(responeId).value;
+        //     console.log('보낼 값: ' + data);
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "http://localhost:9081/com.solponge/ajax",
+        //         contentType: "application/json",
+        //         data: JSON.stringify({num: data}),
+        //         success: function(response) {
+        //             console.log("데이터보냄:", response);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error("Error:", error);
+        //         }
+        //     });
+        // }
+
+        $(document).ready(function () {
+            // var currentPosition = parseInt($(".quickmenu").css("top"));
+            // $(window).scroll(function() {
+            //     var position = $(window).scrollTop();
+            //     $(".quickmenu").stop().animate({"top":position+currentPosition+"px"},10);
+            // });
+            //
+            // var $banner = $(".container_right");
+            // var $bannerWidth = $banner.children().outerWidth();//이미지의 폭
+            // var $bannerHeight = $banner.children().outerHeight(); // 높이
+            // var $length = $banner.children().length;//이미지의 갯수
+            // var rollingId;
+            //
+            // //정해진 초마다 함수 실행
+            // rollingId = setInterval(function () {
+            //     rollingStart();
+            // }, 3000);//다음 이미지로 롤링 애니메이션 할 시간차
 
             function rollingStart() {
                 $banner.css("width", $bannerWidth * $length + "px");

@@ -7,16 +7,22 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    /**
+     * 인터셉터를 등록
+     */
     public void addInterceptors(InterceptorRegistry registry){
 
+        /*어드민 여부 확인*/
         registry.addInterceptor(new AdminLoginCheckInterceptor())
                 .order(1)
                 .addPathPatterns("/com.solponge/admin/**");
 
-        // LoginCheckInterceptor를 등록합니다.
+        /*회원 여부 확인*/
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
+                /*체크 예외 경로*/
                 .excludePathPatterns(
                         "/com.solponge/main",
                         "/com.solponge/join",

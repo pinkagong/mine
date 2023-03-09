@@ -25,7 +25,6 @@ public class JobcScrapController {
     /**
      * 공고 스크랩
      */
-    @Autowired
     private final JobScrapService jobscrapService;
     /*회사 스크랩*/
     @PostMapping("/scrap/company")
