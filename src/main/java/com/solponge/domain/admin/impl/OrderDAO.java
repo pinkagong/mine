@@ -1,6 +1,8 @@
-package com.solponge.domain.product.impl;
+package com.solponge.domain.admin.impl;
 
+import com.solponge.domain.admin.AdminOrderVo;
 import com.solponge.domain.product.productVo;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
-public class productDAO {
-
+public class OrderDAO {
     @Autowired
     SqlSessionTemplate sqlSession;
 
@@ -47,6 +49,7 @@ public class productDAO {
         System.out.println("===> Spring JDBC로 getproductpopularTop8List() 기능 처리");
         return sqlSession.selectList("collection_of_sql_statements.list_popular_6");
     }
+
     // 글 상세 조회
     public productVo getproduct(int product_num){
         System.out.println("===> Spring JDBC로 getproduct() 기능 처리");
@@ -72,25 +75,12 @@ public class productDAO {
     }
 
     // 글 수정
-    public void updateproduct(productVo vo) {
+    public void updateOrder(String paymentNum, AdminOrderVo vo) {
         Map<String, Object> param = new HashMap<>();
-        param.put("NUM", vo.getProduct_num());
-        param.put("TITLE", vo.getProduct_title());
-        param.put("SUB", vo.getProduct_subtitle());
-        param.put("WRITER", vo.getProduct_writer());
-        param.put("PRICE", vo.getProduct_price());
-        param.put("IMG", vo.getProduct_img());
-        param.put("DATE", vo.getProduct_date());
-        param.put("PAGE", vo.getProduct_page());
-        param.put("CODE", vo.getProduct_code());
-        param.put("STOCK", vo.getProduct_stock());
-        param.put("SALE", vo.getProduct_sale());
-        param.put("VISIT", vo.getProduct_visit());
-        System.out.println(vo.getProduct_code());
-        System.out.println("===> Spring JDBC로 updateBoard() 기능 처리");
-        System.out.println(vo.getProduct_code());
-        sqlSession.update("collection_of_sql_statements.updatepro", param);
-        sqlSession.update("collection_of_sql_statements.updateProductCode", param);
+        param.put("payment_num",paymentNum);
+        param.put("delivery_num", vo.getDelivery_num());
+        log.info("vo.getDelivery_num()={}",vo.getDelivery_num());
+        sqlSession.update("order.updateOrder", param);
     }
 
     // 글 삭제
@@ -101,12 +91,25 @@ public class productDAO {
         sqlSession.delete("collection_of_sql_statements.deletepro", param);
     }
 
+    public AdminOrderVo getMyOrder(String paymentNum){
+        Map<String,Object> param=new HashMap<>();
+        param.put("PAYMENT_NUM",paymentNum);
+        return sqlSession.selectOne("order.getMyOrder",param);
+
+    }
+
 
 
     // 글 목록 조회
-    public List<productVo> productFindAll() {
+    public List<AdminOrderVo> getBoardList() {
         System.out.println("===> Spring JDBC로 getBoardList() 기능 처리");
-        return sqlSession.selectList("collection_of_sql_statements.list");
+        return sqlSession.selectList("order.list");
     }
 
+    public List<AdminOrderVo> getMemberOrders(String paymentNum) {
+        System.out.println("===> Spring JDBC로 getBoardList() 기능 처리");
+        Map<String,Object> param=new HashMap<>();
+        param.put("PAYMENT_NUM",paymentNum);
+        return sqlSession.selectList("order.orderList",param);
+    }
 }

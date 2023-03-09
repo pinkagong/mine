@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order">
+
+    <select id="list" resultType="com.solponge.domain.admin.AdminOrderVo">
+        SELECT * FROM PAYMENT
+    </select>
+
+    <select id="orderList" resultType="com.solponge.domain.admin.AdminOrderVo">
+        SELECT * FROM PAYMENT where PAYMENT_NUM=#{PAYMENT_NUM, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectOrder" resultType="com.solponge.domain.admin.AdminOrderVo" >
+        select * from PAYMENT where MEMBER_NO=#{member_no, jdbcType=NUMERIC}
+    </select>
+
+    <select id="getMyOrder" resultType="com.solponge.domain.admin.AdminOrderVo">
+        select * from PAYMENT where PAYMENT_NUM=#{PAYMENT_NUM, jdbcType=VARCHAR}
+    </select>
+
+
+
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="MEMBER_NO" keyColumn="MEMBER_NO">
+        INSERT INTO PAYMENT(MEMBER_NO, MEMBER_ID, MEMBER_PWD, MEMBER_ADDRESS, MEMBER_EMAIL, MEMBER_PHONE, MEMBER_NAME, MEMBER_GRADE, MEMBER_DATE)
+        VALUES(MEMBER_SEQ.NEXTVAL, #{member_id}, #{member_pwd}, #{member_address}, #{member_email}, #{member_phone}, #{member_name}, 'BASIC', SYSTIMESTAMP )
+    </insert>
+    <update id="updateOrder">
+        update PAYMENT set DELIVERY_NUM=#{delivery_num}, SUCCESS=2 where PAYMENT_NUM=#{payment_num}
+    </update>
+    <delete id="deleteOrder">
+        delete PAYMENT where MEMBER_NO=#{member_no}
+    </delete>
+</mapper>
+
+

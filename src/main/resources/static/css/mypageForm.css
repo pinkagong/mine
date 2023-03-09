@@ -1,0 +1,62 @@
+#mypagebody {
+    width: 1050px;
+    margin: 1% auto;
+}
+#sidebar{
+    width:150px;
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+#sidebar{
+    display:inline-block;
+    float:left;
+}
+#memberinfo{
+    display:inline-block;
+}
+
+#memberinfo {
+    margin-top: 20px;
+    border: 1px solid black;
+    padding: 10px;
+    width: 840px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+#member_id[readonly],
+#email1,
+#email2,
+#firstnum,
+#secnum,
+#thrnum,
+#sample6_postcode,
+#sample6_address,
+#sample6_detailAddress {
+    width: 150px;
+}
+
+#emails {
+    width: 120px;
+}
+
+#buttons{
+    text-align:center;
+}

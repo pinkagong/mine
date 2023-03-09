@@ -1,0 +1,9 @@
+#block{
+    width: 1050px;
+    margin: auto 0px;
+}
+td{
+    width: 300px;
+    text-align: center;
+    cursor: pointer;
+}

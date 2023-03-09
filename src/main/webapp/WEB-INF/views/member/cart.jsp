@@ -156,7 +156,7 @@
         </div>
         <br>
 
-        <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/myPage/cart">주문하기</button>
+        <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/payments">주문하기</button>
     </form>
 
 
