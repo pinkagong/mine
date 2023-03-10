@@ -88,8 +88,9 @@
             </thead>
 
             <c:forEach var="order" items="${paymentEntities}">
-                <form method="post" action="order/${order.payment.paymentNum}/update">
-                    <c:if test="${order.success == 1}">
+                <c:if test="${order.success == 1}">
+                <form method="post" action="/com.solponge/admin/order/${String.valueOf(order.payment.paymentNum)}/update">
+
                         <tr>
                             <td>${order.payment.paymentNum}</td>
                             <td>${order.member.MEMBER_ID}</td>
@@ -101,7 +102,7 @@
                             <td>${order.delivery.deliveryInfo}</td>
                             <td>
                                 <input type="hidden" name="payment_num" value="${order.payment.paymentNum}">
-                                <input type="text" id="delivery_num" name="delivery_num" value="${order.delivery.deliveryNum}">
+                                <input type="text" id="deliveryNum" name="deliveryNum" value="${order.delivery.deliveryNum}">
                             </td>
                             <td>
                                 <p id="demo">
@@ -112,11 +113,11 @@
                                     </c:choose>
                                 </p></td>
                             <td>
-                                <div><button type="submit" id="${order.payment.paymentNum}" onclick="sendPostRequest(this.id)">발송</button></div>
+                                <div><button type="submit">발송</button></div>
                             </td>
                         </tr>
-                    </c:if>
                 </form>
+                </c:if>
             </c:forEach>
         </table>
         <br>
