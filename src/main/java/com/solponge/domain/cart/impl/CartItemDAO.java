@@ -50,5 +50,11 @@ public class CartItemDAO {
         sqlSession.delete("cartItem.deleteCartItem",param);
     }
 
+    public void cartItemDeleteFromMember(int MEMBER_NO){
+        Map<String,Object> param=new HashMap<>();
+        param.put("MEMBER_NO",MEMBER_NO);
+        sqlSession.delete("cartItem.deleteCartItemByMember",param);
+    }
+
 
 }

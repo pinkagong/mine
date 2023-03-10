@@ -53,4 +53,14 @@ public class CartServiceImpl implements CartService {
     public List<CartListVo> cartList(int member_num) {
         return cartDAO.showMemberCart(member_num);
     }
+
+    @Override
+    public void deleteCartItemByMember(int MEMBER_NO) {
+        cartItemDAO.cartItemDeleteFromMember(MEMBER_NO);
+    }
+
+    @Override
+    public void deleteCartByMember(int MEMBER_NUM) {
+        cartDAO.cartDeleteByMember(MEMBER_NUM);
+    }
 }

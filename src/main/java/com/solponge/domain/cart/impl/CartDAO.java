@@ -57,4 +57,10 @@ public class CartDAO {
     public List<CartListVo> showMemberCart(int MEMBER_NUM){
         return sqlSession.selectList("cart.cartList", MEMBER_NUM);
     }
+
+    public void cartDeleteByMember(int MEMBER_NUM){
+        Map<String,Object> param=new HashMap<>();
+        param.put("MEMBER_NUM",MEMBER_NUM);
+        sqlSession.delete("cart.deleteCartByMember",param);
+    }
 }

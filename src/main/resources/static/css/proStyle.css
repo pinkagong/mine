@@ -20,8 +20,10 @@ table td button {
     background-color: rgb(102,153,255) !important;
     color: white !important;
     border: none !important;
-    padding: 10px 15px !important;
     cursor: pointer !important;
+}
+.button{
+    padding: 10px; !important;
 }
 table td button:hover {
     background-color: #3458b3;
@@ -147,7 +149,6 @@ button:hover {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 200px;
     font-size: 1rem;
     line-height: 1.5;
     color: #495057;
@@ -203,3 +204,83 @@ input[type="password"][readonly] {
     outline: none;
 }
 
+
+
+
+.member-form {
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: 'Noto Sans KR', sans-serif;
+    flex-direction: column;
+    align-items: center;
+}
+
+.member-label {
+    width: 100%;!important;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #f2f2f2;
+}
+
+.member-se{
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.product-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.input-label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#product-form {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#product-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#product-form button[type="submit"],
+#product-form button[type="button"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: rgb(102, 153, 255);
+    cursor: pointer;
+}
+
+#product-form button[type="submit"]:hover,
+#product-form button[type="button"]:hover {
+    background-color: rgb(102, 153, 255);
+}
+
+.add {
+    max-width: 1300px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.padding-left{
+    padding-left: 70%;
+}
+
+.padding-left1{
+    padding-left: 60%;
+}
+
+.padding-left0{
+    padding-left: 80%;
+}

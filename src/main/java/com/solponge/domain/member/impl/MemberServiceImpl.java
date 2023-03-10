@@ -36,6 +36,9 @@ public class MemberServiceImpl implements MemberService {
         memberDAO.memberDelete(member);
     }
 
+    public void withdrawal(Long MEMBER_NO) {
+        memberDAO.memberDelete(MEMBER_NO);
+    }
     @Override
     public MemberVo findByNo(Long memberNo) {
         return memberDAO.memberFindByNo(memberNo);

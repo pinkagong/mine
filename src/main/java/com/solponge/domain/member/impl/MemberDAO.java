@@ -74,6 +74,13 @@ public class MemberDAO {
         param.put("member_no",member.getMEMBER_NO());
         sqlSession.delete("member.deleteMember",param);
     }
+    public void memberDelete(Long MEMBER_NO) {
+        Map<String,Object> param = new HashMap<>();
+        param.put("member_no",MEMBER_NO);
+        sqlSession.delete("member.delete_member_num",param);
+        sqlSession.delete("member.delete_CART_ITEM",param);
+        sqlSession.delete("member.delete_member_No",param);
+    }
 
 
     public MemberVo memberFindByNo(Long memberNo) {

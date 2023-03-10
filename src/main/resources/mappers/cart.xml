@@ -22,6 +22,8 @@
         DELETE FROM CART WHERE CART_NUM=#{CART_NUM}
     </delete>
 
+
+
     <!--서비스 CURD-->
 
     <resultMap id="cartListResultMap" type="com.solponge.domain.cart.CartListVo">
@@ -48,6 +50,10 @@
                 JOIN product ON cart_item.PRODUCT_NUM = product.PRODUCT_NUM
         WHERE cart.MEMBER_NUM = #{MEMBER_NUM, jdbcType=NUMERIC}
     </select>
+
+    <delete id="deleteCartByMember">
+        DELETE FROM CART WHERE MEMBER_NUM=#{MEMBER_NUM}
+    </delete>
 
 
 

@@ -76,9 +76,14 @@ public class MemberController {
 
     @GetMapping("/{MEMBER_NO}/myPage/delete")
     public String deleteMember(@PathVariable Long MEMBER_NO, HttpServletRequest request) {
-        MemberVo loginMember = getLoginMember(request);
+        getLoginMember(request);
         MemberVo member = memberService.findByNo(MEMBER_NO);
-        memberService.withdrawal(member);
+
+
+
+        memberService.withdrawal(MEMBER_NO);//멤버삭제
+
+
         HttpSession session = request.getSession(false);
         if (session!=null){
             session.invalidate();

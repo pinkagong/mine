@@ -19,11 +19,13 @@ public class productVo {
     private int product_sale;
     private int product_visit;
 
+    private int PRODUCT_GARBAGE;
+
     //기본 생성자
     public productVo(){}
 
     //생성자 오버로딩
-    public productVo(int product_num, String product_title, String product_subtitle, String product_writer, int product_price, String product_img, Date product_date, int product_stock, int product_sale, int product_visit, String product_page, String product_code) {
+    public productVo(int PRODUCT_GARBAGE, int product_num, String product_title, String product_subtitle, String product_writer, int product_price, String product_img, Date product_date, int product_stock, int product_sale, int product_visit, String product_page, String product_code) {
         this.product_num = product_num;
         this.product_title = product_title;
         this.product_subtitle = product_subtitle;
@@ -36,6 +38,7 @@ public class productVo {
         this.product_visit = product_visit;
         this.product_page = product_page;
         this.product_code = product_code;
+        this.PRODUCT_GARBAGE = PRODUCT_GARBAGE;
     }
 
     public productVo(int product_num, String product_title, int product_price, int product_stock) {

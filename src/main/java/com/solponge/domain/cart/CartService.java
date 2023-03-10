@@ -25,4 +25,9 @@ public interface CartService {
 
     List<CartListVo> cartList(int member_num);
 
+    /**
+     * 서비스
+     */
+    void deleteCartItemByMember(int MEMBER_NO);
+    void deleteCartByMember(int MEMBER_NUM);
 }

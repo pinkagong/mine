@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/proStyle.css">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="//cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
         <script>
@@ -33,42 +28,41 @@
 <header>
     <%@include file="../../tags/header.jsp"%>
 </header>
-<div>
+<div class="add">
     <div>
-        <h2>상품 등록</h2>
+        <h2 class="product-title">상품 등록</h2>
     </div>
-    <h4>상품 입력</h4>
-    <form id="myForm" action="/com.solponge/admin/product/add" method="post">
+    <form id="product-form" action="/com.solponge/admin/product/add" method="post">
         <div>
-           <label for="product_title">책제목</label>
+           <label for="product_title" class="input-label">책제목</label>
            <input type="text" id="product_title" name="product_title" placeholder="이름을 입력하세요">
         </div>
         <div>
-           <label for="product_subtitle">부제목</label>
+           <label for="product_subtitle" class="input-label">부제목</label>
            <input type="text" id="product_subtitle" name="product_subtitle" placeholder="부제목을 입력하세요">
         </div>
         <div>
-           <label for="product_writer">작가</label>
+           <label for="product_writer" class="input-label">작가</label>
            <input type="text" id="product_writer" name="product_writer" placeholder="작가를 입력하세요">
         </div>
         <div>
-           <label for="product_price">가격</label>
+           <label for="product_price" class="input-label">가격</label>
            <input type="text" id="product_price" name="product_price" placeholder="가격을 입력하세요">
         </div>
         <div>
-            <label for="product_img">이미지</label>
+            <label for="product_img" class="input-label">이미지</label>
             <input type="text" id="product_img" name="product_img" placeholder="이미지 URL을 입력하세요">
         </div>
         <div>
-            <label for="product_date">출간일</label>
+            <label for="product_date" class="input-label">출간일</label>
             <input type="text" id="product_date" name="product_date" placeholder="출간일을 입력하세요 (yyyy-MM-dd)">
         </div>
         <div>
-            <label for="product_page">페이지 수</label>
+            <label for="product_page" class="input-label">페이지 수</label>
             <input type="text" id="product_page" name="product_page" placeholder="페이지 수를 입력하세요">
         </div>
         <div>
-            <label for="product_stock">재고</label>
+            <label for="product_stock" class="input-label">재고</label>
             <input type="text" id="product_stock" name="product_stock" placeholder="재고를 입력하세요">
         </div>
         <div id="product_code">
@@ -83,16 +77,25 @@
                     });
                </script>
 
-        <hr class="my-4">
+        <table>
+            <tr>
+                <th></th>
+            </tr>
+        </table>
         <div class="row">
-            <div class="col">
+            <div class="padding-left0">
                 <button type="submit" onclick="postData()">상품등록</button>
-            </div>
-            <div class="col">
+            </div>&nbsp
+            <div>
                 <button onclick="location.href='/basic/items/product'" type="button">취소</button>
             </div>
         </div>
     </form>
+    <table>
+        <tr>
+            <th></th>
+        </tr>
+    </table>
 </div> <!-- /container -->
 <footer>
     <%@include file="../../tags/footer.jsp" %>

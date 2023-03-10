@@ -62,9 +62,10 @@ public class OrderController {
         MemberVo loginMember = getLoginMember(request);//사용자 확인
 
         List<OrderVo> orderList = new ArrayList<>();
-        int oneItem=4;
-
-        if (cartItems.size() != oneItem) { // 하나의 상품만을 주문한것이 아닐때
+        int oneItem=1;
+        String a = cartItems.toString();
+        String[] aa = a .split(",");
+        if (cartItems.size() != oneItem && aa.length!=4) { // 하나의 상품만을 주문한것이 아닐때
             for (String cartItem : cartItems) {
                 String[] cartItemArray = cartItem.split(",");
                 int productNum = Integer.parseInt(cartItemArray[0]);

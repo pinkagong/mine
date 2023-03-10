@@ -216,9 +216,11 @@
         }
 
         $(document).ready(function() {
-            $(".navbar-brand").click(function() {
-                $(this).attr("target", "_self");
+            const aTags = document.querySelectorAll('a');
+            aTags.forEach(a => {
+                a.target = '_self';
             });
+            console.log(aTags)
         });
 
     </script>
@@ -227,6 +229,7 @@
 <header>
     <%@include file="../../tags/header.jsp"%>
 </header>
+
 
 <div id="infocontainer">
     <form id="my-form">

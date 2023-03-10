@@ -34,58 +34,58 @@
 <header>
     <%@include file="../../tags/header.jsp"%>
 </header>
-<div class="container">
+<div class="add">
     <div class="py-5 text-center">
-        <h2>상품 수정 폼</h2>
+        <h2 class="product-title">상품 수정</h2>
     </div>
-    <form id="myForm" action="../${product.product_num}/edit" method="post">
+    <form id="product-form" action="../${product.product_num}/edit" method="post">
             <div>
-                <label for="product_num">번호</label>
+                <label for="product_num" class="input-label">번호</label>
                 <input type="text" id="product_num" name="product_num" class="form-control" value="${product.product_num}"
                        readonly>
             </div>
             <div>
-                <label for="product_title">상품명</label>
+                <label for="product_title" class="input-label">상품명</label>
                 <input type="text" id="product_title" name="product_title" class="form-control" value="${product.product_title}">
             </div>
             <div>
-                <label for="product_subtitle">부제목</label>
+                <label for="product_subtitle" class="input-label">부제목</label>
                 <input type="text" id="product_subtitle" name="product_subtitle" class="form-control" value="${product.product_subtitle}">
             </div>
             <div>
-                <label for="product_writer">작가</label>
+                <label for="product_writer" class="input-label">작가</label>
                 <input type="text" id="product_writer" name="product_writer" class="form-control" value="${product.product_writer}">
             </div>
             <div>
-                <label for="product_price">가격</label>
+                <label for="product_price" class="input-label">가격</label>
                 <input type="text" id="product_price" name="product_price" class="form-control" value="${product.product_price}">
             </div>
             <div>
               <img src=${product.product_img} alt="img">
             </div><br>
             <div class="mb-3">
-              <label for="product_img" class="form-label">이미지</label>
+              <label for="product_img" class="form-label" class="input-label">이미지</label>
               <input type="text" id="product_img" name="product_img" class="form-control" value="${product.product_img}">
             </div>
             <div>
-               <label for="product_date">출간일</label>
+               <label for="product_date" class="input-label">출간일</label>
                <input type="text" id="product_date" name="product_date" class="form-control" value=${product.product_date}>
             </div>
             <div>
-                <label for="product_page">페이지 수</label>
+                <label for="product_page" class="input-label">페이지 수</label>
                 <input type="text" id="product_page" name="product_page" class="form-control" value="${product.product_page}">
             </div>
             <div>
-                <label for="product_stock">재고</label>
+                <label for="product_stock" class="input-label">재고</label>
                 <input type="text" id="product_stock" name="product_stock" class="form-control" value="${product.product_stock}">
             </div>
              <div>
-                <label for="product_sale">판매량</label>
-                <input type="text" id="product_sale" name="product_sale" class="form-control" value="${product.product_sale}">
+                <label for="product_sale" class="input-label">판매량</label>
+                <input type="text" id="product_sale" name="product_sale" class="form-control" value="${product.product_sale}" readonly>
              </div>
              <div>
-                <label for="product_visit">방문 수</label>
-                <input type="text" id="product_visit" name="product_visit" class="form-control" value="${product.product_visit}">
+                <label for="product_visit" class="input-label">방문 수</label>
+                <input type="text" id="product_visit" name="product_visit" class="form-control" value="${product.product_visit}" readonly>
              </div>
         <div id="product_code">
                              <p>${product.product_code}</p>
@@ -101,18 +101,23 @@
 
             <hr class="my-4">
             <div class="row">
-                <div class="col">
+                <div class = "padding-left">
                     <button class="w-100 btn btn-primary btn-lg" type="submit" onclick="postData()">저장</button>
-                </div>
-                <div class="col">
-                    <c:url value="/admin/${product.product_num}" var="itemUrl"/>
+                </div>&nbsp
+                <div>
+                    <c:url value="/com.solponge/admin/product/${product.product_num}" var="itemUrl"/>
                     <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='${itemUrl}'" type="button">취소</button>
-                </div>
-                <div class="col">
-                    <c:url value="/admin/product/${product.product_num}/delete" var="itemUrl"/>
+                </div>&nbsp
+                <div>
+                    <c:url value="/com.solponge/admin/product/${product.product_num}/delete" var="itemUrl"/>
                     <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='${itemUrl}'" type="button">삭제</button>
-                </div>
+                </div>&nbsp
             </div>
+        <table>
+            <tr>
+                <th></th>
+            </tr>
+        </table>
     </form>
 </div> <!-- /container -->
 <footer>

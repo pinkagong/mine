@@ -22,6 +22,10 @@
         DELETE FROM CART_ITEM WHERE CART_ITEM_NUM=#{CART_ITEM_NUM}
     </delete>
 
+    <delete id="deleteCartItemByMember">
+        DELETE FROM CART_ITEM WHERE MEMBER_NO=#{MEMBER_NO}
+    </delete>
+
 
 
 </mapper>

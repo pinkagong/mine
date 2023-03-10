@@ -29,6 +29,17 @@
     <delete id="deleteMember">
         delete MEMBER2 where MEMBER_NO=#{member_no}
     </delete>
+
+    <delete id="delete_member_num">
+        delete from cart where member_num = #{member_no}
+    </delete>
+    <delete id="delete_CART_ITEM">
+        delete from CART_ITEM where member_num =#{member_no}
+    </delete>
+    <delete id="delete_member_No">
+        delete from member2 where member_No =#{member_no}
+    </delete>
+
 </mapper>
 
 

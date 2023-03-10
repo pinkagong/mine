@@ -98,7 +98,7 @@ public class productDAO {
         Map<String, Object> param = new HashMap<>();
         param.put("NUM", product_num);
         System.out.println("===> Spring JDBC로 deleteBoard() 기능 처리");
-        sqlSession.delete("collection_of_sql_statements.deletepro", param);
+        sqlSession.update("collection_of_sql_statements.deletepro", param);
     }
 
 
