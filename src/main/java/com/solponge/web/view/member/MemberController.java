@@ -71,7 +71,7 @@ public class MemberController {
                 firstnum, secnum, thrnum);
         //업데이트한 회원정보를 세션에 저장
         sessionSave(loginMember, Session);
-        return "main";
+        return "redirect:/com.solponge/main";
     }
 
     @GetMapping("/{MEMBER_NO}/myPage/delete")

@@ -43,7 +43,7 @@
             <table>
                 <tr>
                     <th>아이디</th>
-                    <td><input type="text" id="member_id" name="member_id" value="${member.MEMBER_ID}" readonly></td>
+                    <td><input type="text" id="member_id" name="member_id" value="${member.MEMBER_ID}" disabled></td>
                 </tr>
                 <tr>
                     <th>비밀번호</th>
@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                     <th>이름</th>
-                    <td><input type="text" name="MEMBER_NAME" id="MEMBER_NAME" value="${member.MEMBER_NAME}"></td>
+                    <td><input type="text" name="MEMBER_NAME" id="MEMBER_NAME" value="${member.MEMBER_NAME}" disabled></td>
                 </tr>
                 <tr>
                     <th>이메일</th>
