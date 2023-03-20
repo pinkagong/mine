@@ -6,7 +6,7 @@
     </select>
     <insert id="insert_scrap_company">
         INSERT INTO companyScrap (MEMBER_NO, companyName, scrap_time)
-        VALUES (#{MEMBER_NO},#{companyName},SYSDATE)
+        VALUES (#{MEMBER_NO},#{companyName},SYSDATE())
     </insert>
     <delete id="delete_scrap_company">
         DELETE FROM companyScrap WHERE MEMBER_NO=#{MEMBER_NO, jdbcType=NUMERIC} AND  COMPANYNAME=#{companyName, jdbcType=VARCHAR}
@@ -17,7 +17,7 @@
     </select>
     <insert id="insert_scrap_info">
         INSERT INTO InfScrap (MEMBER_NO, infoname, scrap_time)
-        VALUES (#{MEMBER_NO},#{Infoname},SYSDATE)
+        VALUES (#{MEMBER_NO},#{Infoname},SYSDATE())
     </insert>
     <delete id="delete_scrap_info">
         DELETE FROM InfScrap WHERE MEMBER_NO=#{MEMBER_NO, jdbcType=NUMERIC} AND  infoname=#{Infoname, jdbcType=VARCHAR}

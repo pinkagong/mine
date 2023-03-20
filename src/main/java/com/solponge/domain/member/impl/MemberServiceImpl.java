@@ -21,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Long join(MemberVo member) {
         String memberNo = memberDAO.memberSave(member);
+        System.out.println(memberNo);
         log.info("joinedMember={}",member.toString());
         return Long.valueOf(memberNo);
     }

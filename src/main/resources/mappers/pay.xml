@@ -7,12 +7,12 @@
         SELECT * FROM payment where member_no = #{member_No} and visible = 1 order by payment_date desc
     </select>
     <insert id="insertPayment">
-        INSERT INTO Payment
-        VALUES(#{payment_num}, #{member_No}, #{product_num}, #{payment_stock}, sysdate,#{payment_phone}, #{payment_email}, #{payment_address},#{deliver_info},0, 1,1)
+        INSERT INTO payment
+        VALUES(#{payment_num}, #{member_No}, #{product_num}, #{payment_stock}, SYSDATE(),#{payment_phone}, #{payment_email}, #{payment_address},#{deliver_info},0, 1,1)
     </insert>
 
     <update id="notVisible">
-        update payment set visible = 0 where payment_num=#{payment_num} and product_num=#{product_num} and member_No=#{member_No}
+        update payment set visible = 0 where payment_num=#{payment_num} and product_num=#{product_num} and member_no=#{member_No}
     </update>
 
     <update id="removeStock">

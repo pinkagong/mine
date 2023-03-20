@@ -2,55 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="collection_of_sql_statements">
     <select id="Searchlist_all" resultType="com.solponge.domain.product.productVo">
-        SELECT * FROM PRODUCT WHERE product_title LIKE '%' || #{SearchValue} || '%' OR product_writer LIKE '%' || #{SearchValue} || '%' AND (product_garbage = 1)
+        SELECT * FROM product WHERE product_title LIKE '%' || #{SearchValue} || '%' OR product_writer LIKE '%' || #{SearchValue} || '%' AND (product_garbage = 1)
     </select>
     <select id="Searchlist_product_title" resultType="com.solponge.domain.product.productVo">
-        SELECT * FROM PRODUCT WHERE product_title LIKE '%' || #{SearchValue} || '%'  AND (product_garbage = 1)
+        SELECT * FROM product WHERE product_title LIKE '%' || #{SearchValue} || '%'  AND (product_garbage = 1)
     </select>
     <select id="Searchlist_product_writer" resultType="com.solponge.domain.product.productVo">
-        SELECT * FROM PRODUCT WHERE product_writer LIKE '%' || #{SearchValue} || '%'  AND (product_garbage = 1)
+        SELECT * FROM product WHERE product_writer LIKE '%' || #{SearchValue} || '%'  AND (product_garbage = 1)
     </select>
     <select id="list" resultType="com.solponge.domain.product.productVo">
         SELECT * FROM product WHERE product_garbage = 1 ORDER BY product_num ASC
     </select>
     <select id="list_new_8" resultType="com.solponge.domain.product.productVo">
         <![CDATA[
-        SELECT *
-        FROM (
-                 SELECT DISTINCT product_num, product_title, product_subtitle, product_writer, product_price, product_img, product_date
-                 FROM product WHERE product_garbage = 1
-                 ORDER BY product_date DESC
-             )
-        WHERE ROWNUM <= 8
+        SELECT DISTINCT product_num, product_title, product_subtitle, product_writer, product_price, product_img, product_date
+        FROM product
+        WHERE product_garbage = 1
+        ORDER BY product_date DESC LIMIT 8;
         ]]>
     </select>
     <select id="list_popular_6" resultType="com.solponge.domain.product.productVo">
         <![CDATA[
-        SELECT *
-        FROM (
-                 SELECT DISTINCT product_num, product_title, product_writer, product_img, PRODUCT_SALE
-                 FROM product WHERE product_garbage = 1
-                 ORDER BY PRODUCT_SALE DESC
-             )
-        WHERE ROWNUM <= 6
+        SELECT DISTINCT product_num, product_title, product_writer, product_img, product_sale
+        FROM product
+        WHERE product_garbage = 1
+        ORDER BY PRODUCT_SALE DESC LIMIT 6;
         ]]>
     </select>
     <select id="product" resultType="com.solponge.domain.product.productVo">
         select * from product where product_garbage = 1 AND product_num=#{product_num}
     </select>
     <insert id="insertpro" useGeneratedKeys="true" keyProperty="PRODUCT_NUM_num" keyColumn="PRODUCT_NUM">
-        insert into PRODUCT(PRODUCT_NUM, PRODUCT_TITLE, PRODUCT_SUBTITLE, PRODUCT_WRITER, PRODUCT_PRICE, PRODUCT_IMG, PRODUCT_DATE, PRODUCT_PAGE, PRODUCT_STOCK, PRODUCT_CODE)
-        values(PRODUCT_SEQ.NEXTVAL, #{TITLE}, #{SUB}, #{WRITER}, #{PRICE}, #{IMG}, #{DATE}, #{PAGE}, #{STOCK}, #{CODE})
+        insert into product(product_num, product_title, product_subtitle, product_writer, product_price, product_img, product_date, product_page, product_stock, product_code)
+        values((select nextval('product') from dual), #{TITLE}, #{SUB}, #{WRITER}, #{PRICE}, #{IMG}, #{DATE}, #{PAGE}, #{STOCK}, #{CODE})
     </insert>
     <!--    <delete id="deletepro">-->
     <!--        DELETE PRODUCT WHERE PRODUCT_NUM=#{NUM}-->
     <!--    </delete>-->
     <update id="deletepro">
-        update PRODUCT set product_garbage=0 where PRODUCT_NUM=#{NUM}
+        update product set product_garbage=0 where product_num=#{NUM}
     </update>
 
     <update id="updatepro">
-        update PRODUCT set PRODUCT_TITLE=#{TITLE}, PRODUCT_SUBTITLE=#{SUB}, PRODUCT_WRITER=#{WRITER}, PRODUCT_PRICE=#{PRICE}, PRODUCT_IMG=#{IMG},PRODUCT_DATE=#{DATE}, PRODUCT_PAGE=#{PAGE}, PRODUCT_STOCK=#{STOCK}, PRODUCT_SALE=#{SALE}, PRODUCT_VISIT=#{VISIT} where PRODUCT_NUM=#{NUM}
+        update product set product_title=#{TITLE}, product_subtitle=#{SUB}, product_writer=#{WRITER}, product_price=#{PRICE}, product_img=#{IMG},product_date=#{DATE}, product_page=#{PAGE}, product_stock=#{STOCK}, product_sale=#{SALE}, product_visit=#{VISIT} where product_num=#{NUM}
     </update>
     <update id="updateProductCode">
         UPDATE product
@@ -59,8 +53,9 @@
     </update>
 
     <update id="updateProductSale">
-        UPDATE product
-        SET PRODUCT_SALE=(SELECT PRODUCT_SALE FROM product WHERE product_num=#{product_num})+#{payment_stock}
-        WHERE product_num =#{product_num}
+        UPDATE product p1
+            JOIN (SELECT product_sale + #{payment_stock} AS new_sale FROM product WHERE product_num = #{product_num}) p2
+        SET p1.product_sale = p2.new_sale
+        WHERE p1.product_num = #{product_num}
     </update>
 </mapper>

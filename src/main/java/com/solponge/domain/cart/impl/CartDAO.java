@@ -38,6 +38,7 @@ public class CartDAO {
 
 
     public String cartInsert(CartVo cartVo){
+        System.out.println(cartVo.getMEMBER_NUM());
         sqlSession.insert("cart.insertCart",cartVo);
         return String.valueOf(cartVo.getMEMBER_NUM());
     }

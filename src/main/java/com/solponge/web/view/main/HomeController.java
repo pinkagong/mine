@@ -86,9 +86,6 @@ public class HomeController {
             log.info("join.bindingResult={}",bindingResult);
         }
         log.info("member={}",member);
-        if(bindingResult.hasErrors()){
-            return "member/joinForm";
-        }
 
         combineString(member); //문자열 합치기 주소,이메일,폰
 
@@ -97,6 +94,9 @@ public class HomeController {
         //회원가입 시 카트 생성
         int cart = cartService.createCart(new CartVo(Math.toIntExact(join)));
         log.info("cartCreated={}",cart);
+        if(bindingResult.hasErrors()){
+            return "member/joinForm";
+        }
         return "member/addComplete";
     }
 

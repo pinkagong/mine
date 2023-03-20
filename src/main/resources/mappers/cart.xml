@@ -9,12 +9,12 @@
     </select>
 
     <select id="selectCart" resultType="com.solponge.domain.cart.CartVo">
-        SELECT CART_NUM, MEMBER_NUM, CART_DATE  FROM CART WHERE MEMBER_NUM = #{MEMBER_NUM, jdbcType=NUMERIC}
+        SELECT CART_NUM, MEMBER_NUM, CART_DATE FROM CART WHERE MEMBER_NUM = #{MEMBER_NUM}
     </select>
 
     <insert id="insertCart" useGeneratedKeys="true" keyProperty="CART_NUM" keyColumn="CART_NUM">
-        INSERT INTO CART(CART_NUM,MEMBER_NUM,CART_DATE)
-        VALUES(CART_NUM_SEQ.NEXTVAL,#{MEMBER_NUM},SYSTIMESTAMP)
+        INSERT INTO CART (CART_NUM,MEMBER_NUM,CART_DATE)
+        VALUES((select nextval('cart') from dual),#{MEMBER_NUM},SYSDATE())
     </insert>
 
 
@@ -39,16 +39,16 @@
     <select id="cartList" resultType="com.solponge.domain.cart.CartListVo">
         SELECT CART.MEMBER_NUM,
                CART.CART_DATE,
-               CART_ITEM.CART_ITEM_NUM,
-               CART_ITEM.PRODUCT_NUM,
-               CART_ITEM.CART_ITEM_STOCK,
-               product.PRODUCT_TITLE,
-               product.PRODUCT_PRICE
+               cart_item.cart_item_num,
+               cart_item.product_num,
+               cart_item.cart_item_stock,
+               product.product_title,
+               product.product_price
         FROM
-            cart
-                JOIN cart_item ON cart.MEMBER_NUM = cart_item.MEMBER_NUM
-                JOIN product ON cart_item.PRODUCT_NUM = product.PRODUCT_NUM
-        WHERE cart.MEMBER_NUM = #{MEMBER_NUM, jdbcType=NUMERIC}
+            CART
+                JOIN cart_item ON CART.MEMBER_NUM = cart_item.member_num
+                JOIN product ON cart_item.product_num = product.product_num
+        WHERE CART.MEMBER_NUM = #{MEMBER_NUM}
     </select>
 
     <delete id="deleteCartByMember">

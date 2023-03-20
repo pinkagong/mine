@@ -3,27 +3,27 @@
 <mapper namespace="cartItem">
 
     <select id="list" resultType="com.solponge.domain.cart.CartItemVo">
-        SELECT * FROM CART_ITEM
+        SELECT * FROM cart_item
     </select>
     <select id="selectCartItem" resultType="com.solponge.domain.cart.CartItemVo">
-        SELECT CART_ITEM_NUM, MEMBER_NUM, PRODUCT_NUM, CART_ITEM_STOCK FROM CART_ITEM WHERE CART_ITEM_NUM = #{CART_ITEM_NUM, jdbcType=NUMERIC}
+        SELECT cart_item_num, member_num, product_num, cart_item_stock FROM cart_item WHERE cart_item_num = #{CART_ITEM_NUM, jdbcType=NUMERIC}
     </select>
 
     <insert id="insertCartItem" useGeneratedKeys="true" keyProperty="CART_ITEM_NUM" keyColumn="CART_ITEM_NUM">
-        INSERT INTO CART_ITEM(CART_ITEM_NUM,MEMBER_NUM,PRODUCT_NUM,CART_ITEM_STOCK)
-        VALUES(CART_ITEM_NUM_SEQ.NEXTVAL,#{MEMBER_NUM},#{PRODUCT_NUM},#{CART_ITEM_STOCK})
+        INSERT INTO cart_item(cart_item_num,member_num,product_num,cart_item_stock)
+        VALUES((select nextval('cart_item') from dual),#{MEMBER_NUM},#{PRODUCT_NUM},#{CART_ITEM_STOCK})
     </insert>
 
     <update id="updateCartItem">
-        UPDATE CART_ITEM SET CART_ITEM_STOCK=#{CART_ITEM_STOCK} WHERE CART_ITEM_NUM=#{CART_ITEM_NUM}
+        UPDATE cart_item SET cart_item_stock=#{CART_ITEM_STOCK} WHERE cart_item_num=#{CART_ITEM_NUM}
     </update>
 
     <delete id="deleteCartItem">
-        DELETE FROM CART_ITEM WHERE CART_ITEM_NUM=#{CART_ITEM_NUM}
+        DELETE FROM cart_item WHERE cart_item_num=#{CART_ITEM_NUM}
     </delete>
 
     <delete id="deleteCartItemByMember">
-        DELETE FROM CART_ITEM WHERE MEMBER_NO=#{MEMBER_NO}
+        DELETE FROM cart_item WHERE member_num=#{MEMBER_NO}
     </delete>
 
 

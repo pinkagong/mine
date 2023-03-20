@@ -75,6 +75,15 @@
 
 
     </style>
+    <script>
+        function check() {
+            if ($("input:checkbox[name='order']").is("checked")===false) {
+                alert("적어도 하나는 선택하여 주십시오.");
+                return false;
+            }
+        }
+
+    </script>
 </head>
 <body>
 <header>
@@ -142,14 +151,7 @@
             <div><span>총 상품 가격 :</span> <span>${cart.totalPrice} 원</span></div>
             <div><span>총 배송비 :
             </span> <span>
-               <c:choose>
-                   <c:when test="${cart.totalPrice >= 50000}">
-                       0 원
-                   </c:when>
-                   <c:otherwise>
                        +2,500 원
-                   </c:otherwise>
-               </c:choose>
             </span></div>
             <hr>
             <div><span>총 결제 금액 :</span> <span>${cart.totalPrice+2500} 원</span></div>
@@ -157,7 +159,7 @@
         <br>
 
 
-        <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/payments">주문하기</button>
+        <button type="submit" formaction="/com.solponge/member/${loginMember.MEMBER_NO}/payments" onclick="check()">주문하기</button>
 
     </form>
 
