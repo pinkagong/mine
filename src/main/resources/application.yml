@@ -1,0 +1,44 @@
+# 서버 포트 설정
+server:
+  port: 8092
+
+# database 연동 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ec2-13-209-17-66.ap-northeast-2.compute.amazonaws.com:3306/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: test
+    password: 0000
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+  web:
+    resources:
+      static-locations: file:src/main/resources/static/
+
+  # spring data jpa 설정
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/views/
+
+stages:
+  - dockerbuild-push
+
+package:
+  image: docker:latest
+  stage: dockerbuild-push
+  services:
+    - docker:dind
+  before_script:
+    - docker login registry.gitlab.com -u $GITLAB_USER -p $GITLAB_PASSWORD
+  script:
+    - docker build -t registry.gitlab.com/$GITLAB_USER/$PROJECT_NAME .
+    - docker push registry.gitlab.com/$GITLAB_USER/$PROJECT_NAME
