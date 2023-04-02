@@ -19,7 +19,7 @@ spring:
   # spring data jpa 설정
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: falsㄴ
+    open-in-view: fals
     show-sql: true
     hibernate:
       ddl-auto: update
